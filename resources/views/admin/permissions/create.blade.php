@@ -8,8 +8,14 @@
  */
 ?>
 
-<form method="post" action="{{ route('permissions.store') }}">
-    {{ csrf_field() }}
+{!! Form::open(['method'=> 'POST', 'route' => 'permissions.store']) !!}
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
     <div class="form-group">
         <label for="inputName">名称</label>
         <input name="name" type="text" class="form-control" id="inputName" placeholder="Enter Name">
@@ -22,5 +28,9 @@
         <label for="inputDescription">描述</label>
         <textarea name="description" class="form-control" id="inputDescription" placeholder="Description"></textarea>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-primary">Save changes</button>
+</div>
+{!! Form::close() !!}

@@ -32,30 +32,46 @@ class PermissionTableSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
 
         // 创建初始用户
-        $root = (new User)->create([
-            'name' => 'root',
-            'email' => '625117069@qq.com',
-            'password' => bcrypt('1234'),
+        $user = (new User)->create([
+            'name' => 'admin',
+            'email' => 'admin@probe.com',
+            'password' => bcrypt('admin'),
         ]);
 
         // 创建初始角色
-        $admin = (new Role)->create([
+        $role = (new Role)->create([
             'name' => 'admin',
             'display_name' => '超级管理员',
             'description' => '超级管理员',
         ]);
 
         // 创建相应的初始权限
-        $super_manager = (new Permission)->create([
-            'name' => 'super_manager',
-            'display_name' => '超级管理员',
-            'description' => '超级管理员',
-        ]);
+        $permissionArray = [];
+        $permissionArray[] = ['name' => 'login', 'display_name' => '登录平台', 'description' => '登录平台',];
+        $permissionArray[] = ['name' => 'view_role', 'display_name' => '查看角色', 'description' => '查看角色',];
+        $permissionArray[] = ['name' => 'create_role', 'display_name' => '创建角色', 'description' => '创建角色',];
+        $permissionArray[] = ['name' => 'edit_role', 'display_name' => '编辑角色', 'description' => '编辑角色',];
+        $permissionArray[] = ['name' => 'delete_role', 'display_name' => '删除角色', 'description' => '删除角色',];
+        $permissionArray[] = ['name' => 'view_permission', 'display_name' => '查看权限', 'description' => '查看权限',];
+        $permissionArray[] = ['name' => 'create_permission', 'display_name' => '创建权限', 'description' => '创建权限',];
+        $permissionArray[] = ['name' => 'edit_permission', 'display_name' => '编辑权限', 'description' => '编辑权限',];
+        $permissionArray[] = ['name' => 'delete_permission', 'display_name' => '删除权限', 'description' => '删除权限',];
+        $permissionArray[] = ['name' => 'view_user', 'display_name' => '查看用户', 'description' => '查看用户',];
+        $permissionArray[] = ['name' => 'create_user', 'display_name' => '创建用户', 'description' => '创建用户',];
+        $permissionArray[] = ['name' => 'edit_user', 'display_name' => '编辑用户', 'description' => '编辑用户',];
+        $permissionArray[] = ['name' => 'delete_user', 'display_name' => '删除用户', 'description' => '删除用户',];
+        $permissionArray[] = ['name' => 'view_u_key', 'display_name' => '查看U盾', 'description' => '查看U盾',];
+        $permissionArray[] = ['name' => 'view_log', 'display_name' => '查看日志', 'description' => '查看日志',];
+        $permissions = [];
+        foreach ($permissionArray as $permissionData) {
+            $permission = (new Permission)->create($permissionData);
+            $permissions[] = $permission;
+        }
 
         // 给角色赋予权限
-        $admin->attachPermission($super_manager);
+        $role->attachPermissions($permissions);
 
         // 给用户指定角色
-        $root->attachRole($admin);
+        $user->attachRole($role);
     }
 }

@@ -19,6 +19,10 @@ class RolesController extends Controller
     public function __construct()
     {
         $this->middleware('role:admin');
+        // $this->middleware('permission:edit_role', ['only' => 'update']);
+        $this->middleware('ability:admin, edit_role', ['only' => 'update']);
+        // $this->middleware('permission:delete_role', ['only' => 'destroy']);
+        $this->middleware(['ability:admin, delete_role', 'protect.admin.role'], ['only' => 'destroy']);
     }
 
     /**
@@ -46,7 +50,7 @@ class RolesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public static function store(Request $request)
@@ -56,7 +60,7 @@ class RolesController extends Controller
             'display_name' => $request->display_name,
             'description' => $request->description,
         ]);
-        if($request->perm){
+        if ($request->perm) {
             $role->attachPermissions($request->perm);
         }
         return redirect()->back();
@@ -65,7 +69,7 @@ class RolesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -76,7 +80,7 @@ class RolesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -87,23 +91,37 @@ class RolesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        //
+        $role = (new Role)->findOrFail($id);
+        $role->fill([
+            'name' => $request->name,
+            'display_name' => $request->display_name,
+            'description' => $request->description,
+        ])->save();
+        $role->savePermissions($request->perm);
+        return redirect()->back();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        $role = (new Role)->findOrFail($id);
+        // $role->perms()->detach();
+        try {
+            $role->delete();
+        } catch (\Exception $e) {
+            return redirect()->back();
+        }
+        return redirect()->back();
     }
 }

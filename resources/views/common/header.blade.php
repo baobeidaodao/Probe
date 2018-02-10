@@ -9,7 +9,7 @@
 ?>
 
 <header class="navbar navbar-expand-sm navbar-light bg-light">
-    <div class="container">
+    <div class="container-fluid">
         <a class="navbar-brand" href="{{ url('/') }}">
             {{ config('app.name', 'Laravel') }}
         </a>
@@ -18,10 +18,10 @@
         </button>
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <ul class="navbar-nav">
-                <li class="nav-item active">
+                <li class="nav-item @if(isset($active) && $active === 'home') active @endif ">
                     <a class="nav-link" href="{{ url('/home') }}">Home<span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item @if(isset($active) && $active === 'admin') active @endif ">
                     <a class="nav-link" href="{{ url('/admin') }}">Admin</a>
                 </li>
                 @role('admin')
@@ -41,7 +41,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="{{ url('admin/roles') }}" target="_self">
+                            <a class="dropdown-item" href="{{ url('admin/users') }}" target="_self">
                                 用户
                             </a>
                         </li>

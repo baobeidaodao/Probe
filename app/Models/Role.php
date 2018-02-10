@@ -23,4 +23,23 @@ class Role extends EntrustRole
         'display_name',
         'description',
     ];
+
+    protected static $admin = 'admin'; // 默认的初始管理员用户
+
+    /**
+     * @return string
+     */
+    public static function getAdmin()
+    {
+        return self::$admin;
+    }
+
+    public static function isAdmin($role)
+    {
+        if (isset($role->name) && $role->name === self::$admin) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

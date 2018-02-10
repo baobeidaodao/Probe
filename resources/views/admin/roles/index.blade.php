@@ -8,25 +8,22 @@
  */
 ?>
 
-@extends('html')
+@extends('admin.index')
 
-@section('body')
-    @include('common.header')
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-3">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>创建角色</h3>
-                    </div>
-                    <div class="card-body">
-                        @include('admin.roles.create')
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-9">
-                @include('admin.roles.table')
+@section('main')
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+        创建角色
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                @include('admin.roles.create')
             </div>
         </div>
+    </div>
+    <div class="table-responsive">
+        @include('admin.roles.table')
     </div>
 @endsection

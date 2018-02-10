@@ -8,7 +8,7 @@
  */
 ?>
 
-<table class="table">
+<table class="table table-striped">
     <thead>
     <tr>
         <th scope="col">id</th>

@@ -30,3 +30,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::resource('roles', 'RolesController');
     Route::resource('permissions', 'PermissionsController');
 });
+
+Route::group(['prefix' => 'test',], function () {
+    Route::get('/', 'TestController@index');
+});

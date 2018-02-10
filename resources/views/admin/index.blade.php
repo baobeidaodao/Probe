@@ -11,35 +11,62 @@
 @extends('html')
 
 @section('body')
-    @include('common.header')
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-center" href="{{ url('/') }}">{{ config('app.name', 'Laravel') }}</a>
+        <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> -->
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hide">
+                    {{ csrf_field() }}
+                </form>
+            </li>
+        </ul>
+    </nav>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2">
-                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <a class="nav-link" id="v-pills-roles-tab" data-toggle="pill" href="{{ url('/admin/roles') }}" role="tab" aria-controls="v-pills-home" aria-selected="true">角色管理</a>
-                    <a class="nav-link" id="v-pills-permissions-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">权限管理</a>
-                    <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">人员管理</a>
-                    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">U盾管理</a>
-                    <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">统计信息</a>
-                    <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">数据查询</a>
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        @role('admin')
+                        @endrole
+                        <li class="nav-item">
+                            <a class="nav-link @if(isset($active) && $active === 'admin') active @endif " href="{{ url('/admin') }}">
+                                <h4>Admin</h4>
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @if(isset($active) && $active === 'roles') active @endif " href="{{ url('admin/roles') }}">
+                                <h5>角色管理</h5>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @if(isset($active) && $active === 'permissions') active @endif " href="{{ url('admin/permissions') }}">
+                                <h5>权限管理</h5>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @if(isset($active) && $active === 'users') active @endif " href="{{ url('admin/users') }}">
+                                <h5>用户管理</h5>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-            </div>
-            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10">
-                <div class="tab-content" id="v-pills-tabContent">
-                    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                        人员管理人员管理人员管理人员管理人员管理人员管理人员管理人员管理人员管理人员管理人员管理人员管理人员管理人员管理
+            </nav>
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+                @section('main')
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Dashboard</h1>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <div class="btn-group mr-2">
+                                <button class="btn btn-sm btn-outline-secondary">Export</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                        U盾管理U盾管理U盾管理U盾管理U盾管理U盾管理U盾管理U盾管理U盾管理U盾管理U盾管理U盾管理
-                    </div>
-                    <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                        统计信息统计信息统计信息统计信息统计信息统计信息统计信息统计信息统计信息统计信息统计信息统计信息统计信息统计信息
-                    </div>
-                    <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                        数据查询数据查询数据查询数据查询数据查询数据查询数据查询数据查询数据查询数据查询数据查询数据查询数据查询数据查询
-                    </div>
-                </div>
-            </div>
+                @show
+            </main>
         </div>
     </div>
 @endsection

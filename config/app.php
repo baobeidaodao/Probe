@@ -182,6 +182,9 @@ return [
         Zizaco\Entrust\EntrustServiceProvider::class,
         // ide 帮助插件
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        // html form 插件
+        Collective\Html\HtmlServiceProvider::class,
+
     ],
 
     /*
@@ -231,7 +234,10 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+        'Entrust' => Zizaco\Entrust\EntrustFacade::class,
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
+
     ],
 
 ];
