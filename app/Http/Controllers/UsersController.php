@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActionLog;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -24,7 +25,11 @@ class UsersController extends Controller
     {
         $users = User::with('roles.perms')->get();
         $roles = (new Role)->get();
-        return view('admin.users.index', compact('users', 'roles'));
+        $data = [];
+        $data['users'] = $users;
+        $data['roles'] = $roles;
+        $data['active'] = 'users';
+        return view('admin.users.index', $data);
     }
 
     /**
@@ -53,6 +58,7 @@ class UsersController extends Controller
         if ($request->role) {
             $user->attachRoles($request->role);
         }
+        ActionLog::log(ActionLog::ACTION_CREATE_USER, isset($user->name) ? $user->name : '');
         return redirect()->back();
     }
 
@@ -101,6 +107,7 @@ class UsersController extends Controller
             $admin = (new Role)->where('name', '=', Role::getAdmin())->first();
             $user->attachRole($admin);
         }
+        ActionLog::log(ActionLog::ACTION_EDIT_USER, isset($user->name) ? $user->name : '');
         return redirect()->back();
     }
 
@@ -119,6 +126,7 @@ class UsersController extends Controller
         } catch (\Exception $e) {
             return redirect()->back();
         }
+        ActionLog::log(ActionLog::ACTION_DELETE_USER, isset($user->name) ? $user->name : '');
         return redirect()->back();
     }
 }

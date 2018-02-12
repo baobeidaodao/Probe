@@ -11,19 +11,62 @@
 @extends('admin.index')
 
 @section('main')
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-        创建权限
-    </button>
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                @include('admin.permissions.create')
-            </div>
-        </div>
-    </div>
     <div class="table-responsive">
-        @include('admin.permissions.table')
+        <table class="table table-hover">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">名称</th>
+                <th scope="col">显示名称</th>
+                <th scope="col">描述</th>
+                <th scope="col">
+                    <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#createPermission">
+                        Create
+                    </button>
+                    <div class="modal fade" id="createPermission" tabindex="-1" role="dialog" aria-labelledby="createPermissionTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                @include('admin.permissions.create')
+                            </div>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($perms as $perm)
+                <tr>
+                    <th scope="row">{{ $perm->id or 0 }}</th>
+                    <td>{{ $perm->name or '' }}</td>
+                    <td>{{ $perm->display_name or '' }}</td>
+                    <td>{{ $perm->description or '' }}</td>
+                    <td>
+                        @permission('edit_permission')
+                        <button type="button" class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#editPermission{{ $perm->id or 0 }}">
+                            Edit
+                        </button>
+                        <div class="modal fade" id="editPermission{{ $perm->id or 0 }}" tabindex="-1" role="dialog" aria-labelledby="editPermission{{ $perm->id or 0 }}Title" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                @include('admin.permissions.edit')
+                            </div>
+                        </div>
+                        @endpermission
+                        @permission('delete_permission')
+                        <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#deletePermission{{ $perm->id or 0 }}">
+                            Delete
+                        </button>
+                        <div class="modal fade" id="deletePermission{{ $perm->id or 0 }}" tabindex="-1" role="dialog" aria-labelledby="deletePermission{{ $perm->id or 0 }}Title" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    @include('admin.permissions.delete')
+                                </div>
+                            </div>
+                        </div>
+                        @endpermission
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
     </div>
 @endsection

@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActionLog;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
@@ -34,7 +35,11 @@ class RolesController extends Controller
     {
         $roles = Role::with('perms')->get();
         $perms = (new Permission)->get();
-        return view('admin.roles.index', compact('roles', 'perms'));
+        $data = [];
+        $data['roles'] = $roles;
+        $data['perms'] = $perms;
+        $data['active'] = 'roles';
+        return view('admin.roles.index', $data);
     }
 
     /**
@@ -63,6 +68,7 @@ class RolesController extends Controller
         if ($request->perm) {
             $role->attachPermissions($request->perm);
         }
+        ActionLog::log(ActionLog::ACTION_CREATE_ROLE, isset($role->display_name) ? $role->display_name : (isset($role->name) ? $role->name : ''));
         return redirect()->back();
     }
 
@@ -104,6 +110,7 @@ class RolesController extends Controller
             'description' => $request->description,
         ])->save();
         $role->savePermissions($request->perm);
+        ActionLog::log(ActionLog::ACTION_EDIT_ROLE, isset($role->display_name) ? $role->display_name : (isset($role->name) ? $role->name : ''));
         return redirect()->back();
     }
 
@@ -119,6 +126,7 @@ class RolesController extends Controller
         // $role->perms()->detach();
         try {
             $role->delete();
+            ActionLog::log(ActionLog::ACTION_DELETE_ROLE, isset($role->display_name) ? $role->display_name : (isset($role->name) ? $role->name : ''));
         } catch (\Exception $e) {
             return redirect()->back();
         }

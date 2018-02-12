@@ -14,6 +14,8 @@ class AdminController extends Controller
 {
     public static function index()
     {
-        return view('admin.index');
+        $data = [];
+        $data['active'] = 'admin';
+        return view('admin.index', $data);
     }
 }

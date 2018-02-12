@@ -29,6 +29,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::resource('users', 'UsersController');
     Route::resource('roles', 'RolesController');
     Route::resource('permissions', 'PermissionsController');
+
+    Route::get('logs/{page?}', 'LogController@index');
 });
 
 Route::group(['prefix' => 'test',], function () {

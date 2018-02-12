@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActionLog;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 
@@ -24,9 +25,9 @@ class PermissionsController extends Controller
         $perms = (new Permission)->get();
         $data = [];
         $data['perms'] = $perms;
+        $data['active'] = 'permissions';
         return view('admin.permissions.index', $data);
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -41,7 +42,7 @@ class PermissionsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -51,13 +52,14 @@ class PermissionsController extends Controller
             'display_name' => $request->display_name,
             'description' => $request->description,
         ]);
+        ActionLog::log(ActionLog::ACTION_CREATE_PERMISSION, isset($permission->display_name) ? $permission->display_name : (isset($permission->name) ? $permission->name : ''));
         return redirect()->back();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -68,7 +70,7 @@ class PermissionsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -79,23 +81,38 @@ class PermissionsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        //
+        $permission = (new Permission())->findOrFail($id);
+        $permission->fill([
+            'name' => $request->name,
+            'display_name' => $request->display_name,
+            'description' => $request->description,
+        ])->save();
+        ActionLog::log(ActionLog::ACTION_EDIT_PERMISSION, isset($permission->display_name) ? $permission->display_name : (isset($permission->name) ? $permission->name : ''));
+        return redirect()->back();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        $permission = (new Permission())->findOrFail($id);
+        // $role->perms()->detach();
+        try {
+            $permission->delete();
+            ActionLog::log(ActionLog::ACTION_DELETE_PERMISSION, isset($permission->display_name) ? $permission->display_name : (isset($permission->name) ? $permission->name : ''));
+        } catch (\Exception $e) {
+            return redirect()->back();
+        }
+        return redirect()->back();
     }
 }
