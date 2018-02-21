@@ -24,9 +24,7 @@
                     </button>
                     <div class="modal fade" id="createUser" tabindex="-1" role="dialog" aria-labelledby="createUserTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                @include('admin.users.create')
-                            </div>
+                            @include('admin.users.create')
                         </div>
                     </div>
                 </th>
@@ -64,9 +62,7 @@
                             </button>
                             <div class="modal fade" id="deleteUser{{ $user->id or 0 }}" tabindex="-1" role="dialog" aria-labelledby="deleteUser{{ $user->id or 0 }}Title" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        @include('admin.users.delete')
-                                    </div>
+                                    @include('admin.users.delete')
                                 </div>
                             </div>
                             @endpermission

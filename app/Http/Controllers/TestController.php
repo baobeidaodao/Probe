@@ -9,10 +9,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\AdminService;
+use App\Services\UDiskService;
+
 class TestController extends Controller
 {
     public static function index()
     {
+        //AdminService::listAreaMap();
+        UDiskService::listUDisk();
         return view('test');
     }
 }

@@ -4,12 +4,12 @@
  * Project : Probe
  * FileName: delete.blade.php
  * Author  : Li Tao
- * DateTime: 2018-02-10 19:06:00
+ * DateTime: 2018-02-11 14:00:00
  */
 ?>
 
 <div class="modal-content">
-    {!! Form::open(['method' => 'delete', 'route' => ['roles.destroy', $role->id], ]) !!}
+    {!! Form::open(['method' => 'delete', 'url' => ['admin/u-disk/destroy', $uDisk['id'], ], ]) !!}
     <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -17,7 +17,7 @@
         </button>
     </div>
     <div class="modal-body">
-        确认删除角色：{{ $role->display_name or $role->name }} ？
+        确认删除U盾：{{ $uDisk['uuid'] or '' }} ？
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

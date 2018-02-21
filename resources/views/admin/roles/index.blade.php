@@ -25,9 +25,7 @@
                     </button>
                     <div class="modal fade" id="createRole" tabindex="-1" role="dialog" aria-labelledby="createRoleTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
                                 @include('admin.roles.create')
-                            </div>
                         </div>
                     </div>
                 </th>
@@ -66,9 +64,7 @@
                             </button>
                             <div class="modal fade" id="deleteRole{{ $loop->iteration }}" tabindex="-1" role="dialog" aria-labelledby="deleteRole{{ $loop->iteration }}Title" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
                                         @include('admin.roles.delete')
-                                    </div>
                                 </div>
                             </div>
                             @endpermission

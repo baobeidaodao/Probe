@@ -25,9 +25,7 @@
                     </button>
                     <div class="modal fade" id="createPermission" tabindex="-1" role="dialog" aria-labelledby="createPermissionTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                @include('admin.permissions.create')
-                            </div>
+                            @include('admin.permissions.create')
                         </div>
                     </div>
                 </th>
@@ -57,9 +55,7 @@
                         </button>
                         <div class="modal fade" id="deletePermission{{ $perm->id or 0 }}" tabindex="-1" role="dialog" aria-labelledby="deletePermission{{ $perm->id or 0 }}Title" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    @include('admin.permissions.delete')
-                                </div>
+                                @include('admin.permissions.delete')
                             </div>
                         </div>
                         @endpermission

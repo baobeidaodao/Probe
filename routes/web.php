@@ -31,6 +31,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::resource('permissions', 'PermissionsController');
 
     Route::get('logs/{page?}', 'LogController@index');
+
+    Route::get('u-disk/{page?}', 'UDiskController@index');
+    Route::any('u-disk/store', 'UDiskController@store');
+    Route::any('u-disk/update/{id?}', 'UDiskController@update');
+    Route::any('u-disk/destroy/{id?}', 'UDiskController@destroy');
+
 });
 
 Route::group(['prefix' => 'test',], function () {

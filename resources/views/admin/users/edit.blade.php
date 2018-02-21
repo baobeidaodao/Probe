@@ -8,8 +8,8 @@
  */
 ?>
 
-{!! Form::open(['method' => 'patch', 'route' => ['users.update', $user->id], ]) !!}
 <div class="modal-content">
+    {!! Form::open(['method' => 'patch', 'route' => ['users.update', $user->id], ]) !!}
     <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -39,5 +39,5 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="submit" class="btn btn-primary">Save changes</button>
     </div>
+    {!! Form::close() !!}
 </div>
-{!! Form::close() !!}

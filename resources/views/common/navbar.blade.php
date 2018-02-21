@@ -17,5 +17,6 @@
         <a href="{{ url('admin/permissions') }}" class="list-group-item list-group-item-action list-group-item-dark text-center @if(isset($active) && $active === 'permissions') active @endif ">权限管理</a>
         <a href="{{ url('admin/users') }}" class="list-group-item list-group-item-action list-group-item-dark text-center @if(isset($active) && $active === 'users') active @endif ">用户管理</a>
         <a href="{{ url('admin/logs') }}" class="list-group-item list-group-item-action list-group-item-dark text-center @if(isset($active) && $active === 'logs') active @endif ">日志管理</a>
+        <a href="{{ url('admin/u-disk') }}" class="list-group-item list-group-item-action list-group-item-dark text-center @if(isset($active) && $active === 'u-disk') active @endif ">U盾管理</a>
     </div>
 </nav>

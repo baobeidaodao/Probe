@@ -31,6 +31,9 @@ class ActionLog extends Model
     const ACTION_CREATE_USER = 9;
     const ACTION_EDIT_USER = 10;
     const ACTION_DELETE_USER = 11;
+    const ACTION_CREATE_U_DISK = 12;
+    const ACTION_EDIT_U_DISK = 13;
+    const ACTION_DELETE_U_DISK = 14;
 
     public static $actionMap = [
         self::ACTION_LOGIN => '登录',
@@ -44,6 +47,9 @@ class ActionLog extends Model
         self::ACTION_CREATE_USER => '创建用户',
         self::ACTION_EDIT_USER => '编辑用户',
         self::ACTION_DELETE_USER => '删除用户',
+        self::ACTION_CREATE_U_DISK => '创建U盾',
+        self::ACTION_EDIT_U_DISK => '编辑U盾',
+        self::ACTION_DELETE_U_DISK => '删除U盾',
     ];
 
     /**
