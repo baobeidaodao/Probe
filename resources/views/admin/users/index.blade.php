@@ -18,6 +18,7 @@
                 <th scope="col">id</th>
                 <th scope="col">name</th>
                 <th scope="col">email</th>
+                <th scope="col">phone</th>
                 <th scope="col">
                     <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#createUser">
                         Create
@@ -36,6 +37,7 @@
                     <th scope="row">{{ $user->id or 0 }}</th>
                     <td>{{ $user->name or '' }}</td>
                     <td>{{ $user->email or '' }}</td>
+                    <td>{{ $user->phone or '' }}</td>
                     <td>
                         <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#viewUser{{ $user->id or 0 }}">
                             View

@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Services\AdminService;
 use App\Services\UDiskService;
 
@@ -17,7 +18,8 @@ class TestController extends Controller
     public static function index()
     {
         //AdminService::listAreaMap();
-        UDiskService::listUDisk();
+        //UDiskService::listUDisk();
+        Department::listDepartment();
         return view('test');
     }
 }

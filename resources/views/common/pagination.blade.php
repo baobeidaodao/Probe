@@ -48,7 +48,7 @@ $show = isset($show) ? $show : 3;
             @endif
         @endfor
         {{-- current --}}
-        <li class="page-item">
+        <li class="page-item active">
             <a class="page-link" href="{{ $url . $page }}" class="ahover">{{ $page }}</a>
         </li>
         {{-- after --}}

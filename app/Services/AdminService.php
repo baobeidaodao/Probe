@@ -10,6 +10,7 @@
 namespace App\Services;
 
 use App\Models\Area;
+use App\Models\Department;
 use App\Models\Role;
 use App\Models\User;
 
@@ -54,13 +55,19 @@ class AdminService
         foreach ($areaMap as $index => $map) {
             $parentId = isset($map['id']) ? $map['id'] : 0;
             foreach ($areaList as $i => $area) {
-                if(isset($area['parent_id']) && $area['parent_id']==$parentId){
+                if (isset($area['parent_id']) && $area['parent_id'] == $parentId) {
                     $areaMap[$index]['sub_area'][] = $area;
                     unset($areaList[$i]);
                 }
             }
         }
-        dd($areaMap);
+        return $areaMap;
+    }
+
+    public static function listDepartment()
+    {
+        $departmentList = Department::listDepartment();
+        return $departmentList;
     }
 
 }

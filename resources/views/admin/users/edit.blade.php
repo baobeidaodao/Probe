@@ -28,10 +28,25 @@
             <input name="email" type="email" class="form-control" id="inputEmail" value="{{ $user->email or '' }}" placeholder="Email">
         </div>
         <div class="form-group">
-            <label for="checkboxDescription">角色</label>
+            <label for="inputPhone">Phone</label>
+            <input name="phone" type="text" class="form-control" id="inputPhone" placeholder="Enter Phone">
+        </div>
+        <div class="form-group">
+            <label for="selectLevel">Level</label>
+            <select name="level" class="form-control" id="selectLevel">
+                <option selected>Choose...</option>
+                @foreach($userLevelList as $userLevel)
+                    <option value="{{ $userLevel['id'] or 0 }}" @if($userLevel['id'] == $user->level) selected @endif >{{ $userLevel['name'] or '' }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
+            <label>角色</label>
             @foreach($roles as $role)
-                {!! Form::checkbox('role[]', $role->id, $user->hasRole($role->name) ? true:false) !!}
-                {{ $role->display_name or $role->name }}
+                <div class="form-check">
+                    {!! Form::checkbox('role[]', $role->id, $user->hasRole($role->name) ? true:false) !!}
+                    {{ $role->display_name or $role->name }}
+                </div>
             @endforeach
         </div>
     </div>

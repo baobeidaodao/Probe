@@ -16,23 +16,28 @@
         </button>
     </div>
     <div class="modal-body">
-        <div class="card">
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">{{ $role->name or '' }}</li>
-                    <li class="list-group-item">{{ $role->display_name or '' }}</li>
-                    <li class="list-group-item">{{ $role->description or '' }}</li>
-                    <li class="list-group-item">
-                        <ul class="list-group list-group-flush">
-                            @foreach($role->perms as $perm)
-                                <li class="list-group-item">
-                                    {{ $perm->display_name or $perm->name }}
-                                </li>
-                            @endforeach
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+        <div class="form-group">
+            <label for="inputName">名称</label>
+            <input name="name" type="text" class="form-control" id="inputName" value="{{ $role->name or '' }}" placeholder="Enter Name" readonly >
+        </div>
+        <div class="form-group">
+            <label for="inputDisplayName">显示名称</label>
+            <input name="display_name" type="text" class="form-control" id="inputDisplayName" value="{{ $role->display_name or '' }}" placeholder="Display Name" readonly >
+        </div>
+        <div class="form-group">
+            <label for="inputDescription">描述</label>
+            <textarea name="description" class="form-control" id="inputDescription" placeholder="Description" readonly >{{ $role->description or '' }}</textarea>
+        </div>
+        <div class="form-group">
+            <label>权限</label>
+            @foreach($perms as $perm)
+                <div class="form-check">
+                    <input name="perm[]" class="form-check-input" type="checkbox" value="{{ $perm->id }}" id="checkbox{{ $loop->iteration }}" @if($role->hasPermission($perm->name)) checked="checked" @endIf disabled >
+                    <label class="form-check-label" for="checkbox{{ $loop->iteration }}">
+                        {{ $perm->display_name or $perm->name }}
+                    </label>
+                </div>
+            @endforeach
         </div>
     </div>
     <div class="modal-footer">

@@ -18,4 +18,12 @@ class Area extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
 
+    const LEVEL_CITY = 2;
+
+    public static function listCity(){
+        $cityList = (new Area)->where('level', '=', self::LEVEL_CITY)
+            ->get()
+            ->toArray();
+        return $cityList;
+    }
 }

@@ -2,20 +2,20 @@
 /**
  * IDE Name: PhpStorm
  * Project : Probe
- * FileName: UsersController.php
+ * FileName: DepartmentController.php
  * Author  : Li Tao
- * DateTime: 2018-02-06 11:42:00
+ * DateTime: 2018-02-22 08:55:00
  */
 
 namespace App\Http\Controllers;
 
 use App\Models\ActionLog;
-use App\Models\Role;
-use App\Models\UserLevel;
+use App\Models\Area;
+use App\Models\Department;
+use App\Services\AdminService;
 use Illuminate\Http\Request;
-use App\Models\User;
 
-class UsersController extends Controller
+class DepartmentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,15 +24,15 @@ class UsersController extends Controller
      */
     public static function index()
     {
-        $users = User::with('roles.perms')->get();
-        $roles = (new Role)->get();
-        $userLevelList = UserLevel::all()->toArray();
+        $departmentList = AdminService::listDepartment();
+        $areaMap = AdminService::listAreaMap();
+        $cityList = Area::listCity();
         $data = [];
-        $data['users'] = $users;
-        $data['roles'] = $roles;
-        $data['userLevelList'] = $userLevelList;
-        $data['active'] = 'users';
-        return view('admin.users.index', $data);
+        $data['departmentList'] = $departmentList;
+        $data['areaMap'] = $areaMap;
+        $data['cityList'] = $cityList;
+        $data['active'] = 'department';
+        return view('admin.department.index', $data);
     }
 
     /**
@@ -53,17 +53,11 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        $user = (new User)->create([
+        $department = (new Department())->create([
             'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'level' => $request->level,
-            'password' => bcrypt($request->password),
+            'area_id' => $request->city_id,
         ]);
-        if ($request->role) {
-            $user->attachRoles($request->role);
-        }
-        ActionLog::log(ActionLog::ACTION_CREATE_USER, isset($user->name) ? $user->name : '');
+        ActionLog::log(ActionLog::ACTION_CREATE_DEPARTMENT, isset($department->name) ? $department->name : '');
         return redirect()->back();
     }
 
@@ -98,23 +92,12 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = (new User)->findOrFail($id);
-        $user->fill([
+        $department = (new Department())->findOrFail($id);
+        $department->fill([
             'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'level' => $request->level,
+            'area_id' => $request->city_id,
         ])->save();
-        if ($roleArray = $request->role) {
-            $user->roles()->sync($roleArray);
-        } else {
-            $user->roles()->detach();
-        }
-        if (User::isAdmin($user)) {
-            $admin = (new Role)->where('name', '=', Role::getAdmin())->first();
-            $user->attachRole($admin);
-        }
-        ActionLog::log(ActionLog::ACTION_EDIT_USER, isset($user->name) ? $user->name : '');
+        ActionLog::log(ActionLog::ACTION_EDIT_DEPARTMENT, isset($department->name) ? $department->name : '');
         return redirect()->back();
     }
 
@@ -126,14 +109,13 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        $user = (new User)->findOrFail($id);
-        // $role->perms()->detach();
+        $department = (new Department())->findOrFail($id);
         try {
-            $user->delete();
+            $department->delete();
+            ActionLog::log(ActionLog::ACTION_DELETE_DEPARTMENT, isset($department->name) ? $department->name : '');
         } catch (\Exception $e) {
             return redirect()->back();
         }
-        ActionLog::log(ActionLog::ACTION_DELETE_USER, isset($user->name) ? $user->name : '');
         return redirect()->back();
     }
 }

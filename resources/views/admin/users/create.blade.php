@@ -23,15 +23,31 @@
         </div>
         <div class="form-group">
             <label for="inputEmail">Email</label>
-            <input name="email" type="email" class="form-control" id="inputEmail" placeholder="Email">
+            <input name="email" type="email" class="form-control" id="inputEmail" placeholder="Enter Email">
         </div>
         <input type="hidden" name="password" value="123456">
-        <div class="form-check">
+        <div class="form-group">
+            <label for="inputPhone">Phone</label>
+            <input name="phone" type="text" class="form-control" id="inputPhone" placeholder="Enter Phone">
+        </div>
+        <div class="form-group">
+            <label for="selectLevel">Level</label>
+            <select name="level" class="form-control" id="selectLevel">
+                <option selected>Choose...</option>
+                @foreach($userLevelList as $userLevel)
+                    <option value="{{ $userLevel['id'] or 0 }}">{{ $userLevel['name'] or '' }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Role</label>
             @foreach($roles as $role)
-                <input name="role[]" class="form-check-input" type="checkbox" value="{{ $role->id or '' }}" id="checkbox{{ $loop->iteration }}">
-                <label class="form-check-label" for="checkbox{{ $loop->iteration }}">
-                    {{ $role->display_name or $role->name }}
-                </label>
+                <div class="form-check">
+                    <input name="role[]" class="form-check-input" type="checkbox" value="{{ $role->id or '' }}" id="checkbox{{ $loop->iteration }}">
+                    <label class="form-check-label" for="checkbox{{ $loop->iteration }}">
+                        {{ $role->display_name or $role->name }}
+                    </label>
+                </div>
             @endforeach
         </div>
     </div>

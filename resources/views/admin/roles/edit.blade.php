@@ -31,12 +31,15 @@
             <label for="inputDescription">描述</label>
             <textarea name="description" class="form-control" id="inputDescription" placeholder="Description">{{ $role->description or '' }}</textarea>
         </div>
-        <div class="form-check">
+        <div class="form-group">
+            <label>权限</label>
             @foreach($perms as $perm)
-                <input name="perm[]" class="form-check-input" type="checkbox" value="{{ $perm->id }}" id="checkbox{{ $loop->iteration }}" @if($role->hasPermission($perm->name)) checked="checked" @endIf >
-                <label class="form-check-label" for="checkbox{{ $loop->iteration }}">
-                    {{ $perm->display_name or $perm->name }}
-                </label>
+                <div class="form-check">
+                    <input name="perm[]" class="form-check-input" type="checkbox" value="{{ $perm->id }}" id="checkbox{{ $loop->iteration }}" @if($role->hasPermission($perm->name)) checked="checked" @endIf >
+                    <label class="form-check-label" for="checkbox{{ $loop->iteration }}">
+                        {{ $perm->display_name or $perm->name }}
+                    </label>
+                </div>
             @endforeach
         </div>
     </div>
