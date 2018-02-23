@@ -30,13 +30,22 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::resource('roles', 'RolesController');
     Route::resource('permissions', 'PermissionsController');
     Route::resource('department', 'DepartmentController');
+    Route::resource('ip', 'IpController');
 
+    /** 日志 */
     Route::get('logs/{page?}', 'LogController@index');
 
+    /** u disk */
     Route::get('u-disk/{page?}', 'UDiskController@index');
     Route::any('u-disk/store', 'UDiskController@store');
     Route::any('u-disk/update/{id?}', 'UDiskController@update');
     Route::any('u-disk/destroy/{id?}', 'UDiskController@destroy');
+
+    /** 统计信息 */
+    Route::get('statistics', 'StatisticsController@index');
+
+    /** 数据查询 */
+    Route::get('data', 'DataController@index');
 
 });
 

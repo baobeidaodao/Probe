@@ -17,4 +17,8 @@ class Operator extends Model
     protected $table = 'operator';
     protected $primaryKey = 'id';
     public $timestamps = false;
+
+    const LEVEL_1 = 1;
+    const LEVEL_2 = 2;
+
 }

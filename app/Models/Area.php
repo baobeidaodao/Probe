@@ -18,6 +18,7 @@ class Area extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
 
+    const LEVEL_PROVINCE = 1;
     const LEVEL_CITY = 2;
 
     public static function listCity(){
@@ -26,4 +27,12 @@ class Area extends Model
             ->toArray();
         return $cityList;
     }
+
+    public static function listProvince(){
+        $cityList = (new Area)->where('level', '=', self::LEVEL_PROVINCE)
+            ->get()
+            ->toArray();
+        return $cityList;
+    }
+
 }

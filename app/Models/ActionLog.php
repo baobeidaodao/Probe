@@ -37,6 +37,9 @@ class ActionLog extends Model
     const ACTION_CREATE_DEPARTMENT = 15;
     const ACTION_EDIT_DEPARTMENT = 16;
     const ACTION_DELETE_DEPARTMENT = 17;
+    const ACTION_CREATE_IP = 15;
+    const ACTION_EDIT_IP = 16;
+    const ACTION_DELETE_IP = 17;
 
     public static $actionMap = [
         self::ACTION_LOGIN => '登录',
@@ -56,6 +59,9 @@ class ActionLog extends Model
         self::ACTION_CREATE_DEPARTMENT => '创建部门',
         self::ACTION_EDIT_DEPARTMENT => '编辑部门',
         self::ACTION_DELETE_DEPARTMENT => '删除部门',
+        self::ACTION_CREATE_IP => '创建IP',
+        self::ACTION_EDIT_IP => '编辑IP',
+        self::ACTION_DELETE_IP => '删除IP',
     ];
 
     /**

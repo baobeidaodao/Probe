@@ -22,7 +22,7 @@
             <input name="name" type="text" class="form-control" id="inputName" placeholder="Enter Name">
         </div>
         <div class="form-group">
-            <label for="selectCityId">Operator</label>
+            <label for="selectCityId">City</label>
             <select name="city_id" class="form-control" id="selectCityId">
                 <option selected>Choose...</option>
                 @foreach($cityList as $city)

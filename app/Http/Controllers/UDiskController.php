@@ -9,7 +9,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\ActionLog;
 use App\Models\Operator;
 use App\Models\UDisk;
@@ -24,7 +23,7 @@ class UDiskController extends Controller
         $size = 10;
         $uDiskListData = UDiskService::listUDisk($page, $size);
         $userList = User::all()->toArray();
-        $operatorList = Operator::all()->toArray();
+        $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_2)->get()->toArray();
         $data = [];
         $data['uDiskList'] = $uDiskListData['uDiskList'];
         $data['userList'] = $userList;
