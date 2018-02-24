@@ -9,7 +9,7 @@
 ?>
 
 <div class="modal-content">
-    {!! Form::open(['method' => 'delete', 'url' => ['admin/u-disk/destroy', $uDisk['id'], ], ]) !!}
+    {!! Form::open(['method' => 'delete', 'route' => ['u-disk.destroy', $uDisk['id'], ], ]) !!}
     <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">

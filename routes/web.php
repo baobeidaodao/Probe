@@ -55,9 +55,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::resource('u-disk', 'UDiskController');
     Route::get('u-disk/page/{page?}', 'UDiskController@index');
     Route::any('u-disk/search/{page?}', 'UDiskController@search');
-    //Route::any('u-disk/store', 'UDiskController@store');
-    //Route::any('u-disk/update/{id?}', 'UDiskController@update');
-    //Route::any('u-disk/destroy/{id?}', 'UDiskController@destroy');
 
     /** 统计信息 */
     Route::get('statistics', 'StatisticsController@index');
