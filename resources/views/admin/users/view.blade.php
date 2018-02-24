@@ -37,6 +37,8 @@
                 @endforeach
             </select>
         </div>
+        <label for="">Area</label>
+        @include('common.area', ['area_id' => $user->area_id, 'readonly' => true, ])
         <div class="form-group">
             <label>Role</label>
             @foreach($roles as $role)

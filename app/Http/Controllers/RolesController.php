@@ -13,6 +13,7 @@ use App\Models\ActionLog;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
+use App\Services\AppService;
 use Illuminate\Http\Request;
 
 class RolesController extends Controller
@@ -29,15 +30,20 @@ class RolesController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param int $page
      * @return \Illuminate\Http\Response
      */
-    public static function index()
+    public static function index($page = 1)
     {
-        $roles = Role::with('perms')->get();
+        $size = 10;
+        // $roles = Role::with('perms')->get();
+        $roleListData = Role::listRole($page, $size);
+        $pagination = AppService::calculatePagination($page, $size, $roleListData['count']);
         $perms = (new Permission)->get();
         $data = [];
-        $data['roles'] = $roles;
+        $data['roles'] = $roleListData['roleList'];
         $data['perms'] = $perms;
+        $data['pagination'] = $pagination;
         $data['active'] = 'roles';
         return view('admin.roles.index', $data);
     }
@@ -132,4 +138,22 @@ class RolesController extends Controller
         }
         return redirect()->back();
     }
+
+    public static function search($page = 1, Request $request){
+        $size = 10;
+        $search = [
+            'name' => isset($request->name) ? $request->name : '',
+        ];
+        $roleListData = Role::searchRole($search, $page, $size);
+        $pagination = AppService::calculatePagination($page, $size, $roleListData['count']);
+        $perms = (new Permission)->get();
+        $data = [];
+        $data['roles'] = $roleListData['roleList'];
+        $data['perms'] = $perms;
+        $data['pagination'] = $pagination;
+        $data['search'] = $search;
+        $data['active'] = 'roles';
+        return view('admin.roles.index', $data);
+    }
+
 }

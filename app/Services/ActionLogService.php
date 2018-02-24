@@ -26,4 +26,18 @@ class ActionLogService
         $data['pagination'] = $pagination;
         return $data;
     }
+
+    public static function searchActionLog($search, $page, $size)
+    {
+        $data = ActionLog::searchActionLog($search, $page, $size);
+        $data = AppService::objectToArray($data);
+        $actionLogList = $data['actionLogList'];
+        foreach ($actionLogList as $index => $actionLog) {
+            $actionLogList[$index]['action_name'] = ActionLog::$actionMap[$actionLog['action']];
+        }
+        $pagination = AppService::calculatePagination($page, $size, $data['count']);
+        $data['actionLogList'] = $actionLogList;
+        $data['pagination'] = $pagination;
+        return $data;
+    }
 }

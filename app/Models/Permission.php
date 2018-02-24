@@ -23,4 +23,33 @@ class Permission extends EntrustPermission
         'display_name',
         'description',
     ];
+
+    public static function listPermission($page, $size)
+    {
+        $db = (new Permission);
+        $count = $db->count();
+        $permissionList = $db->forPage($page, $size)
+            ->get();
+        $data = [];
+        $data['count'] = $count;
+        $data['permissionList'] = $permissionList;
+        return $data;
+    }
+
+    public static function searchPermission($search = [], $page, $size)
+    {
+        $db = (new Permission)->where(function ($query) use ($search) {
+            if (isset($search) && isset($search['name']) && !empty($search['name'])) {
+                $query->where('permissions.name', 'like', $search['name'])
+                    ->orWhere('permissions.display_name', 'like', $search['name']);
+            }
+        });
+        $count = $db->count();
+        $permissionList = $db->forPage($page, $size)
+            ->get();
+        $data = [];
+        $data['count'] = $count;
+        $data['permissionList'] = $permissionList;
+        return $data;
+    }
 }

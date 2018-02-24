@@ -11,29 +11,36 @@
 @extends('admin.index')
 
 @section('main')
-    <div class="table-responsive">
-        <table class="table table-hover">
-            <thead class="thead-light">
-            <tr>
-                <th scope="col">id</th>
-                <th scope="col">User</th>
-                <th scope="col">Action</th>
-                <th scope="col">Remark</th>
-                <th scope="col">Time</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($actionLogList as $actionLog)
-                <tr>
-                    <th scope="row">{{ $actionLog['id'] or 0 }}</th>
-                    <td>{{ $actionLog['name'] or '' }}</td>
-                    <td>{{ $actionLog['action_name'] or '' }}</td>
-                    <td>{{ $actionLog['remark'] or '' }}</td>
-                    <td>{{ $actionLog['created_at'] or '' }}</td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
+    <div class="card">
+        <div class="card-header">
+            @include('admin.logs.search')
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">User</th>
+                        <th scope="col">Action</th>
+                        <th scope="col">Remark</th>
+                        <th scope="col">Time</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($actionLogList as $actionLog)
+                        <tr>
+                            <th scope="row">{{ $actionLog['id'] or 0 }}</th>
+                            <td>{{ $actionLog['name'] or '' }}</td>
+                            <td>{{ $actionLog['action_name'] or '' }}</td>
+                            <td>{{ $actionLog['remark'] or '' }}</td>
+                            <td>{{ $actionLog['created_at'] or '' }}</td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @include('common.pagination', ['url' => url('/admin/logs/page') . '/', 'page' => $pagination['page'], 'count' => $pagination['count'],])
     </div>
-    @include('common.pagination', ['url' => url('/admin/logs/') . '/', 'page' => $pagination['page'], 'count' => $pagination['count'],])
 @endsection

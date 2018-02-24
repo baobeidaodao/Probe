@@ -27,19 +27,37 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/', 'AdminController@index');
 
     Route::resource('users', 'UsersController');
+    Route::get('users/page/{page?}', 'UsersController@index');
+    Route::post('users/search/{page?}', 'UsersController@search');
+
     Route::resource('roles', 'RolesController');
+    Route::get('roles/page/{page?}', 'RolesController@index');
+    Route::post('roles/search/{page?}', 'RolesController@search');
+
     Route::resource('permissions', 'PermissionsController');
+    Route::get('permissions/page/{page?}', 'PermissionsController@index');
+    Route::post('permissions/search/{page?}', 'PermissionsController@search');
+
     Route::resource('department', 'DepartmentController');
+    Route::get('department/page/{page?}', 'DepartmentController@index');
+    Route::post('department/search/{page?}', 'DepartmentController@search');
+
     Route::resource('ip', 'IpController');
+    Route::get('ip/page/{page?}', 'IpController@index');
+    Route::post('ip/search/{page?}', 'IpController@search');
 
     /** 日志 */
-    Route::get('logs/{page?}', 'LogController@index');
+    Route::get('logs', 'LogController@index');
+    Route::get('logs/page/{page?}', 'LogController@index');
+    Route::any('logs/search/{page?}', 'LogController@search');
 
     /** u disk */
-    Route::get('u-disk/{page?}', 'UDiskController@index');
-    Route::any('u-disk/store', 'UDiskController@store');
-    Route::any('u-disk/update/{id?}', 'UDiskController@update');
-    Route::any('u-disk/destroy/{id?}', 'UDiskController@destroy');
+    Route::resource('u-disk', 'UDiskController');
+    Route::get('u-disk/page/{page?}', 'UDiskController@index');
+    Route::any('u-disk/search/{page?}', 'UDiskController@search');
+    //Route::any('u-disk/store', 'UDiskController@store');
+    //Route::any('u-disk/update/{id?}', 'UDiskController@update');
+    //Route::any('u-disk/destroy/{id?}', 'UDiskController@destroy');
 
     /** 统计信息 */
     Route::get('statistics', 'StatisticsController@index');

@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ActionLog;
 use App\Models\Permission;
+use App\Services\AppService;
 use Illuminate\Http\Request;
 
 class PermissionsController extends Controller
@@ -18,13 +19,18 @@ class PermissionsController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param int $page
      * @return \Illuminate\Http\Response
      */
-    public static function index()
+    public static function index($page = 1)
     {
-        $perms = (new Permission)->get();
+        $size = 10;
+        // $perms = (new Permission)->get();
+        $permissionListData = Permission::listPermission($page, $size);
+        $pagination = AppService::calculatePagination($page, $size, $permissionListData['count']);
         $data = [];
-        $data['perms'] = $perms;
+        $data['perms'] = $permissionListData['permissionList'];
+        $data['pagination'] = $pagination;
         $data['active'] = 'permissions';
         return view('admin.permissions.index', $data);
     }
@@ -115,4 +121,20 @@ class PermissionsController extends Controller
         }
         return redirect()->back();
     }
+
+    public static function search($page = 1, Request $request){
+        $size = 10;
+        $search = [
+            'name' => isset($request->name) ? $request->name : '',
+        ];
+        $permissionListData = Permission::searchPermission($search, $page, $size);
+        $pagination = AppService::calculatePagination($page, $size, $permissionListData['count']);
+        $data = [];
+        $data['perms'] = $permissionListData['permissionList'];
+        $data['pagination'] = $pagination;
+        $data['search'] = $search;
+        $data['active'] = 'permissions';
+        return view('admin.permissions.index', $data);
+    }
+
 }

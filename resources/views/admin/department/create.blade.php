@@ -21,15 +21,8 @@
             <label for="inputName">名称</label>
             <input name="name" type="text" class="form-control" id="inputName" placeholder="Enter Name">
         </div>
-        <div class="form-group">
-            <label for="selectCityId">City</label>
-            <select name="city_id" class="form-control" id="selectCityId">
-                <option selected>Choose...</option>
-                @foreach($cityList as $city)
-                    <option value="{{ $city['id'] or 0 }}">{{ $city['name'] or '' }}</option>
-                @endforeach
-            </select>
-        </div>
+        <label for="">Area</label>
+        @include('common.area', ['area_id' => '', ])
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

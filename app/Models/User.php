@@ -33,7 +33,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'phone', 'level', 'subjection',
+        'name', 'email', 'password', 'phone', 'level', 'subjection', 'area_id',
     ];
 
     /**
@@ -62,6 +62,38 @@ class User extends Authenticatable
         } else {
             return false;
         }
+    }
+
+    public static function listUser($page, $size)
+    {
+        $db = User::with('roles.perms');
+        $count = $db->count();
+        $userList = $db->forPage($page, $size)
+            ->get();
+        $data = [];
+        $data['count'] = $count;
+        $data['userList'] = $userList;
+        return $data;
+    }
+
+    public static function searchUser($search = [], $page, $size)
+    {
+        $db = User::with('roles.perms')
+            ->where(function ($query) use ($search) {
+                if (isset($search) && isset($search['name']) && !empty($search['name'])) {
+                    $query->where('users.name', 'like', $search['name']);
+                }
+                if (isset($search) && isset($search['area_id']) && !empty($search['area_id'])) {
+                    $query->where('users.area_id', '=', $search['area_id']);
+                }
+            });
+        $count = $db->count();
+        $userList = $db->forPage($page, $size)
+            ->get();
+        $data = [];
+        $data['count'] = $count;
+        $data['userList'] = $userList;
+        return $data;
     }
 
 }

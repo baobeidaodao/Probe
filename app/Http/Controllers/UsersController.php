@@ -12,25 +12,35 @@ namespace App\Http\Controllers;
 use App\Models\ActionLog;
 use App\Models\Role;
 use App\Models\UserLevel;
+use App\Services\AdminService;
+use App\Services\AppService;
 use Illuminate\Http\Request;
 use App\Models\User;
+use PhpParser\Node\Expr\Isset_;
 
 class UsersController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param int $page
      * @return \Illuminate\Http\Response
      */
-    public static function index()
+    public static function index($page = 1)
     {
-        $users = User::with('roles.perms')->get();
+        $size = 10;
+        // $users = User::with('roles.perms')->get();
+        $userListData = User::listUser($page, $size);
+        $pagination = AppService::calculatePagination($page, $size, $userListData['count']);
         $roles = (new Role)->get();
         $userLevelList = UserLevel::all()->toArray();
+        $areaMap = AdminService::listAreaMap();
         $data = [];
-        $data['users'] = $users;
+        $data['users'] = $userListData['userList'];
         $data['roles'] = $roles;
+        $data['pagination'] = $pagination;
         $data['userLevelList'] = $userLevelList;
+        $data['areaMap'] = $areaMap;
         $data['active'] = 'users';
         return view('admin.users.index', $data);
     }
@@ -59,6 +69,7 @@ class UsersController extends Controller
             'phone' => $request->phone,
             'level' => $request->level,
             'password' => bcrypt($request->password),
+            'area_id' => (isset($request->city_id) && !empty($request->city_id)) ? $request->city_id : ((isset($request->province_id) && !empty($request->province_id)) ? $request->province_id : 0),
         ]);
         if ($request->role) {
             $user->attachRoles($request->role);
@@ -104,6 +115,8 @@ class UsersController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'level' => $request->level,
+            'password' => (isset($request->password) && !empty($request->password)) ? bcrypt($request->password) : $user->password,
+            'area_id' => (isset($request->city_id) && !empty($request->city_id)) ? $request->city_id : ((isset($request->province_id) && !empty($request->province_id)) ? $request->province_id : 0),
         ])->save();
         if ($roleArray = $request->role) {
             $user->roles()->sync($roleArray);
@@ -135,5 +148,27 @@ class UsersController extends Controller
         }
         ActionLog::log(ActionLog::ACTION_DELETE_USER, isset($user->name) ? $user->name : '');
         return redirect()->back();
+    }
+
+    public static function search($page = 1, Request $request){
+        $size = 10;
+        $search = [
+            'name' => isset($request->name) ? $request->name : '',
+            'area_id' => (isset($request->city_id) && !empty($request->city_id)) ? $request->city_id : ((isset($request->province_id) && !empty($request->province_id)) ? $request->province_id : 0),
+        ];
+        $userListData = User::searchUser($search, $page, $size);
+        $pagination = AppService::calculatePagination($page, $size, $userListData['count']);
+        $roles = (new Role)->get();
+        $userLevelList = UserLevel::all()->toArray();
+        $areaMap = AdminService::listAreaMap();
+        $data = [];
+        $data['users'] = $userListData['userList'];
+        $data['roles'] = $roles;
+        $data['search'] = $search;
+        $data['pagination'] = $pagination;
+        $data['userLevelList'] = $userLevelList;
+        $data['areaMap'] = $areaMap;
+        $data['active'] = 'users';
+        return view('admin.users.index', $data);
     }
 }

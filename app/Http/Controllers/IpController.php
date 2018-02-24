@@ -14,6 +14,7 @@ use App\Models\Area;
 use App\Models\Ip;
 use App\Models\Operator;
 use App\Services\AdminService;
+use App\Services\AppService;
 use Illuminate\Http\Request;
 
 class IpController extends Controller
@@ -21,17 +22,21 @@ class IpController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param int $page
      * @return \Illuminate\Http\Response
      */
-    public static function index()
+    public static function index($page = 1)
     {
-        $ipList = Ip::listIp();
+        $size = 10;
+        $ipListData = Ip::listIp($page, $size);
+        $pagination = AppService::calculatePagination($page, $size, $ipListData['count']);
         $areaMap = AdminService::listAreaMap();
         $cityList = Area::listCity();
         $provinceList = Area::listProvince();
         $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_1)->get()->toArray();
         $data = [];
-        $data['ipList'] = $ipList;
+        $data['ipList'] = $ipListData['ipList'];
+        $data['pagination'] = $pagination;
         $data['areaMap'] = $areaMap;
         $data['cityList'] = $cityList;
         $data['provinceList'] = $provinceList;
@@ -128,5 +133,32 @@ class IpController extends Controller
             return redirect()->back();
         }
         return redirect()->back();
+    }
+
+    public static function search($page = 1, Request $request)
+    {
+        $size = 10;
+        $search = [
+            'ip' => isset($request->ip) ? $request->ip : '',
+            'type' => isset($request->type) ? $request->type : '',
+            'operator_id' => isset($request->operator_id) ? $request->operator_id : null,
+            'area_id' => isset($request->province_id) ? $request->province_id : null,
+        ];
+        $ipListData = Ip::searchIp($search, $page, $size);
+        $pagination = AppService::calculatePagination($page, $size, $ipListData['count']);
+        $areaMap = AdminService::listAreaMap();
+        $cityList = Area::listCity();
+        $provinceList = Area::listProvince();
+        $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_1)->get()->toArray();
+        $data = [];
+        $data['ipList'] = $ipListData['ipList'];
+        $data['search'] = $search;
+        $data['pagination'] = $pagination;
+        $data['areaMap'] = $areaMap;
+        $data['cityList'] = $cityList;
+        $data['provinceList'] = $provinceList;
+        $data['operatorList'] = $operatorList;
+        $data['active'] = 'ip';
+        return view('admin.ip.index', $data);
     }
 }

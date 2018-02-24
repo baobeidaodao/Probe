@@ -100,4 +100,30 @@ class ActionLog extends Model
         return $data;
     }
 
+    public static function searchActionLog($search = [], $page, $size)
+    {
+        $db = (new ActionLog)
+            ->leftJoin('users', 'action_log.user_id', '=', 'users.id')
+            ->where(function ($query) use ($search) {
+                if (isset($search) && isset($search['user_name']) && !empty($search['user_name'])) {
+                    $query->where('users.name', 'like', $search['user_name']);
+                }
+                if (isset($search) && isset($search['start_date']) && !empty($search['start_date'])) {
+                    $query->where('action_log.created_at', '>=', $search['start_date']);
+                }
+                if (isset($search) && isset($search['end_date']) && !empty($search['end_date'])) {
+                    $query->where('action_log.created_at', '<=', $search['end_date']);
+                }
+            });
+        $count = $db->count();
+        $actionLogList = $db->select('action_log.*', 'users.name')
+            ->orderBy('action_log.id', 'desc')
+            ->forPage($page, $size)
+            ->get();
+        $data = [];
+        $data['count'] = $count;
+        $data['actionLogList'] = $actionLogList;
+        return $data;
+    }
+
 }

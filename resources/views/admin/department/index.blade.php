@@ -11,6 +11,11 @@
 @extends('admin.index')
 
 @section('main')
+    <div class="card">
+        <div class="card-header">
+            @include('admin.department.search')
+        </div>
+        <div class="card-body">
     <div class="table-responsive">
         <table class="table table-hover">
             <thead class="thead-light">
@@ -60,5 +65,8 @@
             @endforeach
             </tbody>
         </table>
+    </div>
+        </div>
+        @include('common.pagination', ['url' => url('/admin/department/page') . '/', 'page' => $pagination['page'], 'count' => $pagination['count'],])
     </div>
 @endsection

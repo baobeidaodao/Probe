@@ -11,8 +11,8 @@ $show = isset($show) ? $show : 3;
 
 ?>
 
-{{--<nav aria-label="Page navigation example">--}}
-    <ul class="pagination">
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
         {{-- first --}}
         <li class="page-item">
             <a class="page-link" href="{{ $url . 1 }}"><<</a>
@@ -84,4 +84,4 @@ $show = isset($show) ? $show : 3;
             <a class="page-link" href="{{ $url . $count }}">>></a>
         </li>
     </ul>
-{{--</nav>--}}
+</nav>

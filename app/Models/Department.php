@@ -19,14 +19,43 @@ class Department extends Model
     public $timestamps = false;
     protected $fillable = ['area_id', 'name',];
 
-    public static function listDepartment()
+    public static function listDepartment($page = 1, $size = 10)
     {
-        $departmentList = (new Department)->join('area as city', 'department.area_id', '=', 'city.id')
-            ->join('area as province', 'city.parent_id', '=', 'province.id')
-            ->select('province.name as province_name', 'city.name as city_name', 'department.id', 'department.area_id', 'department.name')
+        $db = (new Department)->join('area as city', 'department.area_id', '=', 'city.id')
+            ->join('area as province', 'city.parent_id', '=', 'province.id');
+        $count = $db->count();
+        $departmentList = $db->select('province.name as province_name', 'city.name as city_name', 'department.id', 'department.area_id', 'department.name')
             ->orderBy('department.id', 'desc')
+            ->forPage($page, $size)
             ->get()
             ->toArray();
-        return $departmentList;
+        $data = [];
+        $data['count'] = $count;
+        $data['departmentList'] = $departmentList;
+        return $data;
+    }
+
+    public static function searchDepartment($search = [], $page, $size)
+    {
+        $db = (new Department)->join('area as city', 'department.area_id', '=', 'city.id')
+            ->join('area as province', 'city.parent_id', '=', 'province.id')
+            ->where(function ($query) use ($search) {
+                if (isset($search) && isset($search['name']) && !empty($search['name'])) {
+                    $query->where('department.name', 'like', $search['name']);
+                }
+                if (isset($search) && isset($search['area_id']) && !empty($search['area_id'])) {
+                    $query->where('department.area_id', '=', $search['area_id']);
+                }
+            });
+        $count = $db->count();
+        $departmentList = $db->select('province.name as province_name', 'city.name as city_name', 'department.id', 'department.area_id', 'department.name')
+            ->orderBy('department.id', 'desc')
+            ->forPage($page, $size)
+            ->get()
+            ->toArray();
+        $data = [];
+        $data['count'] = $count;
+        $data['departmentList'] = $departmentList;
+        return $data;
     }
 }

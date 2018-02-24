@@ -64,9 +64,9 @@ class AdminService
         return $areaMap;
     }
 
-    public static function listDepartment()
+    public static function listDepartment($page = 1, $size = 10)
     {
-        $departmentList = Department::listDepartment();
+        $departmentList = Department::listDepartment($page, $size);
         return $departmentList;
     }
 

@@ -17,19 +17,21 @@
         </button>
     </div>
     <div class="modal-body">
-        @if($user->name !== 'admin')
-            <div class="form-group">
-                <label for="inputName">Name</label>
-                <input name="name" type="text" class="form-control" id="inputName" value="{{ $user->name or '' }}" placeholder="Enter Name">
-            </div>
-        @endif
+        <div class="form-group">
+            <label for="inputName">Name</label>
+            <input name="name" type="text" class="form-control" id="inputName" value="{{ $user->name or '' }}" placeholder="Enter Name" @if($user->name === 'admin') readonly @endif>
+        </div>
         <div class="form-group">
             <label for="inputEmail">Email</label>
-            <input name="email" type="email" class="form-control" id="inputEmail" value="{{ $user->email or '' }}" placeholder="Email">
+            <input name="email" type="email" class="form-control" id="inputEmail" value="{{ $user->email or '' }}" placeholder="Enter Email">
+        </div>
+        <div class="form-group">
+            <label for="inputPassword">Password</label>
+            <input name="password" type="password" class="form-control" id="inputPassword" value="" placeholder="Enter Password">
         </div>
         <div class="form-group">
             <label for="inputPhone">Phone</label>
-            <input name="phone" type="text" class="form-control" id="inputPhone" placeholder="Enter Phone">
+            <input name="phone" type="text" class="form-control" id="inputPhone" value="{{ $user->phone or '' }}" placeholder="Enter Phone">
         </div>
         <div class="form-group">
             <label for="selectLevel">Level</label>
@@ -40,6 +42,8 @@
                 @endforeach
             </select>
         </div>
+        <label for="">Area</label>
+        @include('common.area', ['area_id' => $user->area_id, ])
         <div class="form-group">
             <label>角色</label>
             @foreach($roles as $role)
