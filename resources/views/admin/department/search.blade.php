@@ -19,7 +19,7 @@
             <input name="name" type="text" class="form-control" id="inputDepartment" placeholder="name" @if(isset($search) && isset($search['name'])) value="{{ $search['name'] or '' }}" @endif >
         </div>
     </div>
-    @include('common.area', ['area_id' => (isset($search) && isset($search['area_id'])) ? $search['area_id'] : '', ])
+    @include('common.area', ['for' => 'search', 'area_id' => (isset($search) && isset($search['area_id'])) ? $search['area_id'] : '', ])
     <div class="col-auto">
         <button type="submit" class="btn btn-outline-primary mb-2">Search</button>
     </div>

@@ -43,7 +43,7 @@
             </select>
         </div>
         <label for="">Area</label>
-        @include('common.area', ['area_id' => $user->area_id, ])
+        @include('common.area', ['for' => 'edit' . $user->id, 'area_id' => $user->area_id, ])
         <div class="form-group">
             <label>角色</label>
             @foreach($roles as $role)

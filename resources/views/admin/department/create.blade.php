@@ -22,7 +22,7 @@
             <input name="name" type="text" class="form-control" id="inputName" placeholder="Enter Name">
         </div>
         <label for="">Area</label>
-        @include('common.area', ['area_id' => '', ])
+        @include('common.area', ['for' => 'create', 'area_id' => '', ])
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
