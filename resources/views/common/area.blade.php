@@ -7,28 +7,40 @@
  * DateTime: 2018-02-24 09:02:00
  */
 $for = isset($for) ? $for : '';
-$area_id = isset($area_id) ? $area_id : 0;
 $areaMap = isset($areaMap) ? $areaMap : [];
 $areaMapJson = json_encode($areaMap);
-$province_id = 0;
-$city_id = 0;
-$area_level = 0;
-foreach ($areaMap as $province) {
-    if ($province['id'] == $area_id) {
-        $area_level = $province['level'];
-        $province_id = $area_id;
-        break;
-    } else {
-        foreach ($province['sub_area'] as $city) {
-            if ($city['id'] == $area_id) {
-                $area_level = $city['level'];
-                $province_id = $province['id'];
-                $city_id = $area_id;
-                break;
+if (isset($area_id) && !empty($area_id)) {
+    $area_id = isset($area_id) ? $area_id : 0;
+    $province_id = 0;
+    $city_id = 0;
+    $area_level = 0;
+    foreach ($areaMap as $province) {
+        if ($province['id'] == $area_id) {
+            $area_level = $province['level'];
+            $province_id = $area_id;
+            break;
+        } else {
+            foreach ($province['sub_area'] as $city) {
+                if ($city['id'] == $area_id) {
+                    $area_level = $city['level'];
+                    $province_id = $province['id'];
+                    $city_id = $area_id;
+                    break;
+                }
             }
         }
     }
+} else {
+    $province_id = isset($province_id) ? $province_id : 0;
+    if (isset($city_id) && !empty($city_id)) {
+        $area_level = 2;
+        $city_id = isset($city_id) ? $city_id : 0;
+    } else {
+        $area_level = 1;
+        $city_id = isset($city_id) ? $city_id : 0;
+    }
 }
+
 ?>
 <script>
     var areaMapJson = '<?php echo $areaMapJson ?>';
@@ -43,7 +55,7 @@ foreach ($areaMap as $province) {
             <select name="province_id" id="selectProvince{{ $for or '' }}" class="form-control" onchange="changeProvince{{$for or ''}}();" @if(isset($readonly) && $readonly == true) readonly @endif >
                 <option value="">Province</option>
                 @foreach($areaMap as $province)
-                    <option value="{{ $province['id'] }}" @if($province['id'] == $province_id) selected @endif >{{ $province['name'] }}</option>
+                    <option value="{{ $province['id'] }}" @if($province['id'] == $province_id) selected @endif >{{ $province['name'] or '' }}</option>
                 @endforeach
             </select>
         </div>
@@ -56,7 +68,7 @@ foreach ($areaMap as $province) {
                 @foreach($areaMap as $province)
                     @if($province['id'] == $province_id)
                         @foreach($province['sub_area'] as $city)
-                            <option value="{{ $city['id'] }}" @if($city['id'] == $city_id) selected @endif >{{ $city['name'] }}</option>
+                            <option value="{{ $city['id'] }}" @if($city['id'] == $city_id) selected @endif >{{ $city['name'] or '' }}</option>
                         @endforeach
                     @endif
                 @endforeach

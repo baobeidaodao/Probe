@@ -18,21 +18,12 @@
     </div>
     <div class="modal-body">
         <div class="form-group">
-            <label for="inputIp">ip</label>
-            <input name="ip" type="text" class="form-control" id="inputIp" placeholder="Enter Ip">
+            <label for="inputStartIp">StartIp</label>
+            <input name="start_ip" type="text" class="form-control" id="inputStartIp" placeholder="Enter StartIp">
         </div>
         <div class="form-group">
-            <label for="inputMask">mask</label>
-            <input name="mask" type="text" class="form-control" id="inputMask" placeholder="Enter Mask">
-        </div>
-        <div class="form-group">
-            <label for="selectType">Type</label>
-            <select name="type" class="form-control" id="selectType">
-                <option selected>Choose...</option>
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-            </select>
+            <label for="inputEndIp">EndIp</label>
+            <input name="end_ip" type="text" class="form-control" id="inputEndIp" placeholder="Enter EndIp">
         </div>
         <div class="form-group">
             <label for="selectOperator">Operator</label>

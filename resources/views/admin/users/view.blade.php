@@ -18,20 +18,20 @@
     <div class="modal-body">
         <div class="form-group">
             <label for="inputName">Name</label>
-            <input name="name" type="text" class="form-control" id="inputName" value="{{ $user->name or '' }}" placeholder="Enter Name" readonly >
+            <input name="name" type="text" class="form-control" id="inputName" value="{{ $user->name or '' }}" placeholder="Enter Name" readonly>
         </div>
         <div class="form-group">
             <label for="inputEmail">Email</label>
-            <input name="email" type="email" class="form-control" id="inputEmail" value="{{ $user->email or '' }}" placeholder="Enter Email" readonly >
+            <input name="email" type="email" class="form-control" id="inputEmail" value="{{ $user->email or '' }}" placeholder="Enter Email" readonly>
         </div>
         <input type="hidden" name="password" value="123456">
         <div class="form-group">
             <label for="inputPhone">Phone</label>
-            <input name="phone" type="text" class="form-control" id="inputPhone" value="{{ $user->phone or '' }}" placeholder="Enter Phone" readonly >
+            <input name="phone" type="text" class="form-control" id="inputPhone" value="{{ $user->phone or '' }}" placeholder="Enter Phone" readonly>
         </div>
         <div class="form-group">
             <label for="selectLevel">Level</label>
-            <select name="level" class="form-control" id="selectLevel" readonly >
+            <select name="level" class="form-control" id="selectLevel" readonly>
                 @foreach($userLevelList as $userLevel)
                     <option value="{{ $userLevel['id'] or 0 }}" @if($userLevel['id'] == $user->level) selected @endif >{{ $userLevel['name'] or '' }}</option>
                 @endforeach
@@ -40,10 +40,18 @@
         <label for="">Area</label>
         @include('common.area', ['for' => 'view' . $user->id, 'area_id' => $user->area_id, 'readonly' => true, ])
         <div class="form-group">
+            <label for="selectDepartment">Department</label>
+            <select name="department_id" class="form-control" id="selectDepartment" readonly>
+                @foreach($departmentList as $department)
+                    <option value="{{ $department['id'] or 0 }}" @if($department['id'] == $user->department_id) selected @endif >{{ $department['name'] or '' }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
             <label>Role</label>
             @foreach($roles as $role)
                 <div class="form-check">
-                    <input name="role[]" class="form-check-input" type="checkbox" value="{{ $role->id or '' }}" id="checkbox{{ $loop->iteration }}" @if($user->hasRole($role->name)) checked="checked" @endIf disabled >
+                    <input name="role[]" class="form-check-input" type="checkbox" value="{{ $role->id or '' }}" id="checkbox{{ $loop->iteration }}" @if($user->hasRole($role->name)) checked="checked" @endIf disabled>
                     <label class="form-check-label" for="checkbox{{ $loop->iteration }}">
                         {{ $role->display_name or $role->name }}
                     </label>

@@ -20,17 +20,6 @@
         </div>
     </div>
     <div class="col-auto">
-        <label class="sr-only" for="selectType">Type</label>
-        <div class="form-group mb-2">
-            <select name="type" id="selectType" class="form-control">
-                <option value="" @if(isset($search) && $search['type'] == '') selected @endif >Type</option>
-                <option value="A" @if(isset($search) && $search['type'] == 'A') selected @endif >A</option>
-                <option value="B" @if(isset($search) && $search['type'] == 'B') selected @endif >B</option>
-                <option value="C" @if(isset($search) && $search['type'] == 'C') selected @endif >C</option>
-            </select>
-        </div>
-    </div>
-    <div class="col-auto">
         <label class="sr-only" for="selectOperator">Operator</label>
         <div class="form-group mb-2">
             <select name="operator_id" id="selectOperator" class="form-control">

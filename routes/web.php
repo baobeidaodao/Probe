@@ -57,10 +57,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::any('u-disk/search/{page?}', 'UDiskController@search');
 
     /** 统计信息 */
-    Route::get('statistics', 'StatisticsController@index');
+    Route::resource('statistics', 'StatisticsController');
+    Route::get('statistics/page/{page?}', 'StatisticsController@index');
+    Route::any('statistics/search', 'StatisticsController@index');
 
     /** 数据查询 */
-    Route::get('data', 'DataController@index');
+    Route::resource('report', 'ReportController');
+    Route::get('report/page/{page?}', 'ReportController@index');
+    Route::any('report/search', 'ReportController@index');
 
 });
 

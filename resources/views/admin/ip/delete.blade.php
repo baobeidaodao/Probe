@@ -17,7 +17,7 @@
         </button>
     </div>
     <div class="modal-body">
-        确认删除IP：{{ $ip['ip'] or '' }} ？
+        确认删除IP：{{ $ip['start_ip'] or '' }} - {{ $ip['end_ip'] or '' }} ？
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

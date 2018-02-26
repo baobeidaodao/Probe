@@ -21,6 +21,6 @@
         <a href="{{ url('admin/u-disk') }}" class="list-group-item list-group-item-action list-group-item-dark text-center @if(isset($active) && $active === 'u-disk') active @endif ">U 盾管理</a>
         <a href="{{ url('admin/statistics') }}" class="list-group-item list-group-item-action list-group-item-dark text-center @if(isset($active) && $active === 'statistics') active @endif ">统计信息</a>
         <a href="{{ url('admin/ip') }}" class="list-group-item list-group-item-action list-group-item-dark text-center @if(isset($active) && $active === 'ip') active @endif ">IP 管理</a>
-        <a href="{{ url('admin/data') }}" class="list-group-item list-group-item-action list-group-item-dark text-center @if(isset($active) && $active === 'data') active @endif ">数据查询</a>
+        <a href="{{ url('admin/report') }}" class="list-group-item list-group-item-action list-group-item-dark text-center @if(isset($active) && $active === 'report') active @endif ">数据查询</a>
     </div>
 </nav>

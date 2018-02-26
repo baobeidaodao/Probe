@@ -64,13 +64,14 @@ class IpController extends Controller
     public function store(Request $request)
     {
         $ip = (new Ip())->create([
-            'ip' => $request->ip,
-            'mask' => $request->mask,
-            'type' => $request->type,
+            'start_ip' => $request->start_ip,
+            'start_value' => ip2long($request->start_ip),
+            'end_ip' => $request->end_ip,
+            'end_value' => ip2long($request->end_ip),
             'operator_id' => $request->operator_id,
             'area_id' => $request->province_id,
         ]);
-        ActionLog::log(ActionLog::ACTION_CREATE_IP, isset($ip->ip) ? $ip->ip : '');
+        ActionLog::log(ActionLog::ACTION_CREATE_IP, isset($ip->start_ip) && isset($ip->end_ip) ? $ip->start_ip . ' - ' . $ip->end_ip : '');
         return redirect()->back();
     }
 
@@ -107,13 +108,14 @@ class IpController extends Controller
     {
         $ip = (new Ip())->findOrFail($id);
         $ip->fill([
-            'ip' => $request->ip,
-            'mask' => $request->mask,
-            'type' => $request->type,
+            'start_ip' => $request->start_ip,
+            'start_value' => ip2long($request->start_ip),
+            'end_ip' => $request->end_ip,
+            'end_value' => ip2long($request->end_ip),
             'operator_id' => $request->operator_id,
             'area_id' => $request->province_id,
         ])->save();
-        ActionLog::log(ActionLog::ACTION_EDIT_IP, isset($ip->ip) ? $ip->ip : '');
+        ActionLog::log(ActionLog::ACTION_EDIT_IP, isset($ip->start_ip) && isset($ip->end_ip) ? $ip->start_ip . ' - ' . $ip->end_ip : '');
         return redirect()->back();
     }
 
@@ -128,7 +130,7 @@ class IpController extends Controller
         $ip = (new Ip())->findOrFail($id);
         try {
             $ip->delete();
-            ActionLog::log(ActionLog::ACTION_DELETE_IP, isset($ip->ip) ? $ip->ip : '');
+            ActionLog::log(ActionLog::ACTION_DELETE_IP, isset($ip->start_ip) && isset($ip->end_ip) ? $ip->start_ip . ' - ' . $ip->end_ip : '');
         } catch (\Exception $e) {
             return redirect()->back();
         }
@@ -140,7 +142,6 @@ class IpController extends Controller
         $size = 10;
         $search = [
             'ip' => isset($request->ip) ? $request->ip : '',
-            'type' => isset($request->type) ? $request->type : '',
             'operator_id' => isset($request->operator_id) ? $request->operator_id : null,
             'area_id' => isset($request->province_id) ? $request->province_id : null,
         ];

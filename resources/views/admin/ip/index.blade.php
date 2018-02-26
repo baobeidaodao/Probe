@@ -21,16 +21,15 @@
                     <thead class="thead-light">
                     <tr>
                         <th scope="col">id</th>
-                        <th scope="col">ip</th>
-                        <th scope="col">mask</th>
-                        <th scope="col">type</th>
+                        <th scope="col">StartIp</th>
+                        <th scope="col">EndIp</th>
                         <th scope="col">operator</th>
                         <th scope="col">province</th>
                         <th scope="col">
-                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#createPermission">
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#create">
                                 Create
                             </button>
-                            <div class="modal fade" id="createPermission" tabindex="-1" role="dialog" aria-labelledby="createPermissionTitle" aria-hidden="true">
+                            <div class="modal fade" id="create" tabindex="-1" role="dialog" aria-labelledby="createTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     @include('admin.ip.create')
                                 </div>
@@ -42,9 +41,8 @@
                     @foreach($ipList as $ip)
                         <tr>
                             <th scope="row">{{ $ip['id'] or 0 }}</th>
-                            <td>{{ $ip['ip'] or '' }}</td>
-                            <td>{{ $ip['mask'] or '' }}</td>
-                            <td>{{ $ip['type'] or '' }}</td>
+                            <td>{{ $ip['start_ip'] or '' }}</td>
+                            <td>{{ $ip['end_ip'] or '' }}</td>
                             <td>{{ $ip['operator_name'] or '' }}</td>
                             <td>{{ $ip['area_name'] or '' }}</td>
                             <td>

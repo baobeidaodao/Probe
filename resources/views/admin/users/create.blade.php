@@ -42,6 +42,15 @@
         <label for="">Area</label>
         @include('common.area', ['for' => 'create', 'area_id' => '', ])
         <div class="form-group">
+            <label for="selectDepartment">Department</label>
+            <select name="department_id" class="form-control" id="selectDepartment">
+                <option selected>Choose...</option>
+                @foreach($departmentList as $department)
+                    <option value="{{ $department['id'] or 0 }}">{{ $department['name'] or '' }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
             <label>Role</label>
             @foreach($roles as $role)
                 <div class="form-check">

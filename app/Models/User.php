@@ -33,7 +33,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'phone', 'level', 'subjection', 'area_id',
+        'name', 'email', 'password', 'phone', 'level', 'department_id', 'area_id',
     ];
 
     /**
@@ -85,6 +85,9 @@ class User extends Authenticatable
                 }
                 if (isset($search) && isset($search['area_id']) && !empty($search['area_id'])) {
                     $query->where('users.area_id', '=', $search['area_id']);
+                }
+                if (isset($search) && isset($search['department_id']) && !empty($search['department_id'])) {
+                    $query->where('users.department_id', '=', $search['department_id']);
                 }
             });
         $count = $db->count();

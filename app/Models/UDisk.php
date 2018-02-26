@@ -62,4 +62,46 @@ class UDisk extends Model
         return $data;
     }
 
+    /**
+     * @author Li Tao
+     * @param $uuid
+     * @return array
+     */
+    public static function uDiskData($uuid)
+    {
+        $uDiskData = (new ProbeResultVerified)
+            ->leftJoin('u_disk', 'probeResultVerified.UDiskUuid', '=', 'u_disk.uuid')
+            ->leftJoin('users', 'u_disk.user_id', '=', 'users.id')
+            ->leftJoin('operator', 'u_disk.operator_id', '=', 'operator.id')
+            ->leftJoin('area as city', 'users.area_id', '=', 'city.id')
+            ->leftJoin('area as province', 'city.parent_id', '=', 'province.id')
+            ->leftJoin('department', 'users.department_id', '=', 'department.id')
+            ->where('probeResultVerified.UDiskUuid', '=', $uuid)
+            ->select([
+                'probeResultVerified.UDiskUuid as u_disk_uuid',
+                'u_disk.id as u_disk_id',
+                'u_disk.uuid as uuid',
+                'users.id as user_id',
+                'users.name as user_name',
+                'users.email as user_email',
+                'users.phone as user_phone',
+                'department.id as user_department_id',
+                'department.name as user_department',
+                'province.id as province_id',
+                'province.name as province',
+                'city.id as city_id',
+                'city.name as city',
+                'operator.id as operator_id',
+                'operator.name as operator',
+            ])
+            ->distinct()
+            ->first();
+        if (isset($uDiskData) && !empty($uDiskData)) {
+            $uDiskData = $uDiskData->toArray();
+        } else {
+            $uDiskData = [];
+        }
+        return $uDiskData;
+    }
+
 }

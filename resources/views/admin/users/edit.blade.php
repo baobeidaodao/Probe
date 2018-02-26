@@ -45,6 +45,15 @@
         <label for="">Area</label>
         @include('common.area', ['for' => 'edit' . $user->id, 'area_id' => $user->area_id, ])
         <div class="form-group">
+            <label for="selectDepartment">Department</label>
+            <select name="department_id" class="form-control" id="selectDepartment">
+                <option selected>Choose...</option>
+                @foreach($departmentList as $department)
+                    <option value="{{ $department['id'] or 0 }}" @if($department['id'] == $user->department_id) selected @endif >{{ $department['name'] or '' }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
             <label>角色</label>
             @foreach($roles as $role)
                 <div class="form-check">

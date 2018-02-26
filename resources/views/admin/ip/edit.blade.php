@@ -18,20 +18,12 @@
     </div>
     <div class="modal-body">
         <div class="form-group">
-            <label for="inputIp">ip</label>
-            <input name="ip" type="text" class="form-control" id="inputIp" value="{{ $ip['ip'] or '' }}" placeholder="Enter Ip">
+            <label for="inputStartIp">StartIp</label>
+            <input name="start_ip" type="text" class="form-control" id="inputStartIp" value="{{ $ip['start_ip'] or '' }}" placeholder="Enter StartIp">
         </div>
         <div class="form-group">
-            <label for="inputMask">mask</label>
-            <input name="mask" type="text" class="form-control" id="inputMask" value="{{ $ip['mask'] or '' }}" placeholder="Enter Mask">
-        </div>
-        <div class="form-group">
-            <label for="selectType">Type</label>
-            <select name="type" class="form-control" id="selectType">
-                <option value="A" @if($ip['type'] == 'A') selected @endif >A</option>
-                <option value="B" @if($ip['type'] == 'B') selected @endif >B</option>
-                <option value="C" @if($ip['type'] == 'C') selected @endif >C</option>
-            </select>
+            <label for="inputEndIp">EndIp</label>
+            <input name="end_ip" type="text" class="form-control" id="inputEndIp" value="{{ $ip['end_ip'] or '' }}" placeholder="Enter EndIp">
         </div>
         <div class="form-group">
             <label for="selectOperator">Operator</label>

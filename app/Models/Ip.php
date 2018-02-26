@@ -18,7 +18,7 @@ class Ip extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
     protected $dates = ['deleted_at'];
-    protected $fillable = ['ip', 'mask', 'type', 'operator_id', 'area_id',];
+    protected $fillable = ['start_ip', 'start_value', 'end_ip', 'end_value', 'operator_id', 'area_id',];
 
     /**
      * 列出 ip
@@ -57,10 +57,9 @@ class Ip extends Model
             ->leftJoin('area', 'ip.area_id', '=', 'area.id')
             ->where(function ($query) use ($search) {
                 if (isset($search) && isset($search['ip']) && !empty($search['ip'])) {
-                    $query->where('ip.ip', 'like', $search['ip']);
-                }
-                if (isset($search) && isset($search['type']) && !empty($search['type'])) {
-                    $query->where('ip.type', 'like', $search['type']);
+                    $ipValue = ip2long($search['ip']);
+                    $query->where('ip.start_value', '<=', $ipValue)
+                        ->where('ip.end_value', '>=', $ipValue);
                 }
                 if (isset($search) && isset($search['operator_id']) && !empty($search['operator_id'])) {
                     $query->where('ip.operator_id', '=', $search['operator_id']);
@@ -79,5 +78,27 @@ class Ip extends Model
         $data['count'] = $count;
         $data['ipList'] = $ipList;
         return $data;
+    }
+
+    public static function ipData($ip)
+    {
+        $ipValue = ip2long($ip);
+        $ipData = (new Ip)->leftJoin('operator', 'ip.operator_id', '=', 'operator.id')
+            ->leftJoin('area as province', 'ip.area_id', '=', 'province.id')
+            ->where('ip.start_value', '<=', $ipValue)
+            ->where('ip.end_value', '>=', $ipValue)
+            ->select([
+                'operator.id as operator_id',
+                'operator.name as operator_name',
+                'province.id as province_id',
+                'province.name as province',
+            ])
+            ->first();
+        if (isset($ipData) && !empty($ipData)) {
+            $ipData = $ipData->toArray();
+        } else {
+            $ipData = [];
+        }
+        return $ipData;
     }
 }
