@@ -10,6 +10,9 @@
 namespace App\Http\Controllers;
 
 
+use App\Services\StatisticsService;
+use Illuminate\Http\Request;
+
 class AdminController extends Controller
 {
     public static function index()
@@ -17,5 +20,15 @@ class AdminController extends Controller
         $data = [];
         $data['active'] = 'admin';
         return view('admin.index', $data);
+    }
+
+    public static function updateStatistics(Request $request)
+    {
+        $update = [
+            'start_date' => isset($request->start_date) ? $request->start_date : '',
+            'end_date' => isset($request->end_date) ? $request->end_date : '',
+        ];
+        StatisticsService::storageOfDate($update['start_date'], $update['end_date']);
+        return redirect()->back();
     }
 }

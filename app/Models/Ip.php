@@ -89,7 +89,7 @@ class Ip extends Model
             ->where('ip.end_value', '>=', $ipValue)
             ->select([
                 'operator.id as operator_id',
-                'operator.name as operator_name',
+                'operator.name as operator',
                 'province.id as province_id',
                 'province.name as province',
             ])

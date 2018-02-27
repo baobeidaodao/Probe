@@ -158,4 +158,46 @@ class StatisticsService
             $report->fill($reportData)->save();
         }
     }
+
+    /**
+     * @author Li Tao
+     * @param $search
+     * @return array
+     */
+    public static function statisticsTips($search)
+    {
+        $statisticsList = (new Statistics)
+            ->where(function ($query) use ($search) {
+                if (isset($search) && isset($search['province_id']) && !empty($search['province_id'])) {
+                    $query->where('statistics.province_id', '=', $search['province_id']);
+                }
+                if (isset($search) && isset($search['city_id']) && !empty($search['city_id'])) {
+                    $query->where('statistics.city_id', '=', $search['city_id']);
+                }
+            })
+            ->get()
+            ->toArray();
+        $province = [];
+        $cityList = [];
+        $province['number'] = 0;
+        foreach ($statisticsList as $statistics) {
+            if (isset($statistics['province_id']) && !empty($statistics['province_id'])) {
+                $province['id'] = $statistics['province_id'];
+                $province['name'] = $statistics['province'];
+                $province['number'] = $province['number'] + 1;
+                $cityId = $statistics['city_id'];
+                if (isset($cityList[$cityId]) && !empty($cityList[$cityId])) {
+                    $cityList[$cityId]['number'] = $cityList[$cityId]['number'] + 1;
+                } else {
+                    $cityList[$cityId]['id'] = $statistics['city_id'];
+                    $cityList[$cityId]['name'] = $statistics['city'];
+                    $cityList[$cityId]['number'] = 1;
+                }
+            }
+        }
+        $tips['province'] = $province;
+        $tips['cityList'] = $cityList;
+        return $tips;
+    }
+
 }

@@ -36,7 +36,7 @@
                     </thead>
                     <tbody>
                     @foreach($reportList as $report)
-                        <tr>
+                        <tr class=" @if(!isset($report['report_count']) || empty($report['report_count'])) table-danger @endif ">
                             <th scope="row">{{ $report['report_id'] or 0 }}</th>
                             <td>{{ $report['ip'] or '' }}</td>
                             <td>{{ $report['uuid'] or '' }}</td>
@@ -62,6 +62,9 @@
                     </tbody>
                 </table>
             </div>
+            @if(isset($search) && isset($search['province_id']) && !empty($search['province_id']))
+                @include('admin.statistics.tips')
+            @endif
         </div>
         @include('common.pagination', ['url' => url('/admin/report/page') . '/', 'page' => $pagination['page'], 'count' => $pagination['count'], 'type' => 'search', ])
     </div>

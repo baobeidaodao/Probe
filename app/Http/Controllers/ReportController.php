@@ -13,6 +13,7 @@ use App\Models\Operator;
 use App\Models\Report;
 use App\Services\AdminService;
 use App\Services\AppService;
+use App\Services\StatisticsService;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
@@ -25,7 +26,7 @@ class ReportController extends Controller
      */
     public static function index(Request $request)
     {
-        $page = 1;
+        $page = isset($request->page) ? $request->page : 1;
         $size = 10;
         $search = [
             'uuid' => isset($request->uuid) ? $request->uuid : '',
@@ -36,18 +37,21 @@ class ReportController extends Controller
             'start_date' => isset($request->start_date) ? $request->start_date . ' 00:00:00' : '',
             'end_date' => isset($request->end_date) ? $request->end_date . ' 23.59.59' : '',
         ];
-        $reportListData = Report::listReport($search, $page, $size);//dd($search);
+        // $reportListData = Report::listReport($search, $page, $size);
+        $reportListData = Report::listReportForUDisk($search, $page, $size);
         $search['start_date'] = isset($search['start_date']) && !empty($search['start_date']) ? date('Y-m-d', strtotime($search['start_date'])) : '';
         $search['end_date'] = isset($search['end_date']) && !empty($search['end_date']) ? date('Y-m-d', strtotime($search['end_date'])) : '';
         $pagination = AppService::calculatePagination($page, $size, $reportListData['count']);
         $areaMap = AdminService::listAreaMap();
         $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_2)->get()->toArray();
+        $tips = StatisticsService::statisticsTips($search);
         $data = [];
         $data['reportList'] = $reportListData['reportList'];
         $data['pagination'] = $pagination;
         $data['operatorList'] = $operatorList;
         $data['areaMap'] = $areaMap;
         $data['search'] = $search;
+        $data['tips'] = $tips;
         $data['active'] = 'report';
         return view('admin.report.index', $data);
     }

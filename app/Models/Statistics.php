@@ -87,4 +87,52 @@ class Statistics extends Model
         $data['statisticsList'] = $statisticsList;
         return $data;
     }
+
+    public static function listStatisticsForUDisk($search = [], $page = 1, $size = 10)
+    {
+        $db = (new UDisk)
+            ->leftJoin('statistics', 'u_disk.uuid', '=', 'statistics.uuid')
+            ->where(function ($query) use ($search) {
+                if (isset($search) && isset($search['uuid']) && !empty($search['uuid'])) {
+                    $query->where('u_disk.uuid', '=', $search['uuid']);
+                }
+                if (isset($search) && isset($search['province_id']) && !empty($search['province_id'])) {
+                    $query->where('statistics.province_id', '=', $search['province_id']);
+                }
+                if (isset($search) && isset($search['city_id']) && !empty($search['city_id'])) {
+                    $query->where('statistics.city_id', '=', $search['city_id']);
+                }
+                if (isset($search) && isset($search['operator_id']) && !empty($search['operator_id'])) {
+                    $query->where('statistics.operator_id', '=', $search['operator_id']);
+                }
+                if (isset($search) && isset($search['start_date']) && !empty($search['start_date'])) {
+                    $query->where('statistics.date', '>=', $search['start_date']);
+                }
+                if (isset($search) && isset($search['end_date']) && !empty($search['end_date'])) {
+                    $query->where('statistics.date', '<=', $search['end_date']);
+                }
+            });
+        $count = $db->count();
+        $statisticsList = $db->orderBy('report_count', 'asc')
+            ->orderBy('id', 'desc')
+            ->forPage($page, $size)
+            ->select([
+                'statistics.*',
+                'u_disk.uuid as uuid',
+            ])
+            ->get()
+            ->toArray();
+        foreach ($statisticsList as $index => $statistics) {
+            $statisticsId = $statistics['id'];
+            $reportList = (new Report)->where('statistics_id', '=', $statisticsId)
+                ->get()
+                ->toArray();
+            $statisticsList[$index]['report'] = $reportList;
+        }
+        $data = [];
+        $data['count'] = $count;
+        $data['statisticsList'] = $statisticsList;
+        return $data;
+    }
+
 }

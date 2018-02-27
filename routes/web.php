@@ -25,6 +25,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/', 'AdminController@index');
+    Route::get('/update-statistics', 'AdminController@updateStatistics');
 
     Route::resource('users', 'UsersController');
     Route::get('users/page/{page?}', 'UsersController@index');

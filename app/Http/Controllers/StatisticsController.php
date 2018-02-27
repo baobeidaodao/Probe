@@ -13,6 +13,7 @@ use App\Models\Operator;
 use App\Models\Statistics;
 use App\Services\AdminService;
 use App\Services\AppService;
+use App\Services\StatisticsService;
 use Illuminate\Http\Request;
 
 class StatisticsController extends Controller
@@ -25,28 +26,31 @@ class StatisticsController extends Controller
      */
     public static function index(Request $request)
     {
-        $page = 1;
+        $page = isset($request->page) ? $request->page : 1;
         $size = 10;
         $search = [
             'uuid' => isset($request->uuid) ? $request->uuid : '',
-            'province_id' => isset($request->province_id) ? $request->province_id : null,
-            'city_id' => isset($request->city_id) ? $request->city_id : null,
-            'operator_id' => isset($request->operator_id) ? $request->operator_id : null,
+            'province_id' => isset($request->province_id) ? $request->province_id : 0,
+            'city_id' => isset($request->city_id) ? $request->city_id : 0,
+            'operator_id' => isset($request->operator_id) ? $request->operator_id : 0,
             'start_date' => isset($request->start_date) ? $request->start_date . ' 00:00:00' : '',
             'end_date' => isset($request->end_date) ? $request->end_date . ' 23.59.59' : '',
         ];
-        $statisticsListData = Statistics::listStatistics($search, $page, $size);
+        // $statisticsListData = Statistics::listStatistics($search, $page, $size);
+        $statisticsListData = Statistics::listStatisticsForUDisk($search, $page, $size);
         $search['start_date'] = isset($search['start_date']) && !empty($search['start_date']) ? date('Y-m-d', strtotime($search['start_date'])) : '';
         $search['end_date'] = isset($search['end_date']) && !empty($search['end_date']) ? date('Y-m-d', strtotime($search['end_date'])) : '';
         $pagination = AppService::calculatePagination($page, $size, $statisticsListData['count']);
         $areaMap = AdminService::listAreaMap();
         $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_2)->get()->toArray();
+        $tips = StatisticsService::statisticsTips($search);
         $data = [];
         $data['statisticsList'] = $statisticsListData['statisticsList'];
         $data['pagination'] = $pagination;
         $data['operatorList'] = $operatorList;
         $data['areaMap'] = $areaMap;
         $data['search'] = $search;
+        $data['tips'] = $tips;
         $data['active'] = 'statistics';
         return view('admin.statistics.index', $data);
     }
