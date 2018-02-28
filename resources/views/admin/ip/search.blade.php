@@ -8,7 +8,6 @@
  */
 ?>
 
-{!! Form::open(['method'=> 'POST', 'url' => 'admin/ip/search']) !!}
 <div class="form-row align-items-center">
     <div class="col-auto">
         <label class="sr-only" for="inputIp">IP</label>
@@ -42,7 +41,6 @@
         </div>
     </div>
     <div class="col-auto">
-        <button type="submit" class="btn btn-outline-primary mb-2">Search</button>
+        <button id="searchButton" type="submit" class="btn btn-outline-primary mb-2">Search</button>
     </div>
 </div>
-{!! Form::close() !!}

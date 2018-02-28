@@ -27,44 +27,39 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/', 'AdminController@index');
     Route::get('/update-statistics', 'AdminController@updateStatistics');
 
+    Route::post('users/search', 'UsersController@index');
     Route::resource('users', 'UsersController');
-    Route::get('users/page/{page?}', 'UsersController@index');
-    Route::post('users/search/{page?}', 'UsersController@search');
 
+    Route::post('roles/search', 'RolesController@index');
     Route::resource('roles', 'RolesController');
-    Route::get('roles/page/{page?}', 'RolesController@index');
-    Route::post('roles/search/{page?}', 'RolesController@search');
 
+    /** 权限 */
+    Route::post('permissions/search', 'PermissionsController@index');
     Route::resource('permissions', 'PermissionsController');
-    Route::get('permissions/page/{page?}', 'PermissionsController@index');
-    Route::post('permissions/search/{page?}', 'PermissionsController@search');
 
+    /** 部门 */
+    Route::post('department/search', 'DepartmentController@index');
     Route::resource('department', 'DepartmentController');
-    Route::get('department/page/{page?}', 'DepartmentController@index');
-    Route::post('department/search/{page?}', 'DepartmentController@search');
 
+    /** ip */
+    Route::post('ip/search', 'IpController@index');
     Route::resource('ip', 'IpController');
-    Route::get('ip/page/{page?}', 'IpController@index');
-    Route::post('ip/search/{page?}', 'IpController@search');
 
     /** 日志 */
-    Route::get('logs', 'LogController@index');
-    Route::get('logs/page/{page?}', 'LogController@index');
-    Route::any('logs/search/{page?}', 'LogController@search');
+    Route::any('logs/search', 'LogController@index');
+    Route::resource('logs', 'LogController');
 
     /** u disk */
+    Route::any('u-disk/search', 'UDiskController@index');
     Route::resource('u-disk', 'UDiskController');
-    Route::get('u-disk/page/{page?}', 'UDiskController@index');
-    Route::any('u-disk/search/{page?}', 'UDiskController@search');
 
     /** 统计信息 */
+    Route::any('statistics/summary', 'StatisticsController@summary');
     Route::resource('statistics', 'StatisticsController');
-    Route::get('statistics/page/{page?}', 'StatisticsController@index');
     Route::any('statistics/search', 'StatisticsController@index');
 
     /** 数据查询 */
     Route::resource('report', 'ReportController');
-    Route::get('report/page/{page?}', 'ReportController@index');
     Route::any('report/search', 'ReportController@index');
 
 });

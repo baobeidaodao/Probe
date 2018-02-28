@@ -12,7 +12,7 @@
     <div class="col-auto">
         <label class="sr-only" for="inputUuid">UUID</label>
         <div class="input-group mb-2">
-            <div class="input-group-prepend">
+            <div class="input-group-prepend sr-only">
                 <div class="input-group-text">UUID</div>
             </div>
             <input name="uuid" type="text" class="form-control" id="inputUuid" placeholder="uuid" @if(isset($search) && isset($search['uuid'])) value="{{ $search['uuid'] or '' }}" @endif >
@@ -21,7 +21,7 @@
     <div class="col-auto">
         <label class="sr-only" for="inputIp">Ip</label>
         <div class="input-group mb-2">
-            <div class="input-group-prepend">
+            <div class="input-group-prepend sr-only">
                 <div class="input-group-text">Ip</div>
             </div>
             <input name="ip" type="text" class="form-control" id="inputIp" placeholder="ip" @if(isset($search) && isset($search['ip'])) value="{{ $search['ip'] or '' }}" @endif >
@@ -42,7 +42,7 @@
     <div class="col-auto">
         <label class="sr-only" for="inputStartDate">StartDate</label>
         <div class="input-group mb-2">
-            <div class="input-group-prepend">
+            <div class="input-group-prepend sr-only">
                 <div class="input-group-text">StartDate</div>
             </div>
             @include('common.date_picker', ['id' => 'inputStartDate', 'name' => 'start_date', 'value' => (isset($search) && isset($search["start_date"])) ? $search["start_date"] : '', 'format' => 'yyyy-mm-dd', ])
@@ -51,13 +51,13 @@
     <div class="col-auto">
         <label class="sr-only" for="inputEndDate">EndDate</label>
         <div class="input-group mb-2">
-            <div class="input-group-prepend">
+            <div class="input-group-prepend sr-only">
                 <div class="input-group-text">EndDate</div>
             </div>
             @include('common.date_picker', ['id' => 'inputEndDate', 'name' => 'end_date', 'value' => (isset($search) && isset($search["end_date"])) ? $search["end_date"] : '', 'format' => 'yyyy-mm-dd', ])
         </div>
     </div>
     <div class="col-auto">
-        <button type="submit" class="btn btn-outline-primary mb-2">Search</button>
+        <button id="searchButton" type="submit" class="btn btn-outline-primary mb-2">Search</button>
     </div>
 </div>

@@ -30,19 +30,25 @@ class RolesController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param int $page
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public static function index($page = 1)
+    public static function index(Request $request)
     {
+        $page = isset($request->page) ? $request->page : 1;
         $size = 10;
+        $search = [
+            'name' => isset($request->name) ? $request->name : '',
+        ];
         // $roles = Role::with('perms')->get();
-        $roleListData = Role::listRole($page, $size);
+        // $roleListData = Role::listRole($page, $size);
+        $roleListData = Role::searchRole($search, $page, $size);
         $pagination = AppService::calculatePagination($page, $size, $roleListData['count']);
         $perms = (new Permission)->get();
         $data = [];
         $data['roles'] = $roleListData['roleList'];
         $data['perms'] = $perms;
+        $data['search'] = $search;
         $data['pagination'] = $pagination;
         $data['active'] = 'roles';
         return view('admin.roles.index', $data);

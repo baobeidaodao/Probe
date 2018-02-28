@@ -8,7 +8,6 @@
  */
 ?>
 
-{!! Form::open(['method'=> 'POST', 'url' => 'admin/department/search']) !!}
 <div class="form-row align-items-center">
     <div class="col-auto">
         <label class="sr-only" for="inputDepartment">Department</label>
@@ -21,7 +20,6 @@
     </div>
     @include('common.area', ['for' => 'search', 'area_id' => (isset($search) && isset($search['area_id'])) ? $search['area_id'] : '', ])
     <div class="col-auto">
-        <button type="submit" class="btn btn-outline-primary mb-2">Search</button>
+        <button id="searchButton" type="submit" class="btn btn-outline-primary mb-2">Search</button>
     </div>
 </div>
-{!! Form::close() !!}

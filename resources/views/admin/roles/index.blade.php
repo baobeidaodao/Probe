@@ -12,6 +12,7 @@
 
 @section('main')
     <div class="card">
+        {!! Form::open(['id' => 'searchForm', 'method'=> 'POST', 'url' => 'admin/roles/search']) !!}
         <div class="card-header">
             @include('admin.roles.search')
         </div>
@@ -28,11 +29,6 @@
                             <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#createRole">
                                 创建角色
                             </button>
-                            <div class="modal fade" id="createRole" tabindex="-1" role="dialog" aria-labelledby="createRoleTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    @include('admin.roles.create')
-                                </div>
-                            </div>
                         </th>
                     </tr>
                     </thead>
@@ -47,31 +43,16 @@
                                 <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#viewRole{{ $loop->iteration }}">
                                     View
                                 </button>
-                                <div class="modal fade" id="viewRole{{ $loop->iteration }}" tabindex="-1" role="dialog" aria-labelledby="viewRole{{ $loop->iteration }}Title" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        @include('admin.roles.view')
-                                    </div>
-                                </div>
                                 @ability('admin', 'edit_role', ['validate_all' => false,])
                                 <button type="button" class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#editRole{{ $loop->iteration }}">
                                     Edit
                                 </button>
-                                <div class="modal fade" id="editRole{{ $loop->iteration }}" tabindex="-1" role="dialog" aria-labelledby="editRole{{ $loop->iteration }}Title" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        @include('admin.roles.edit')
-                                    </div>
-                                </div>
                                 @endability
                                 @if($role->name !== 'admin')
                                     @permission('delete_role')
                                     <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#deleteRole{{ $loop->iteration }}">
                                         Delete
                                     </button>
-                                    <div class="modal fade" id="deleteRole{{ $loop->iteration }}" tabindex="-1" role="dialog" aria-labelledby="deleteRole{{ $loop->iteration }}Title" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            @include('admin.roles.delete')
-                                        </div>
-                                    </div>
                                     @endpermission
                                 @endif
                             </td>
@@ -81,6 +62,29 @@
                 </table>
             </div>
         </div>
-        @include('common.pagination', ['url' => url('/admin/roles/page') . '/', 'page' => $pagination['page'], 'count' => $pagination['count'],])
+        @include('common.pagination', ['url' => url('/admin/roles/page') . '/', 'page' => $pagination['page'], 'count' => $pagination['count'], 'type' => 'search'])
+        {!! Form::close() !!}
+        <div class="modal fade" id="createRole" tabindex="-1" role="dialog" aria-labelledby="createRoleTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                @include('admin.roles.create')
+            </div>
+        </div>
+        @foreach($roles as $role)
+            <div class="modal fade" id="viewRole{{ $loop->iteration }}" tabindex="-1" role="dialog" aria-labelledby="viewRole{{ $loop->iteration }}Title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    @include('admin.roles.view')
+                </div>
+            </div>
+            <div class="modal fade" id="editRole{{ $loop->iteration }}" tabindex="-1" role="dialog" aria-labelledby="editRole{{ $loop->iteration }}Title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    @include('admin.roles.edit')
+                </div>
+            </div>
+            <div class="modal fade" id="deleteRole{{ $loop->iteration }}" tabindex="-1" role="dialog" aria-labelledby="deleteRole{{ $loop->iteration }}Title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    @include('admin.roles.delete')
+                </div>
+            </div>
+        @endforeach
     </div>
 @endsection

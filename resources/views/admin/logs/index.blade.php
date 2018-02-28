@@ -12,6 +12,7 @@
 
 @section('main')
     <div class="card">
+        {!! Form::open(['id' => 'searchForm', 'method'=> 'POST', 'url' => 'admin/logs/search']) !!}
         <div class="card-header">
             @include('admin.logs.search')
         </div>
@@ -41,6 +42,7 @@
                 </table>
             </div>
         </div>
-        @include('common.pagination', ['url' => url('/admin/logs/page') . '/', 'page' => $pagination['page'], 'count' => $pagination['count'],])
+        @include('common.pagination', ['url' => url('/admin/logs/page') . '/', 'page' => $pagination['page'], 'count' => $pagination['count'], 'type' => 'search', ])
+        {!! Form::close() !!}
     </div>
 @endsection

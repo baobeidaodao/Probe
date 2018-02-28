@@ -19,18 +19,23 @@ class PermissionsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param int $page
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public static function index($page = 1)
+    public static function index(Request $request)
     {
+        $page = isset($request->page) ? $request->page : 1;
         $size = 10;
+        $search = [
+            'name' => isset($request->name) ? $request->name : '',
+        ];
         // $perms = (new Permission)->get();
-        $permissionListData = Permission::listPermission($page, $size);
+        $permissionListData = Permission::searchPermission($search, $page, $size);
         $pagination = AppService::calculatePagination($page, $size, $permissionListData['count']);
         $data = [];
         $data['perms'] = $permissionListData['permissionList'];
         $data['pagination'] = $pagination;
+        $data['search'] = $search;
         $data['active'] = 'permissions';
         return view('admin.permissions.index', $data);
     }
@@ -59,7 +64,7 @@ class PermissionsController extends Controller
             'description' => $request->description,
         ]);
         ActionLog::log(ActionLog::ACTION_CREATE_PERMISSION, isset($permission->display_name) ? $permission->display_name : (isset($permission->name) ? $permission->name : ''));
-        return redirect()->back();
+        return redirect('admin/permissions');
     }
 
     /**
@@ -100,7 +105,7 @@ class PermissionsController extends Controller
             'description' => $request->description,
         ])->save();
         ActionLog::log(ActionLog::ACTION_EDIT_PERMISSION, isset($permission->display_name) ? $permission->display_name : (isset($permission->name) ? $permission->name : ''));
-        return redirect()->back();
+        return redirect('admin/permissions');
     }
 
     /**
@@ -119,7 +124,7 @@ class PermissionsController extends Controller
         } catch (\Exception $e) {
             return redirect()->back();
         }
-        return redirect()->back();
+        return redirect('admin/permissions');
     }
 
     public static function search($page = 1, Request $request){

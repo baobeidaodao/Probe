@@ -12,6 +12,7 @@
 
 @section('main')
     <div class="card">
+        {!! Form::open(['id' => 'searchForm', 'method'=> 'POST', 'url' => 'admin/users/search']) !!}
         <div class="card-header">
             @include('admin.users.search')
         </div>
@@ -28,11 +29,6 @@
                             <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#createUser">
                                 Create
                             </button>
-                            <div class="modal fade" id="createUser" tabindex="-1" role="dialog" aria-labelledby="createUserTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    @include('admin.users.create')
-                                </div>
-                            </div>
                         </th>
                     </tr>
                     </thead>
@@ -47,31 +43,16 @@
                                 <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#viewUser{{ $user->id or 0 }}">
                                     View
                                 </button>
-                                <div class="modal fade" id="viewUser{{ $user->id or 0 }}" tabindex="-1" role="dialog" aria-labelledby="viewUser{{ $user->id or 0 }}Title" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        @include('admin.users.view')
-                                    </div>
-                                </div>
                                 @ability('admin', 'edit_user', ['validate_all' => false,])
                                 <button type="button" class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#editUser{{ $user->id or 0 }}">
                                     Edit
                                 </button>
-                                <div class="modal fade" id="editUser{{ $user->id or 0 }}" tabindex="-1" role="dialog" aria-labelledby="editUser{{ $user->id or 0 }}Title" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        @include('admin.users.edit')
-                                    </div>
-                                </div>
                                 @endability
                                 @if($user->name !== 'admin')
                                     @permission('delete_user')
                                     <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#deleteUser{{ $user->id or 0 }}">
                                         Delete
                                     </button>
-                                    <div class="modal fade" id="deleteUser{{ $user->id or 0 }}" tabindex="-1" role="dialog" aria-labelledby="deleteUser{{ $user->id or 0 }}Title" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            @include('admin.users.delete')
-                                        </div>
-                                    </div>
                                     @endpermission
                                 @endif
                             </td>
@@ -81,6 +62,29 @@
                 </table>
             </div>
         </div>
-        @include('common.pagination', ['url' => url('/admin/users/page') . '/', 'page' => $pagination['page'], 'count' => $pagination['count'],])
+        @include('common.pagination', ['url' => url('/admin/users/page') . '/', 'page' => $pagination['page'], 'count' => $pagination['count'], 'type' => 'search'])
+        {!! Form::close() !!}
+        <div class="modal fade" id="createUser" tabindex="-1" role="dialog" aria-labelledby="createUserTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                @include('admin.users.create')
+            </div>
+        </div>
+        @foreach($users as $user)
+            <div class="modal fade" id="viewUser{{ $user->id or 0 }}" tabindex="-1" role="dialog" aria-labelledby="viewUser{{ $user->id or 0 }}Title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    @include('admin.users.view')
+                </div>
+            </div>
+            <div class="modal fade" id="editUser{{ $user->id or 0 }}" tabindex="-1" role="dialog" aria-labelledby="editUser{{ $user->id or 0 }}Title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    @include('admin.users.edit')
+                </div>
+            </div>
+            <div class="modal fade" id="deleteUser{{ $user->id or 0 }}" tabindex="-1" role="dialog" aria-labelledby="deleteUser{{ $user->id or 0 }}Title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    @include('admin.users.delete')
+                </div>
+            </div>
+        @endforeach
     </div>
 @endsection

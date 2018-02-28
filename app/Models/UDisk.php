@@ -69,14 +69,14 @@ class UDisk extends Model
      */
     public static function uDiskData($uuid)
     {
-        $uDiskData = (new ProbeResultVerified)
-            ->leftJoin('u_disk', 'probeResultVerified.UDiskUuid', '=', 'u_disk.uuid')
+        $uDiskData = (new UDisk)
+            ->leftJoin('probeResultVerified', 'probeResultVerified.UDiskUuid', '=', 'u_disk.uuid')
             ->leftJoin('users', 'u_disk.user_id', '=', 'users.id')
             ->leftJoin('operator', 'u_disk.operator_id', '=', 'operator.id')
             ->leftJoin('area as city', 'users.area_id', '=', 'city.id')
             ->leftJoin('area as province', 'city.parent_id', '=', 'province.id')
             ->leftJoin('department', 'users.department_id', '=', 'department.id')
-            ->where('probeResultVerified.UDiskUuid', '=', $uuid)
+            ->where('u_disk.uuid', '=', $uuid)
             ->select([
                 'probeResultVerified.UDiskUuid as u_disk_uuid',
                 'u_disk.id as u_disk_id',

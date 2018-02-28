@@ -51,6 +51,38 @@ class StatisticsController extends Controller
         $data['areaMap'] = $areaMap;
         $data['search'] = $search;
         $data['tips'] = $tips;
+        $data['form'] = 'search';
+        $data['active'] = 'statistics';
+        return view('admin.statistics.index', $data);
+    }
+
+    public static function summary(Request $request)
+    {
+        $page = isset($request->page) ? $request->page : 1;
+        $size = 10;
+        $search = [
+            'uuid' => isset($request->uuid) ? $request->uuid : '',
+            'province_id' => isset($request->province_id) ? $request->province_id : 0,
+            'city_id' => isset($request->city_id) ? $request->city_id : 0,
+            'operator_id' => isset($request->operator_id) ? $request->operator_id : 0,
+            'start_date' => isset($request->start_date) ? $request->start_date . ' 00:00:00' : '',
+            'end_date' => isset($request->end_date) ? $request->end_date . ' 23.59.59' : '',
+        ];
+        $statisticsListData = Statistics::summaryStatistics($search, $page, $size);
+        $search['start_date'] = isset($search['start_date']) && !empty($search['start_date']) ? date('Y-m-d', strtotime($search['start_date'])) : '';
+        $search['end_date'] = isset($search['end_date']) && !empty($search['end_date']) ? date('Y-m-d', strtotime($search['end_date'])) : '';
+        $pagination = AppService::calculatePagination($page, $size, $statisticsListData['count']);
+        $areaMap = AdminService::listAreaMap();
+        $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_2)->get()->toArray();
+        $tips = StatisticsService::statisticsTips($search);
+        $data = [];
+        $data['statisticsList'] = $statisticsListData['statisticsList'];
+        $data['pagination'] = $pagination;
+        $data['operatorList'] = $operatorList;
+        $data['areaMap'] = $areaMap;
+        $data['search'] = $search;
+        $data['tips'] = $tips;
+        $data['form'] = 'summary';
         $data['active'] = 'statistics';
         return view('admin.statistics.index', $data);
     }

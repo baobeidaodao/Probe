@@ -52,15 +52,29 @@ class StatisticsService
             $date = date('Y-m-d', strtotime('-1 day'));
         }
         $startDateTime = $date . ' 00:00:00';
-        // $startDateTime = '2018-01-01' . ' 00:00:00';
         $endDateTime = $date . ' 23:59:59';
-        $probeResultVerifiedList = (new ProbeResultVerified)
-            ->whereBetween('dt', [$startDateTime, $endDateTime])
-            ->orderBy('dt', 'asc')
+        $probeResultVerifiedList = (new UDisk)
+            ->leftJoin('probeResultVerified', function ($join) use ($startDateTime, $endDateTime) {
+                $join->on('probeResultVerified.UDiskUuid', '=', 'u_disk.uuid')
+                    ->whereBetween('probeResultVerified.dt', [$startDateTime, $endDateTime]);
+            })
+            ->where(function ($query) use ($startDateTime, $endDateTime) {
+                $query->whereNull('probeResultVerified.dt')
+                    ->orWhereBetween('probeResultVerified.dt', [$startDateTime, $endDateTime]);
+            })
+            ->orderBy('probeResultVerified.dt', 'asc')
+            ->select([
+                'u_disk.id as u_disk_id',
+                'u_disk.uuid as uuid',
+                'probeResultVerified.*',
+            ])
             ->get()
             ->toArray();
         $probeResultArray = self::filterProbeResult($probeResultVerifiedList);
         foreach ($probeResultArray as $probeResult) {
+            if (!isset($probeResult['dt']) || empty($probeResult['dt'])) {
+                $probeResult['dt'] = $date . ' 00:00:00';
+            }
             self::storageProbeResult($probeResult);
         }
     }
@@ -80,6 +94,9 @@ class StatisticsService
                 $probeResultList[$index]['result'] = $result;
                 $key = $probeResult['UDiskUuid'] . $result;
                 $probeResultArray[$key] = $probeResultList[$index];
+            } else {
+                $key = $probeResult['uuid'];
+                $probeResultArray[$key] = $probeResultList[$index];
             }
         }
         return $probeResultArray;
@@ -92,7 +109,7 @@ class StatisticsService
      */
     private static function storageProbeResult($probeResult)
     {
-        $uuid = $probeResult['UDiskUuid'];
+        $uuid = $probeResult['uuid'];
         $date = $probeResult['dt'];
         $startDate = date('Y-m-d 00:00:00', strtotime($date));
         $endDate = date('Y-m-d 23:59:59', strtotime($date));
@@ -112,7 +129,7 @@ class StatisticsService
         $statisticsData['city'] = isset($uDiskData['city']) ? $uDiskData['city'] : null;
         $statisticsData['operator_id'] = isset($uDiskData['operator_id']) ? $uDiskData['operator_id'] : null;
         $statisticsData['operator'] = isset($uDiskData['operator']) ? $uDiskData['operator'] : null;
-        $statisticsData['date'] = $date;
+        $statisticsData['date'] = date('Y-m-d 00:00:00', strtotime($date));
         $statistics = (new Statistics)->where('uuid', '=', $uuid)
             ->whereBetween('date', [$startDate, $endDate])
             ->first();
@@ -130,6 +147,9 @@ class StatisticsService
     private static function storageReport($statisticsId, $probeResult)
     {
         $ip = $probeResult['result'];
+        if (!isset($ip) || empty($ip)) {
+            return;
+        }
         $date = $probeResult['dt'];
         $probeType = $probeResult['probeType'];
         if (in_array($probeType, [101, 202,])) {
@@ -168,11 +188,23 @@ class StatisticsService
     {
         $statisticsList = (new Statistics)
             ->where(function ($query) use ($search) {
+                if (isset($search) && isset($search['uuid']) && !empty($search['uuid'])) {
+                    $query->where('statistics.uuid', '=', $search['uuid']);
+                }
                 if (isset($search) && isset($search['province_id']) && !empty($search['province_id'])) {
                     $query->where('statistics.province_id', '=', $search['province_id']);
                 }
                 if (isset($search) && isset($search['city_id']) && !empty($search['city_id'])) {
                     $query->where('statistics.city_id', '=', $search['city_id']);
+                }
+                if (isset($search) && isset($search['operator_id']) && !empty($search['operator_id'])) {
+                    $query->where('statistics.operator_id', '=', $search['operator_id']);
+                }
+                if (isset($search) && isset($search['start_date']) && !empty($search['start_date'])) {
+                    $query->where('statistics.date', '>=', $search['start_date']);
+                }
+                if (isset($search) && isset($search['end_date']) && !empty($search['end_date'])) {
+                    $query->where('statistics.date', '<=', $search['end_date']);
                 }
             })
             ->get()
@@ -184,14 +216,14 @@ class StatisticsService
             if (isset($statistics['province_id']) && !empty($statistics['province_id'])) {
                 $province['id'] = $statistics['province_id'];
                 $province['name'] = $statistics['province'];
-                $province['number'] = $province['number'] + 1;
+                $province['number'] = $province['number'] + $statistics['report_count'];
                 $cityId = $statistics['city_id'];
                 if (isset($cityList[$cityId]) && !empty($cityList[$cityId])) {
-                    $cityList[$cityId]['number'] = $cityList[$cityId]['number'] + 1;
+                    $cityList[$cityId]['number'] = $cityList[$cityId]['number'] + $statistics['report_count'];
                 } else {
                     $cityList[$cityId]['id'] = $statistics['city_id'];
                     $cityList[$cityId]['name'] = $statistics['city'];
-                    $cityList[$cityId]['number'] = 1;
+                    $cityList[$cityId]['number'] = $statistics['report_count'];
                 }
             }
         }

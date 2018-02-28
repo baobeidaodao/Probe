@@ -19,17 +19,26 @@ use Illuminate\Http\Request;
 
 class UDiskController extends Controller
 {
-    public static function index($page = 1)
+    public static function index(Request $request)
     {
+        $page = isset($request->page) ? $request->page : 1;
         $size = 10;
-        $uDiskListData = UDiskService::listUDisk($page, $size);
+        $search = [
+            'uuid' => isset($request->uuid) ? $request->uuid : '',
+            'user_name' => isset($request->user_name) ? $request->user_name : '',
+            'operator_id' => isset($request->operator_id) ? $request->operator_id : '',
+        ];
+        // $uDiskListData = UDiskService::listUDisk($page, $size);
+        $uDiskListData = UDisk::searchUDisk($search, $page, $size);
+        $pagination = AppService::calculatePagination($page, $size, $uDiskListData['count']);
         $userList = User::all()->toArray();
         $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_2)->get()->toArray();
         $data = [];
         $data['uDiskList'] = $uDiskListData['uDiskList'];
+        $data['pagination'] = $pagination;
         $data['userList'] = $userList;
+        $data['search'] = $search;
         $data['operatorList'] = $operatorList;
-        $data['pagination'] = $uDiskListData['pagination'];
         $data['active'] = 'u-disk';
         return view('admin.u_disk.index', $data);
     }
@@ -54,7 +63,7 @@ class UDiskController extends Controller
             'operator_id' => $request->operator_id,
         ])->save();
         ActionLog::log(ActionLog::ACTION_EDIT_U_DISK, isset($uDisk->uuid) ? $uDisk->uuid : '');
-        return redirect()->back();
+        return redirect('admin/u-disk');
     }
 
     public function destroy($id)
@@ -66,7 +75,7 @@ class UDiskController extends Controller
         } catch (\Exception $e) {
             return redirect()->back();
         }
-        return redirect()->back();
+        return redirect('admin/u-disk');
     }
 
     public static function search($page = 1, Request $request)

@@ -41,7 +41,7 @@ class AppService
     {
         $count = ceil($total / $size);
         $pagination = [];
-        $pagination['page'] = intval($page);
+        $pagination['page'] = intval($page) > intval($count) ? intval($count) : intval($page);
         $pagination['size'] = intval($size);
         $pagination['count'] = intval($count);
         $pagination['total'] = intval($total);

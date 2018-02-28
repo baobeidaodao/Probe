@@ -37,8 +37,8 @@ class ReportController extends Controller
             'start_date' => isset($request->start_date) ? $request->start_date . ' 00:00:00' : '',
             'end_date' => isset($request->end_date) ? $request->end_date . ' 23.59.59' : '',
         ];
-        // $reportListData = Report::listReport($search, $page, $size);
-        $reportListData = Report::listReportForUDisk($search, $page, $size);
+        $reportListData = Report::listReport($search, $page, $size);
+        // $reportListData = Report::listReportForUDisk($search, $page, $size);
         $search['start_date'] = isset($search['start_date']) && !empty($search['start_date']) ? date('Y-m-d', strtotime($search['start_date'])) : '';
         $search['end_date'] = isset($search['end_date']) && !empty($search['end_date']) ? date('Y-m-d', strtotime($search['end_date'])) : '';
         $pagination = AppService::calculatePagination($page, $size, $reportListData['count']);

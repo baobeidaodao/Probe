@@ -2,9 +2,9 @@
 /**
  * IDE Name: PhpStorm
  * Project : Probe
- * FileName: search.blade.php
+ * FileName: index.blade.php
  * Author  : Li Tao
- * DateTime: 2018-02-26 13:43:00
+ * DateTime: 2018-02-07 07:34:00
  */
 ?>
 
@@ -49,6 +49,20 @@
         </div>
     </div>
     <div class="col-auto">
-        <button id="searchButton" type="submit" class="btn btn-outline-primary mb-2">Search</button>
+        <button id="searchButton" type="submit" class="btn btn-outline-primary mb-2">search</button>
+        <button id="summaryButton" type="submit" class="btn btn-outline-primary mb-2">Summary</button>
     </div>
 </div>
+
+<script>
+    $(function () {
+        $("#searchButton").click(function () {
+            $("#searchFormPage").val(1);
+            $("#searchForm").attr('action', '{{ url('/admin/statistics/search') }}');
+        });
+        $("#summaryButton").click(function () {
+            $("#searchFormPage").val(1);
+            $("#searchForm").attr('action', '{{ url('/admin/statistics/summary') }}');
+        });
+    });
+</script>

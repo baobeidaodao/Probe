@@ -36,7 +36,7 @@ $show = isset($show) ? $show : 3;
         {{-- earlier --}}
         @if($page - $show  -1 > 1 )
             <li class="page-item">
-                <a>...</a>
+                <a class="page-link">...</a>
             </li>
         @endif
         {{-- before--}}
@@ -60,7 +60,7 @@ $show = isset($show) ? $show : 3;
         {{-- later --}}
         @if($count - ($page + $show) > 1)
             <li class="page-item">
-                <a>...</a>
+                <a class="page-link">...</a>
             </li>
         @endif
         {{-- max --}}
@@ -85,12 +85,18 @@ $show = isset($show) ? $show : 3;
         </li>
     </ul>
 </nav>
-
+<input id="searchFormPage" type="hidden" name="page" value="{{ $page or 1 }}">
 <script>
     var type = "{{ $type or '' }}";
     if (type === 'search') {
+        $("#searchButton").click(function () {
+            $("#searchFormPage").val(1);
+        });
         $(".page-link").click(function () {
             var page = $(this).attr('data-page');
+            if (typeof(page) === 'undefined') {
+                return false;
+            }
             $("#searchFormPage").val(page);
             $("#searchForm").submit();
             return false;

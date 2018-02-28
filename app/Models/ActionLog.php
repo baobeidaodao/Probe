@@ -119,7 +119,8 @@ class ActionLog extends Model
         $actionLogList = $db->select('action_log.*', 'users.name')
             ->orderBy('action_log.id', 'desc')
             ->forPage($page, $size)
-            ->get();
+            ->get()
+            ->toArray();
         $data = [];
         $data['count'] = $count;
         $data['actionLogList'] = $actionLogList;

@@ -21,19 +21,26 @@ class DepartmentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param int $page
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public static function index($page = 1)
+    public static function index(Request $request)
     {
+        $page = isset($request->page) ? $request->page : 1;
         $size = 10;
-        $departmentListData = AdminService::listDepartment($page, $size);
+        $search = [
+            'name' => isset($request->name) ? $request->name : '',
+            'area_id' => (isset($request->city_id) && !empty($request->city_id)) ? $request->city_id : ((isset($request->province_id) && !empty($request->province_id)) ? $request->province_id : 0),
+        ];
+        // $departmentListData = AdminService::listDepartment($page, $size);
+        $departmentListData = Department::searchDepartment($search, $page, $size);
         $pagination = AppService::calculatePagination($page, $size, $departmentListData['count']);
         $areaMap = AdminService::listAreaMap();
         $cityList = Area::listCity();
         $data = [];
         $data['departmentList'] = $departmentListData['departmentList'];
         $data['pagination'] = $pagination;
+        $data['search'] = $search;
         $data['areaMap'] = $areaMap;
         $data['cityList'] = $cityList;
         $data['active'] = 'department';
@@ -63,7 +70,7 @@ class DepartmentController extends Controller
             'area_id' => $request->city_id,
         ]);
         ActionLog::log(ActionLog::ACTION_CREATE_DEPARTMENT, isset($department->name) ? $department->name : '');
-        return redirect()->back();
+        return redirect('admin/department');
     }
 
     /**
@@ -103,7 +110,7 @@ class DepartmentController extends Controller
             'area_id' => $request->city_id,
         ])->save();
         ActionLog::log(ActionLog::ACTION_EDIT_DEPARTMENT, isset($department->name) ? $department->name : '');
-        return redirect()->back();
+        return redirect('admin/department');
     }
 
     /**
@@ -121,7 +128,7 @@ class DepartmentController extends Controller
         } catch (\Exception $e) {
             return redirect()->back();
         }
-        return redirect()->back();
+        return redirect('admin/department');
     }
 
     public static function search($page = 1, Request $request)

@@ -8,7 +8,6 @@
  */
 ?>
 
-{!! Form::open(['method'=> 'POST', 'url' => 'admin/roles/search']) !!}
 <div class="form-row align-items-center">
     <div class="col-auto">
         <label class="sr-only" for="inputName">Role</label>
@@ -20,7 +19,6 @@
         </div>
     </div>
     <div class="col-auto">
-        <button type="submit" class="btn btn-outline-primary mb-2">Search</button>
+        <button id="searchButton" type="submit" class="btn btn-outline-primary mb-2">Search</button>
     </div>
 </div>
-{!! Form::close() !!}

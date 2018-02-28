@@ -29,6 +29,9 @@ class AdminController extends Controller
             'end_date' => isset($request->end_date) ? $request->end_date : '',
         ];
         StatisticsService::storageOfDate($update['start_date'], $update['end_date']);
-        return redirect()->back();
+        $data = [];
+        $data['update'] = $update;
+        $data['active'] = 'admin';
+        return view('admin.index', $data);
     }
 }

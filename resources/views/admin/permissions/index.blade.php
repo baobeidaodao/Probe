@@ -12,6 +12,7 @@
 
 @section('main')
     <div class="card">
+        {!! Form::open(['id' => 'searchForm', 'method'=> 'POST', 'url' => 'admin/permissions/search']) !!}
         <div class="card-header">
             @include('admin.permissions.search')
         </div>
@@ -28,11 +29,6 @@
                             <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#createPermission">
                                 Create
                             </button>
-                            <div class="modal fade" id="createPermission" tabindex="-1" role="dialog" aria-labelledby="createPermissionTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    @include('admin.permissions.create')
-                                </div>
-                            </div>
                         </th>
                     </tr>
                     </thead>
@@ -48,21 +44,11 @@
                                 <button type="button" class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#editPermission{{ $perm->id or 0 }}">
                                     Edit
                                 </button>
-                                <div class="modal fade" id="editPermission{{ $perm->id or 0 }}" tabindex="-1" role="dialog" aria-labelledby="editPermission{{ $perm->id or 0 }}Title" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        @include('admin.permissions.edit')
-                                    </div>
-                                </div>
                                 @endpermission
                                 @permission('delete_permission')
                                 <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#deletePermission{{ $perm->id or 0 }}">
                                     Delete
                                 </button>
-                                <div class="modal fade" id="deletePermission{{ $perm->id or 0 }}" tabindex="-1" role="dialog" aria-labelledby="deletePermission{{ $perm->id or 0 }}Title" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        @include('admin.permissions.delete')
-                                    </div>
-                                </div>
                                 @endpermission
                             </td>
                         </tr>
@@ -71,6 +57,24 @@
                 </table>
             </div>
         </div>
-        @include('common.pagination', ['url' => url('/admin/permissions/page') . '/', 'page' => $pagination['page'], 'count' => $pagination['count'],])
+        @include('common.pagination', ['url' => url('/admin/permissions/page') . '/', 'page' => $pagination['page'], 'count' => $pagination['count'], 'type' => 'search', ])
+        {!! Form::close() !!}
+        <div class="modal fade" id="createPermission" tabindex="-1" role="dialog" aria-labelledby="createPermissionTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                @include('admin.permissions.create')
+            </div>
+        </div>
+        @foreach($perms as $perm)
+            <div class="modal fade" id="editPermission{{ $perm->id or 0 }}" tabindex="-1" role="dialog" aria-labelledby="editPermission{{ $perm->id or 0 }}Title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    @include('admin.permissions.edit')
+                </div>
+            </div>
+            <div class="modal fade" id="deletePermission{{ $perm->id or 0 }}" tabindex="-1" role="dialog" aria-labelledby="deletePermission{{ $perm->id or 0 }}Title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    @include('admin.permissions.delete')
+                </div>
+            </div>
+        @endforeach
     </div>
 @endsection

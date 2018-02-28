@@ -22,13 +22,20 @@ class IpController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param int $page
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public static function index($page = 1)
+    public static function index(Request $request)
     {
+        $page = isset($request->page) ? $request->page : 1;
         $size = 10;
-        $ipListData = Ip::listIp($page, $size);
+        $search = [
+            'ip' => isset($request->ip) ? $request->ip : '',
+            'operator_id' => isset($request->operator_id) ? $request->operator_id : null,
+            'area_id' => isset($request->province_id) ? $request->province_id : null,
+        ];
+        // $ipListData = Ip::listIp($page, $size);
+        $ipListData = Ip::searchIp($search, $page, $size);
         $pagination = AppService::calculatePagination($page, $size, $ipListData['count']);
         $areaMap = AdminService::listAreaMap();
         $cityList = Area::listCity();
@@ -37,6 +44,7 @@ class IpController extends Controller
         $data = [];
         $data['ipList'] = $ipListData['ipList'];
         $data['pagination'] = $pagination;
+        $data['search'] = $search;
         $data['areaMap'] = $areaMap;
         $data['cityList'] = $cityList;
         $data['provinceList'] = $provinceList;
@@ -72,7 +80,7 @@ class IpController extends Controller
             'area_id' => $request->province_id,
         ]);
         ActionLog::log(ActionLog::ACTION_CREATE_IP, isset($ip->start_ip) && isset($ip->end_ip) ? $ip->start_ip . ' - ' . $ip->end_ip : '');
-        return redirect()->back();
+        return redirect('admin/ip');
     }
 
     /**
@@ -116,7 +124,7 @@ class IpController extends Controller
             'area_id' => $request->province_id,
         ])->save();
         ActionLog::log(ActionLog::ACTION_EDIT_IP, isset($ip->start_ip) && isset($ip->end_ip) ? $ip->start_ip . ' - ' . $ip->end_ip : '');
-        return redirect()->back();
+        return redirect('admin/ip');
     }
 
     /**
@@ -134,7 +142,7 @@ class IpController extends Controller
         } catch (\Exception $e) {
             return redirect()->back();
         }
-        return redirect()->back();
+        return redirect('admin/ip');
     }
 
     public static function search($page = 1, Request $request)

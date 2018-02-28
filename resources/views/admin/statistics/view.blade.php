@@ -20,21 +20,21 @@
             <table class="table table-hover">
                 <thead class="thead-light">
                 <tr>
-                    <th scope="col">Id</th>
                     <th scope="col">Ip</th>
                     <th scope="col">Operator</th>
                     <th scope="col">Province</th>
-                    <th scope="col">Probe Type</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Date</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($statistics['report'] as $report)
                     <tr>
-                        <th scope="row">{{ $report['id'] or 0 }}</th>
                         <td>{{ $report['ip'] or '' }}</td>
                         <td>{{ $report['operator'] or '' }}</td>
                         <td>{{ $report['province'] or '' }}</td>
                         <td data-probe-type="{{ $report['probe_type'] or '' }}">@if($report['probe_type'] == 1) 自有 @else 公有 @endif</td>
+                        <td>{{ $report['date'] or '' }}</td>
                     </tr>
                 @endforeach
                 </tbody>

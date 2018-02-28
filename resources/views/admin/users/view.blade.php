@@ -10,28 +10,28 @@
 
 <div class="modal-content">
     <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <h5 class="modal-title">Modal title</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
         <div class="form-group">
-            <label for="inputName">Name</label>
-            <input name="name" type="text" class="form-control" id="inputName" value="{{ $user->name or '' }}" placeholder="Enter Name" readonly>
+            <label for="viewInputName{{ $user->id or 0 }}">Name</label>
+            <input name="name" type="text" class="form-control" id="viewInputName{{ $user->id or 0 }}" value="{{ $user->name or '' }}" placeholder="Enter Name" readonly>
         </div>
         <div class="form-group">
-            <label for="inputEmail">Email</label>
-            <input name="email" type="email" class="form-control" id="inputEmail" value="{{ $user->email or '' }}" placeholder="Enter Email" readonly>
+            <label for="viewInputEmail{{ $user->id or 0 }}">Email</label>
+            <input name="email" type="email" class="form-control" id="viewInputEmail{{ $user->id or 0 }}" value="{{ $user->email or '' }}" placeholder="Enter Email" readonly>
         </div>
         <input type="hidden" name="password" value="123456">
         <div class="form-group">
-            <label for="inputPhone">Phone</label>
-            <input name="phone" type="text" class="form-control" id="inputPhone" value="{{ $user->phone or '' }}" placeholder="Enter Phone" readonly>
+            <label for="viewInputPhone{{ $user->id or 0 }}">Phone</label>
+            <input name="phone" type="text" class="form-control" id="viewInputPhone{{ $user->id or 0 }}" value="{{ $user->phone or '' }}" placeholder="Enter Phone" readonly>
         </div>
         <div class="form-group">
-            <label for="selectLevel">Level</label>
-            <select name="level" class="form-control" id="selectLevel" readonly>
+            <label for="viewSelectLevel{{ $user->id or 0 }}">Level</label>
+            <select name="level" class="form-control" id="viewSelectLevel{{ $user->id or 0 }}" readonly>
                 @foreach($userLevelList as $userLevel)
                     <option value="{{ $userLevel['id'] or 0 }}" @if($userLevel['id'] == $user->level) selected @endif >{{ $userLevel['name'] or '' }}</option>
                 @endforeach
@@ -40,8 +40,8 @@
         <label for="">Area</label>
         @include('common.area', ['for' => 'view' . $user->id, 'area_id' => $user->area_id, 'readonly' => true, ])
         <div class="form-group">
-            <label for="selectDepartment">Department</label>
-            <select name="department_id" class="form-control" id="selectDepartment" readonly>
+            <label for="viewSelectDepartment{{ $user->id or 0 }}">Department</label>
+            <select name="department_id" class="form-control" id="viewSelectDepartment{{ $user->id or 0 }}" readonly>
                 @foreach($departmentList as $department)
                     <option value="{{ $department['id'] or 0 }}" @if($department['id'] == $user->department_id) selected @endif >{{ $department['name'] or '' }}</option>
                 @endforeach
@@ -51,8 +51,8 @@
             <label>Role</label>
             @foreach($roles as $role)
                 <div class="form-check">
-                    <input name="role[]" class="form-check-input" type="checkbox" value="{{ $role->id or '' }}" id="checkbox{{ $loop->iteration }}" @if($user->hasRole($role->name)) checked="checked" @endIf disabled>
-                    <label class="form-check-label" for="checkbox{{ $loop->iteration }}">
+                    <input name="role[]" class="form-check-input" type="checkbox" value="{{ $role->id or '' }}" id="viewCheckbox{{ $user->id or 0 }}{{ $loop->iteration }}" @if($user->hasRole($role->name)) checked="checked" @endIf disabled>
+                    <label class="form-check-label" for="viewCheckbox{{ $user->id or 0 }}{{ $loop->iteration }}">
                         {{ $role->display_name or $role->name }}
                     </label>
                 </div>
