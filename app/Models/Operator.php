@@ -16,7 +16,8 @@ class Operator extends Model
     protected $connection = 'mysql';
     protected $table = 'operator';
     protected $primaryKey = 'id';
-    public $timestamps = false;
+    public $timestamps = true;
+    protected $dates = ['deleted_at'];
 
     const LEVEL_1 = 1;
     const LEVEL_2 = 2;

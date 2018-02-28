@@ -1,0 +1,12 @@
+INSERT INTO probe.operator (id, name, level, created_at, updated_at, deleted_at) VALUES (1, '联通', 1, null, null, null);
+INSERT INTO probe.operator (id, name, level, created_at, updated_at, deleted_at) VALUES (2, '电信', 1, null, null, null);
+INSERT INTO probe.operator (id, name, level, created_at, updated_at, deleted_at) VALUES (3, '移动', 1, null, null, null);
+INSERT INTO probe.operator (id, name, level, created_at, updated_at, deleted_at) VALUES (4, '其他', 1, null, null, null);
+INSERT INTO probe.operator (id, name, level, created_at, updated_at, deleted_at) VALUES (5, '方正', 2, null, null, null);
+INSERT INTO probe.operator (id, name, level, created_at, updated_at, deleted_at) VALUES (6, '长宽', 2, null, null, null);
+INSERT INTO probe.operator (id, name, level, created_at, updated_at, deleted_at) VALUES (7, '广电', 2, null, null, null);
+INSERT INTO probe.operator (id, name, level, created_at, updated_at, deleted_at) VALUES (8, '铁通', 2, null, null, null);
+INSERT INTO probe.operator (id, name, level, created_at, updated_at, deleted_at) VALUES (9, '移动', 2, null, null, null);
+INSERT INTO probe.operator (id, name, level, created_at, updated_at, deleted_at) VALUES (10, '鹏博士', 2, null, null, null);
+INSERT INTO probe.operator (id, name, level, created_at, updated_at, deleted_at) VALUES (11, '电信通', 2, null, null, null);
+INSERT INTO probe.operator (id, name, level, created_at, updated_at, deleted_at) VALUES (12, '其他', 2, null, null, null);

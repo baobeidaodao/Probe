@@ -16,7 +16,8 @@ class Department extends Model
     protected $connection = 'mysql';
     protected $table = 'department';
     protected $primaryKey = 'id';
-    public $timestamps = false;
+    protected $dates = ['deleted_at'];
+    public $timestamps = true;
     protected $fillable = ['area_id', 'name',];
 
     public static function listDepartment($page = 1, $size = 10)

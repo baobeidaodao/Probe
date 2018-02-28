@@ -16,5 +16,6 @@ class UserLevel extends Model
     protected $connection = 'mysql';
     protected $table = 'user_level';
     protected $primaryKey = 'id';
-    public $timestamps = false;
+    public $timestamps = true;
+    protected $dates = ['deleted_at'];
 }

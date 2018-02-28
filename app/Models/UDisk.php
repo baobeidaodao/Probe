@@ -16,7 +16,8 @@ class UDisk extends Model
     protected $connection = 'mysql';
     protected $table = 'u_disk';
     protected $primaryKey = 'id';
-    public $timestamps = false;
+    public $timestamps = true;
+    protected $dates = ['deleted_at'];
     protected $fillable = ['uuid', 'user_id', 'operator_id',];
 
     public static function listUDisk($page, $size)

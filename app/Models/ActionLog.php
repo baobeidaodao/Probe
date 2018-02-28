@@ -18,6 +18,7 @@ class ActionLog extends Model
     protected $table = 'action_log';
     protected $primaryKey = 'id';
     public $timestamps = true;
+    protected $dates = ['deleted_at'];
     protected $fillable = ['user_id', 'action', 'remark',];
 
     const ACTION_LOGIN = 1;
@@ -40,6 +41,9 @@ class ActionLog extends Model
     const ACTION_CREATE_IP = 15;
     const ACTION_EDIT_IP = 16;
     const ACTION_DELETE_IP = 17;
+    const ACTION_VIEW_STATISTICS = 18;
+    const ACTION_UPDATE_STATISTICS = 19;
+    const ACTION_VIEW_REPORT = 20;
 
     public static $actionMap = [
         self::ACTION_LOGIN => '登录',
@@ -62,6 +66,9 @@ class ActionLog extends Model
         self::ACTION_CREATE_IP => '创建IP',
         self::ACTION_EDIT_IP => '编辑IP',
         self::ACTION_DELETE_IP => '删除IP',
+        self::ACTION_VIEW_STATISTICS => '查询统计',
+        self::ACTION_UPDATE_STATISTICS => '更新数据',
+        self::ACTION_VIEW_REPORT => '查询数据',
     ];
 
     /**

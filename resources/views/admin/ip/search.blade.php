@@ -12,7 +12,7 @@
     <div class="col-auto">
         <label class="sr-only" for="inputIp">IP</label>
         <div class="input-group mb-2">
-            <div class="input-group-prepend">
+            <div class="input-group-prepend sr-only">
                 <div class="input-group-text">IP</div>
             </div>
             <input name="ip" type="text" class="form-control" id="inputIp" placeholder="ip" @if(isset($search) && isset($search['ip'])) value="{{ $search['ip'] or '' }}" @endif >

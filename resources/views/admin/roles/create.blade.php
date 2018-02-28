@@ -11,30 +11,30 @@
 <div class="modal-content">
     {!! Form::open(['method' => 'POST', 'route'=> 'roles.store']) !!}
     <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <h5 class="modal-title">Modal title</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
         <div class="form-group">
-            <label for="inputName">名称</label>
-            <input name="name" type="text" class="form-control" id="inputName" placeholder="Enter Name">
+            <label for="createInputName">名称</label>
+            <input name="name" type="text" class="form-control" id="createInputName" placeholder="Enter Name">
         </div>
         <div class="form-group">
-            <label for="inputDisplayName">显示名称</label>
-            <input name="display_name" type="text" class="form-control" id="inputDisplayName" placeholder="Display Name">
+            <label for="createInputDisplayName">显示名称</label>
+            <input name="display_name" type="text" class="form-control" id="createInputDisplayName" placeholder="Display Name">
         </div>
         <div class="form-group">
-            <label for="inputDescription">描述</label>
-            <textarea name="description" class="form-control" id="inputDescription" placeholder="Description"></textarea>
+            <label for="createInputDescription">描述</label>
+            <textarea name="description" class="form-control" id="createInputDescription" placeholder="Description"></textarea>
         </div>
         <div class="form-group">
             <label>权限</label>
             @foreach($perms as $perm)
                 <div class="form-check">
-                    <input name="perm[]" class="form-check-input" type="checkbox" value="{{ $perm->id or '' }}" id="checkbox{{ $loop->iteration }}">
-                    <label class="form-check-label" for="checkbox{{ $loop->iteration }}">
+                    <input name="perm[]" class="form-check-input" type="checkbox" value="{{ $perm->id or '' }}" id="createCheckbox{{ $perm->id or 0 }}">
+                    <label class="form-check-label" for="createCheckbox{{ $perm->id or 0 }}">
                         {{ $perm->display_name or $perm->name }}
                     </label>
                 </div>

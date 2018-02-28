@@ -60,8 +60,12 @@ class PermissionTableSeeder extends Seeder
         $permissionArray[] = ['name' => 'create_user', 'display_name' => '创建用户', 'description' => '创建用户',];
         $permissionArray[] = ['name' => 'edit_user', 'display_name' => '编辑用户', 'description' => '编辑用户',];
         $permissionArray[] = ['name' => 'delete_user', 'display_name' => '删除用户', 'description' => '删除用户',];
-        $permissionArray[] = ['name' => 'view_u_key', 'display_name' => '查看U盾', 'description' => '查看U盾',];
-        $permissionArray[] = ['name' => 'view_log', 'display_name' => '查看日志', 'description' => '查看日志',];
+        $permissionArray[] = ['name' => 'department_manage', 'display_name' => '部门管理', 'description' => '部门管理',];
+        $permissionArray[] = ['name' => 'log_manage', 'display_name' => '日志管理', 'description' => '日志管理',];
+        $permissionArray[] = ['name' => 'u_disk_manage', 'display_name' => 'U盾管理', 'description' => 'U盾管理',];
+        $permissionArray[] = ['name' => 'ip_manage', 'display_name' => 'IP管理', 'description' => 'IP管理',];
+        $permissionArray[] = ['name' => 'view_statistics', 'display_name' => '统计信息', 'description' => '统计信息',];
+        $permissionArray[] = ['name' => 'view_report', 'display_name' => '数据查询', 'description' => '数据查询',];
         $permissions = [];
         foreach ($permissionArray as $permissionData) {
             $permission = (new Permission)->create($permissionData);
