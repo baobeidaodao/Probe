@@ -18,4 +18,10 @@ class UserLevel extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
     protected $dates = ['deleted_at'];
+
+    const LEVEL_ADMIN = 1;
+    const LEVEL_GROUP_MANAGER = 2;
+    const LEVEL_PROVINCIAL_MANAGER = 3;
+    const LEVEL_MUNICIPAL_MANAGER = 4;
+    const LEVEL_TESTER = 5;
 }

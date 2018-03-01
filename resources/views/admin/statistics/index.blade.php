@@ -28,7 +28,9 @@
                         <th scope="col">User</th>
                         <th scope="col">User Phone</th>
                         <th scope="col">Report</th>
-                        <th scope="col">Date</th>
+                        @if($form == 'search')
+                            <th scope="col">Date</th>
+                        @endif
                         <th scope="col">View</th>
                     </tr>
                     </thead>
@@ -42,7 +44,9 @@
                             <td>{{ $statistics['user_name'] or '' }}</td>
                             <td>{{ $statistics['user_phone'] or '' }}</td>
                             <td>{{ $statistics['report_count'] or '' }}</td>
-                            <td>{{ date('Y-m-d', strtotime($statistics['date'])) }}</td>
+                            @if($form == 'search')
+                                <td>{{ date('Y-m-d', strtotime($statistics['date'])) }}</td>
+                            @endif
                             <td>
                                 <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#view{{ $statistics['id'] or 0 }}">
                                     View
