@@ -44,7 +44,18 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        if (isset($_GET['isDebug'])) {//Modify Taoshuchen 接受动态参数，方便调试
+            dd($exception);
+        }
+        if (config('app.debug')) {
+            return parent::render($request, $exception);
+        } else {
+            if ($exception && method_exists($exception, 'getStatusCode')) {
+                return response()->view('error.' . $exception->getStatusCode(), ['status_code' => $exception->getStatusCode()], $exception->getStatusCode());
+            } else {
+                abort('404');
+            }
+        }
     }
 
     /**
