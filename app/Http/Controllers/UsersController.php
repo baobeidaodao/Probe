@@ -18,6 +18,7 @@ use App\Services\AppService;
 use Illuminate\Http\Request;
 use App\Models\User;
 use PhpParser\Node\Expr\Isset_;
+use Validator;
 
 class UsersController extends Controller
 {
@@ -34,7 +35,7 @@ class UsersController extends Controller
         $search = [
             'name' => isset($request->name) ? $request->name : '',
             'area_id' => (isset($request->city_id) && !empty($request->city_id)) ? $request->city_id : ((isset($request->province_id) && !empty($request->province_id)) ? $request->province_id : 0),
-            'department_id' => isset($request->department_id) ? $request->department_id : '',
+            'department_id' => isset($request->department_id) ? $request->department_id : 0,
         ];
         // $users = User::with('roles.perms')->get();
         // $userListData = User::listUser($page, $size);
@@ -74,6 +75,17 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:users|max:255',
+            'email' => 'required|unique:users|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/users')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $user = (new User)->create([
             'name' => $request->name,
             'email' => $request->email,
@@ -81,7 +93,7 @@ class UsersController extends Controller
             'level' => $request->level,
             'password' => bcrypt($request->password),
             'area_id' => (isset($request->city_id) && !empty($request->city_id)) ? $request->city_id : ((isset($request->province_id) && !empty($request->province_id)) ? $request->province_id : 0),
-            'department_id' => isset($request->department_id) ? $request->department_id : '',
+            'department_id' => isset($request->department_id) ? $request->department_id : 0,
         ]);
         if ($request->role) {
             $user->attachRoles($request->role);
@@ -121,6 +133,17 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:users|max:255',
+            'email' => 'required|unique:users|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/users')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $user = (new User)->findOrFail($id);
         $user->fill([
             'name' => $request->name,
@@ -129,7 +152,7 @@ class UsersController extends Controller
             'level' => $request->level,
             'password' => (isset($request->password) && !empty($request->password)) ? bcrypt($request->password) : $user->password,
             'area_id' => (isset($request->city_id) && !empty($request->city_id)) ? $request->city_id : ((isset($request->province_id) && !empty($request->province_id)) ? $request->province_id : 0),
-            'department_id' => isset($request->department_id) ? $request->department_id : '',
+            'department_id' => isset($request->department_id) ? $request->department_id : 0,
         ])->save();
         if ($roleArray = $request->role) {
             $user->roles()->sync($roleArray);
@@ -169,7 +192,7 @@ class UsersController extends Controller
         $search = [
             'name' => isset($request->name) ? $request->name : '',
             'area_id' => (isset($request->city_id) && !empty($request->city_id)) ? $request->city_id : ((isset($request->province_id) && !empty($request->province_id)) ? $request->province_id : 0),
-            'department_id' => isset($request->department_id) ? $request->department_id : '',
+            'department_id' => isset($request->department_id) ? $request->department_id : 0,
         ];
         $userListData = User::searchUser($search, $page, $size);
         $pagination = AppService::calculatePagination($page, $size, $userListData['count']);

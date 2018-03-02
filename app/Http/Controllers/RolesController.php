@@ -15,6 +15,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Services\AppService;
 use Illuminate\Http\Request;
+use Validator;
 
 class RolesController extends Controller
 {
@@ -72,6 +73,16 @@ class RolesController extends Controller
      */
     public static function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:roles|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/roles')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $role = (new Role)->create([
             'name' => $request->name,
             'display_name' => $request->display_name,
@@ -81,7 +92,7 @@ class RolesController extends Controller
             $role->attachPermissions($request->perm);
         }
         ActionLog::log(ActionLog::ACTION_CREATE_ROLE, isset($role->display_name) ? $role->display_name : (isset($role->name) ? $role->name : ''));
-        return redirect()->back();
+        return redirect('admin/roles');
     }
 
     /**
@@ -115,6 +126,16 @@ class RolesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:roles|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/roles')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $role = (new Role)->findOrFail($id);
         $role->fill([
             'name' => $request->name,
@@ -145,7 +166,8 @@ class RolesController extends Controller
         return redirect()->back();
     }
 
-    public static function search($page = 1, Request $request){
+    public static function search($page = 1, Request $request)
+    {
         $size = 10;
         $search = [
             'name' => isset($request->name) ? $request->name : '',

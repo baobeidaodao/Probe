@@ -15,6 +15,7 @@ use App\Models\Department;
 use App\Services\AdminService;
 use App\Services\AppService;
 use Illuminate\Http\Request;
+use Validator;
 
 class DepartmentController extends Controller
 {
@@ -65,6 +66,17 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:permissions|max:255',
+            'city_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/department')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $department = (new Department())->create([
             'name' => $request->name,
             'area_id' => $request->city_id,
@@ -104,6 +116,17 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:permissions|max:255',
+            'city_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/department')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $department = (new Department())->findOrFail($id);
         $department->fill([
             'name' => $request->name,

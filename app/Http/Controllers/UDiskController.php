@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Services\AppService;
 use App\Services\UDiskService;
 use Illuminate\Http\Request;
+use Validator;
 
 class UDiskController extends Controller
 {
@@ -26,7 +27,7 @@ class UDiskController extends Controller
         $search = [
             'uuid' => isset($request->uuid) ? $request->uuid : '',
             'user_name' => isset($request->user_name) ? $request->user_name : '',
-            'operator_id' => isset($request->operator_id) ? $request->operator_id : '',
+            'operator_id' => isset($request->operator_id) ? $request->operator_id : 0,
         ];
         // $uDiskListData = UDiskService::listUDisk($page, $size);
         $uDiskListData = UDisk::searchUDisk($search, $page, $size);
@@ -45,10 +46,20 @@ class UDiskController extends Controller
 
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'uuid' => 'required|unique:u_disk|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/u-disk')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $uDisk = (new UDisk)->create([
-            'uuid' => $request->uuid,
-            'user_id' => $request->user_id,
-            'operator_id' => $request->operator_id,
+            'uuid' => isset($request->uuid) ? $request->uuid : '',
+            'user_id' => isset($request->user_id) ? $request->user_id : 0,
+            'operator_id' => isset($request->operator_id) ? $request->operator_id : 0,
         ]);
         ActionLog::log(ActionLog::ACTION_CREATE_U_DISK, isset($uDisk->uuid) ? $uDisk->uuid : '');
         return redirect()->back();
@@ -56,6 +67,16 @@ class UDiskController extends Controller
 
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'uuid' => 'required|unique:u_disk|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/u-disk')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $uDisk = (new UDisk())->findOrFail($id);
         $uDisk->fill([
             'uuid' => $request->uuid,
@@ -84,7 +105,7 @@ class UDiskController extends Controller
         $search = [
             'uuid' => isset($request->uuid) ? $request->uuid : '',
             'user_name' => isset($request->user_name) ? $request->user_name : '',
-            'operator_id' => isset($request->operator_id) ? $request->operator_id : '',
+            'operator_id' => isset($request->operator_id) ? $request->operator_id : 0,
         ];
         $uDiskListData = UDisk::searchUDisk($search, $page, $size);
         $pagination = AppService::calculatePagination($page, $size, $uDiskListData['count']);

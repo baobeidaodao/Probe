@@ -28,7 +28,7 @@
         <div class="form-group">
             <label for="selectOperator">Operator</label>
             <select name="operator_id" class="form-control" id="selectOperator">
-                <option selected>Choose...</option>
+                <option value="">Choose...</option>
                 @foreach($operatorList as $operator)
                     <option value="{{ $operator['id'] or 0 }}">{{ $operator['name'] or '' }}</option>
                 @endforeach
@@ -37,7 +37,7 @@
         <div class="form-group">
             <label for="selectProvince">Province</label>
             <select name="province_id" class="form-control" id="selectProvince">
-                <option selected>Choose...</option>
+                <option value="">Choose...</option>
                 @foreach($provinceList as $province)
                     <option value="{{ $province['id'] or 0 }}">{{ $province['name'] or '' }}</option>
                 @endforeach

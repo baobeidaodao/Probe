@@ -13,6 +13,7 @@ use App\Models\ActionLog;
 use App\Models\Permission;
 use App\Services\AppService;
 use Illuminate\Http\Request;
+use Validator;
 
 class PermissionsController extends Controller
 {
@@ -58,6 +59,16 @@ class PermissionsController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:permissions|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/permissions')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $permission = (new Permission())->create([
             'name' => $request->name,
             'display_name' => $request->display_name,
@@ -98,6 +109,16 @@ class PermissionsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:permissions|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/permissions')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $permission = (new Permission())->findOrFail($id);
         $permission->fill([
             'name' => $request->name,

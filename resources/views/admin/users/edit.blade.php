@@ -36,7 +36,7 @@
         <div class="form-group">
             <label for="editSelectLevel{{ $user->id or 0 }}">Level</label>
             <select name="level" class="form-control" id="editSelectLevel{{ $user->id or 0 }}">
-                <option selected>Choose...</option>
+                <option value="">Choose...</option>
                 @foreach($userLevelList as $userLevel)
                     <option value="{{ $userLevel['id'] or 0 }}" @if($userLevel['id'] == $user->level) selected @endif >{{ $userLevel['name'] or '' }}</option>
                 @endforeach
@@ -47,7 +47,7 @@
         <div class="form-group">
             <label for="editSelectDepartment{{ $user->id or 0 }}">Department</label>
             <select name="department_id" class="form-control" id="editSelectDepartment{{ $user->id or 0 }}">
-                <option selected>Choose...</option>
+                <option value="">Choose...</option>
                 @foreach($departmentList as $department)
                     <option value="{{ $department['id'] or 0 }}" @if($department['id'] == $user->department_id) selected @endif >{{ $department['name'] or '' }}</option>
                 @endforeach

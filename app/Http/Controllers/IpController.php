@@ -16,6 +16,7 @@ use App\Models\Operator;
 use App\Services\AdminService;
 use App\Services\AppService;
 use Illuminate\Http\Request;
+use Validator;
 
 class IpController extends Controller
 {
@@ -71,13 +72,26 @@ class IpController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'start_ip' => 'required|unique:ip|max:255',
+            'end_ip' => 'required|unique:ip|max:255',
+            'operator_id' => 'required',
+            'province_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/ip')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $ip = (new Ip())->create([
             'start_ip' => $request->start_ip,
             'start_value' => ip2long($request->start_ip),
             'end_ip' => $request->end_ip,
             'end_value' => ip2long($request->end_ip),
-            'operator_id' => $request->operator_id,
-            'area_id' => $request->province_id,
+            'operator_id' => isset($request->operator_id) ? $request->operator_id : 0,
+            'area_id' => isset($request->province_id) ? $request->province_id : 0,
         ]);
         ActionLog::log(ActionLog::ACTION_CREATE_IP, isset($ip->start_ip) && isset($ip->end_ip) ? $ip->start_ip . ' - ' . $ip->end_ip : '');
         return redirect('admin/ip');
@@ -114,14 +128,27 @@ class IpController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'start_ip' => 'required|unique:ip|max:255',
+            'end_ip' => 'required|unique:ip|max:255',
+            'operator_id' => 'required',
+            'province_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('admin/ip')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $ip = (new Ip())->findOrFail($id);
         $ip->fill([
             'start_ip' => $request->start_ip,
             'start_value' => ip2long($request->start_ip),
             'end_ip' => $request->end_ip,
             'end_value' => ip2long($request->end_ip),
-            'operator_id' => $request->operator_id,
-            'area_id' => $request->province_id,
+            'operator_id' => isset($request->operator_id) ? $request->operator_id : 0,
+            'area_id' => isset($request->province_id) ? $request->province_id : 0,
         ])->save();
         ActionLog::log(ActionLog::ACTION_EDIT_IP, isset($ip->start_ip) && isset($ip->end_ip) ? $ip->start_ip . ' - ' . $ip->end_ip : '');
         return redirect('admin/ip');

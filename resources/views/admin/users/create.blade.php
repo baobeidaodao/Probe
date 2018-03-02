@@ -33,7 +33,7 @@
         <div class="form-group">
             <label for="createSelectLevel">Level</label>
             <select name="level" class="form-control" id="createSelectLevel">
-                <option selected>Choose...</option>
+                <option value="">Choose...</option>
                 @foreach($userLevelList as $userLevel)
                     <option value="{{ $userLevel['id'] or 0 }}">{{ $userLevel['name'] or '' }}</option>
                 @endforeach
@@ -44,7 +44,7 @@
         <div class="form-group">
             <label for="createSelectDepartment">Department</label>
             <select name="department_id" class="form-control" id="createSelectDepartment">
-                <option selected>Choose...</option>
+                <option value="">Choose...</option>
                 @foreach($departmentList as $department)
                     <option value="{{ $department['id'] or 0 }}">{{ $department['name'] or '' }}</option>
                 @endforeach
