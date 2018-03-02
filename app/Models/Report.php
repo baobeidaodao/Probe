@@ -68,7 +68,7 @@ class Report extends Model
                 }
             });
         $count = $db->count();
-        $reportList = $db->orderBy('statistics.report_count', 'asc')
+        $reportList = $db->orderBy('report.date', 'desc')
             ->orderBy('report.id', 'desc')
             ->forPage($page, $size)
             ->select([
