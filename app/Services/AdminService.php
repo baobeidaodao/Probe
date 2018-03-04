@@ -155,7 +155,7 @@ class AdminService
             })
             ->get()
             ->toArray();
-        $allAreaList = (new Area)::all()->toArray();
+        $allAreaList = Area::all()->toArray();
         $areaMap = [];
         foreach ($areaList as $index => $area) {
             if (isset($area['parent_id']) && $area['parent_id'] == 0) {
