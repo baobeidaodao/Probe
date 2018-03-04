@@ -41,7 +41,8 @@ class StatisticsController extends Controller
         $search['start_date'] = isset($search['start_date']) && !empty($search['start_date']) ? date('Y-m-d', strtotime($search['start_date'])) : '';
         $search['end_date'] = isset($search['end_date']) && !empty($search['end_date']) ? date('Y-m-d', strtotime($search['end_date'])) : '';
         $pagination = AppService::calculatePagination($page, $size, $statisticsListData['count']);
-        $areaMap = AdminService::listAreaMap();
+        //$areaMap = AdminService::listAreaMap();
+        $areaMap = AdminService::listAreaMapForUser();
         $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_2)->get()->toArray();
         $tips = StatisticsService::statisticsTips($search);
         $data = [];
@@ -72,7 +73,8 @@ class StatisticsController extends Controller
         $search['start_date'] = isset($search['start_date']) && !empty($search['start_date']) ? date('Y-m-d', strtotime($search['start_date'])) : '';
         $search['end_date'] = isset($search['end_date']) && !empty($search['end_date']) ? date('Y-m-d', strtotime($search['end_date'])) : '';
         $pagination = AppService::calculatePagination($page, $size, $statisticsListData['count']);
-        $areaMap = AdminService::listAreaMap();
+        //$areaMap = AdminService::listAreaMap();
+        $areaMap = AdminService::listAreaMapForUser();
         $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_2)->get()->toArray();
         $tips = StatisticsService::statisticsTips($search);
         $data = [];

@@ -22,10 +22,10 @@
                     <thead class="thead-light">
                     <tr>
                         <th scope="col">id</th>
-                        <th scope="col">User</th>
-                        <th scope="col">Action</th>
-                        <th scope="col">Remark</th>
-                        <th scope="col">Time</th>
+                        <th scope="col">人员</th>
+                        <th scope="col">操作</th>
+                        <th scope="col">备注</th>
+                        <th scope="col">时间</th>
                     </tr>
                     </thead>
                     <tbody>

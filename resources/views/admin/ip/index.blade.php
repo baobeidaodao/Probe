@@ -22,13 +22,13 @@
                     <thead class="thead-light">
                     <tr>
                         <th scope="col">id</th>
-                        <th scope="col">StartIp</th>
-                        <th scope="col">EndIp</th>
-                        <th scope="col">operator</th>
-                        <th scope="col">province</th>
+                        <th scope="col">起始IP</th>
+                        <th scope="col">结束IP</th>
+                        <th scope="col">运营商</th>
+                        <th scope="col">省</th>
                         <th scope="col">
                             <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#create">
-                                Create
+                                创建
                             </button>
                         </th>
                     </tr>
@@ -43,10 +43,10 @@
                             <td>{{ $ip['area_name'] or '' }}</td>
                             <td>
                                 <button type="button" class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#edit{{ $ip['id'] or 0 }}">
-                                    Edit
+                                    修改
                                 </button>
                                 <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#delete{{ $ip['id'] or 0 }}">
-                                    Delete
+                                    删除
                                 </button>
                             </td>
                         </tr>

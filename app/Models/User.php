@@ -79,6 +79,10 @@ class User extends Authenticatable
     public static function searchUser($search = [], $page, $size)
     {
         $db = User::with('roles.perms')
+            ->where(function ($query) {
+                $area = Area::areaForUser();
+                $query->whereIn('users.area_id', $area['areaIdList']);
+            })
             ->where(function ($query) use ($search) {
                 if (isset($search) && isset($search['name']) && !empty($search['name'])) {
                     $query->where('users.name', 'like', $search['name']);

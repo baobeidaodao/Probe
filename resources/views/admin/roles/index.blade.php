@@ -43,17 +43,17 @@
                             <td>{{ $role->description or '' }}</td>
                             <td>
                                 <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#view{{ $role->id or 0 }}">
-                                    View
+                                    查看
                                 </button>
                                 @ability('admin', 'edit_role', ['validate_all' => false,])
                                 <button type="button" class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#edit{{ $role->id or 0 }}">
-                                    Edit
+                                    修改
                                 </button>
                                 @endability
                                 @if($role->name !== 'admin')
                                     @permission('delete_role')
                                     <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#delete{{ $role->id or 0 }}">
-                                        Delete
+                                        删除
                                     </button>
                                     @endpermission
                                 @endif

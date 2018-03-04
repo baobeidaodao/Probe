@@ -21,10 +21,10 @@
                 <thead class="thead-light">
                 <tr>
                     <th scope="col">Ip</th>
-                    <th scope="col">Operator</th>
-                    <th scope="col">Province</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Date</th>
+                    <th scope="col">运营商</th>
+                    <th scope="col">上报省</th>
+                    <th scope="col">上报类型</th>
+                    <th scope="col">时间</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -42,7 +42,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
     </div>
 </div>
 

@@ -19,10 +19,10 @@
     <div class="modal-body">
         <div class="form-group">
             <label for="inputUuid">uuid</label>
-            <input name="uuid" type="text" class="form-control" id="inputUuid" value="{{ $uDisk['uuid'] or '' }}" placeholder="Enter Name">
+            <input name="uuid" type="text" class="form-control" id="inputUuid" value="{{ $uDisk['uuid'] or '' }}" placeholder="UUID">
         </div>
         <div class="form-group">
-            <label for="selectUserId">user_id</label>
+            <label for="selectUserId">人员</label>
             <select name="user_id" class="form-control" id="selectUserId">
                 @foreach($userList as $user)
                     <option value="{{ $user['id'] or 0 }}" @if($user['id'] == $uDisk['user_id']) selected @endif >{{ $user['name'] or '' }}</option>
@@ -39,8 +39,8 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn btn-primary">保存</button>
     </div>
     {!! Form::close() !!}
 </div>

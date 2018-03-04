@@ -14,7 +14,6 @@ use App\Models\Operator;
 use App\Models\UDisk;
 use App\Models\User;
 use App\Services\AppService;
-use App\Services\UDiskService;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -68,7 +67,7 @@ class UDiskController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'uuid' => 'required|unique:u_disk|max:255',
+            'uuid' => 'required|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -99,25 +98,4 @@ class UDiskController extends Controller
         return redirect('admin/u-disk');
     }
 
-    public static function search($page = 1, Request $request)
-    {
-        $size = 10;
-        $search = [
-            'uuid' => isset($request->uuid) ? $request->uuid : '',
-            'user_name' => isset($request->user_name) ? $request->user_name : '',
-            'operator_id' => isset($request->operator_id) ? $request->operator_id : 0,
-        ];
-        $uDiskListData = UDisk::searchUDisk($search, $page, $size);
-        $pagination = AppService::calculatePagination($page, $size, $uDiskListData['count']);
-        $userList = User::all()->toArray();
-        $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_2)->get()->toArray();
-        $data = [];
-        $data['uDiskList'] = $uDiskListData['uDiskList'];
-        $data['userList'] = $userList;
-        $data['search'] = $search;
-        $data['operatorList'] = $operatorList;
-        $data['pagination'] = $pagination;
-        $data['active'] = 'u-disk';
-        return view('admin.u_disk.index', $data);
-    }
 }

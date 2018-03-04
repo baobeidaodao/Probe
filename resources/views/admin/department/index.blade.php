@@ -22,12 +22,12 @@
                     <thead class="thead-light">
                     <tr>
                         <th scope="col">id</th>
-                        <th scope="col">department</th>
-                        <th scope="col">city</th>
-                        <th scope="col">province</th>
+                        <th scope="col">部门</th>
+                        <th scope="col">市</th>
+                        <th scope="col">省</th>
                         <th scope="col">
                             <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#createPermission">
-                                Create
+                                创建
                             </button>
                         </th>
                     </tr>
@@ -41,10 +41,10 @@
                             <td>{{ $department['city_name'] or '' }}</td>
                             <td>
                                 <button type="button" class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#edit{{ $department['id'] or 0 }}">
-                                    Edit
+                                    修改
                                 </button>
                                 <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#delete{{ $department['id'] or 0 }}">
-                                    Delete
+                                    删除
                                 </button>
                             </td>
                         </tr>

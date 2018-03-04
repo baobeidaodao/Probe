@@ -11,33 +11,33 @@
 
 <div class="form-row align-items-center">
     <div class="col-auto">
-        <label class="sr-only" for="inputUser">User</label>
+        <label class="sr-only" for="inputUser">人员</label>
         <div class="input-group mb-2">
             <div class="input-group-prepend sr-only">
-                <div class="input-group-text">User</div>
+                <div class="input-group-text">人员</div>
             </div>
-            <input name="user_name" type="text" class="form-control" id="inputUser" placeholder="user" @if(isset($search) && isset($search['user_name'])) value="{{ $search['user_name'] or '' }}" @endif >
+            <input name="user_name" type="text" class="form-control" id="inputUser" placeholder="人员" @if(isset($search) && isset($search['user_name'])) value="{{ $search['user_name'] or '' }}" @endif >
         </div>
     </div>
     <div class="col-auto">
-        <label class="sr-only" for="inputStartDate">StartDate</label>
+        <label class="sr-only" for="inputStartDate">开始时间</label>
         <div class="input-group mb-2">
             <div class="input-group-prepend sr-only">
-                <div class="input-group-text">StartDate</div>
+                <div class="input-group-text">开始时间</div>
             </div>
-            @include('common.date_picker', ['id' => 'inputStartDate', 'name' => 'start_date', 'value' => (isset($search) && isset($search["start_date"])) ? $search["start_date"] : '', 'format' => 'yyyy-mm-dd hh:ii:ss', ])
+            @include('common.date_picker', ['id' => 'inputStartDate', 'name' => 'start_date', 'placeholder' => '开始时间', 'value' => (isset($search) && isset($search["start_date"])) ? $search["start_date"] : '', 'format' => 'yyyy-mm-dd hh:ii:ss', ])
         </div>
     </div>
     <div class="col-auto">
-        <label class="sr-only" for="inputEndDate">EndDate</label>
+        <label class="sr-only" for="inputEndDate">结束时间</label>
         <div class="input-group mb-2">
             <div class="input-group-prepend sr-only">
-                <div class="input-group-text">EndDate</div>
+                <div class="input-group-text">结束时间</div>
             </div>
-            @include('common.date_picker', ['id' => 'inputEndDate', 'name' => 'end_date', 'value' => (isset($search) && isset($search["end_date"])) ? $search["end_date"] : '', 'format' => 'yyyy-mm-dd hh:ii:ss', ])
+            @include('common.date_picker', ['id' => 'inputEndDate', 'name' => 'end_date', 'placeholder' => '结束时间', 'value' => (isset($search) && isset($search["end_date"])) ? $search["end_date"] : '', 'format' => 'yyyy-mm-dd hh:ii:ss', ])
         </div>
     </div>
     <div class="col-auto">
-        <button id="searchButton" type="submit" class="btn btn-outline-primary mb-2">Search</button>
+        <button id="searchButton" type="submit" class="btn btn-outline-primary mb-2">搜索</button>
     </div>
 </div>

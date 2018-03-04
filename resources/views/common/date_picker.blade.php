@@ -9,7 +9,7 @@
 
 ?>
 
-<input id="{{ $id or '' }}" name="{{ $name or '' }}" class="form-control" type="text" value="{{ $value or '' }}" placeholder="{{ $name or '' }}">
+<input id="{{ $id or '' }}" name="{{ $name or '' }}" placeholder="{{ $placeholder or '' }}" class="form-control" type="text" value="{{ $value or $name }}">
 <script>
     $('#{{ $id or '' }}').datetimepicker({
         format: "{{ $format or '' }}",

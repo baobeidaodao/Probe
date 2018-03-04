@@ -18,22 +18,22 @@
     </div>
     <div class="modal-body">
         <div class="form-group">
-            <label for="createInputName">Name</label>
-            <input name="name" type="text" class="form-control" id="createInputName" placeholder="Enter Name">
+            <label for="createInputName">姓名</label>
+            <input name="name" type="text" class="form-control" id="createInputName" placeholder="姓名">
         </div>
         <div class="form-group">
             <label for="createInputEmail">Email</label>
-            <input name="email" type="email" class="form-control" id="createInputEmail" placeholder="Enter Email">
+            <input name="email" type="email" class="form-control" id="createInputEmail" placeholder="Email">
         </div>
         <input type="hidden" name="password" value="123456">
         <div class="form-group">
-            <label for="createInputPhone">Phone</label>
-            <input name="phone" type="text" class="form-control" id="createInputPhone" placeholder="Enter Phone">
+            <label for="createInputPhone">电话</label>
+            <input name="phone" type="text" class="form-control" id="createInputPhone" placeholder="电话">
         </div>
         <div class="form-group">
-            <label for="createSelectLevel">Level</label>
+            <label for="createSelectLevel">级别</label>
             <select name="level" class="form-control" id="createSelectLevel">
-                <option value="">Choose...</option>
+                <option value="">选择</option>
                 @foreach($userLevelList as $userLevel)
                     <option value="{{ $userLevel['id'] or 0 }}">{{ $userLevel['name'] or '' }}</option>
                 @endforeach
@@ -42,16 +42,18 @@
         <label for="">Area</label>
         @include('common.area', ['for' => 'create', 'area_id' => '', ])
         <div class="form-group">
-            <label for="createSelectDepartment">Department</label>
+            <label for="createSelectDepartment">部门</label>
             <select name="department_id" class="form-control" id="createSelectDepartment">
-                <option value="">Choose...</option>
+                @if(count($departmentList)>1)
+                @endif
+                <option value="">选择</option>
                 @foreach($departmentList as $department)
                     <option value="{{ $department['id'] or 0 }}">{{ $department['name'] or '' }}</option>
                 @endforeach
             </select>
         </div>
         <div class="form-group">
-            <label>Role</label>
+            <label>角色</label>
             @foreach($roles as $role)
                 <div class="form-check">
                     <input name="role[]" class="form-check-input" type="checkbox" value="{{ $role->id or '' }}" id="createCheckbox{{ $loop->iteration }}">
@@ -63,8 +65,8 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn btn-primary">保存</button>
     </div>
     {!! Form::close() !!}
 </div>

@@ -41,6 +41,10 @@ class UDisk extends Model
         $db = (new UDisk)
             ->leftJoin('users', 'u_disk.user_id', '=', 'users.id')
             ->leftJoin('operator', 'u_disk.operator_id', '=', 'operator.id')
+            ->where(function ($query) {
+                $area = Area::areaForUser();
+                $query->whereIn('users.area_id', $area['areaIdList']);
+            })
             ->where(function ($query) use ($search) {
                 if (isset($search) && isset($search['uuid']) && !empty($search['uuid'])) {
                     $query->where('u_disk.uuid', 'like', $search['uuid']);

@@ -20,18 +20,18 @@
         @if($role->name !== 'admin')
             <div class="form-group">
                 <label for="editInputName{{ $role->id or 0 }}">名称</label>
-                <input name="name" type="text" class="form-control" id="editInputName{{ $role->id or 0 }}" value="{{ $role->name or '' }}" placeholder="Enter Name">
+                <input name="name" type="text" class="form-control" id="editInputName{{ $role->id or 0 }}" value="{{ $role->name or '' }}" placeholder="名称">
             </div>
         @else
-            <input name="name" type="hidden" class="form-control" id="editInputName{{ $role->id or 0 }}" value="{{ $role->name or '' }}" placeholder="Enter Name">
+            <input name="name" type="hidden" class="form-control" id="editInputName{{ $role->id or 0 }}" value="{{ $role->name or '' }}" placeholder="名称">
         @endif
         <div class="form-group">
             <label for="editInputDisplayName{{ $role->id or 0 }}">显示名称</label>
-            <input name="display_name" type="text" class="form-control" id="editInputDisplayName{{ $role->id or 0 }}" value="{{ $role->display_name or '' }}" placeholder="Display Name">
+            <input name="display_name" type="text" class="form-control" id="editInputDisplayName{{ $role->id or 0 }}" value="{{ $role->display_name or '' }}" placeholder="显示名称">
         </div>
         <div class="form-group">
             <label for="editInputDescription{{ $role->id or 0 }}">描述</label>
-            <textarea name="description" class="form-control" id="editInputDescription{{ $role->id or 0 }}" placeholder="Description">{{ $role->description or '' }}</textarea>
+            <textarea name="description" class="form-control" id="editInputDescription{{ $role->id or 0 }}" placeholder="描述">{{ $role->description or '' }}</textarea>
         </div>
         <div class="form-group">
             <label>权限</label>
@@ -46,8 +46,8 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn btn-primary">保存</button>
     </div>
     {!! Form::close() !!}
 </div>

@@ -20,8 +20,8 @@
         确认删除IP：{{ $ip['start_ip'] or '' }} - {{ $ip['end_ip'] or '' }} ？
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Delete</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn btn-primary">删除</button>
     </div>
     {!! Form::close() !!}
 </div>

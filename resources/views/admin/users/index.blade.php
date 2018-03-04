@@ -22,12 +22,12 @@
                     <thead class="thead-light">
                     <tr>
                         <th scope="col">id</th>
-                        <th scope="col">name</th>
-                        <th scope="col">email</th>
-                        <th scope="col">phone</th>
+                        <th scope="col">姓名</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">电话</th>
                         <th scope="col">
                             <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#createUser">
-                                Create
+                                创建
                             </button>
                         </th>
                     </tr>
@@ -41,17 +41,17 @@
                             <td>{{ $user->phone or '' }}</td>
                             <td>
                                 <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#viewUser{{ $user->id or 0 }}">
-                                    View
+                                    查看
                                 </button>
                                 @ability('admin', 'edit_user', ['validate_all' => false,])
                                 <button type="button" class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#editUser{{ $user->id or 0 }}">
-                                    Edit
+                                    修改
                                 </button>
                                 @endability
                                 @if($user->name !== 'admin')
                                     @permission('delete_user')
                                     <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#deleteUser{{ $user->id or 0 }}">
-                                        Delete
+                                        删除
                                     </button>
                                     @endpermission
                                 @endif

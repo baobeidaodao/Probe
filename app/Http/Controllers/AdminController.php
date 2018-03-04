@@ -10,6 +10,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\ActionLog;
 use App\Services\StatisticsService;
 use Illuminate\Http\Request;
 
@@ -29,6 +30,7 @@ class AdminController extends Controller
             'end_date' => isset($request->end_date) ? $request->end_date : '',
         ];
         StatisticsService::storageOfDate($update['start_date'], $update['end_date']);
+        ActionLog::log(ActionLog::ACTION_UPDATE_STATISTICS, $update['start_date'] . ' ~ ' . $update['end_date']);
         $data = [];
         $data['update'] = $update;
         $data['active'] = 'admin';

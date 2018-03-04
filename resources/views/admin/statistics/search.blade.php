@@ -20,10 +20,10 @@
     </div>
     @include('common.area', ['for' => 'search', 'area_id' => (isset($search) && isset($search['area_id'])) ? $search['area_id'] : '', 'province_id' => (isset($search) && isset($search['province_id'])) ? $search['province_id'] : '', 'city_id' => (isset($search) && isset($search['city_id'])) ? $search['city_id'] : '', ])
     <div class="col-auto">
-        <label class="sr-only" for="selectOperator">Operator</label>
+        <label class="sr-only" for="selectOperator">运营商</label>
         <div class="form-group mb-2">
             <select name="operator_id" id="selectOperator" class="form-control">
-                <option selected value="">Operator</option>
+                <option selected value="">运营商</option>
                 @foreach($operatorList as $operator)
                     <option value="{{ $operator['id'] or 0 }}" @if(isset($search) && isset($search['operator_id']) && $search['operator_id'] == $operator['id']) selected @endif >{{ $operator['name'] or '' }}</option>
                 @endforeach
@@ -31,24 +31,24 @@
         </div>
     </div>
     <div class="col-auto">
-        <label class="sr-only" for="inputStartDate">StartDate</label>
+        <label class="sr-only" for="inputStartDate">开始时间</label>
         <div class="input-group mb-2">
             <div class="sr-only input-group-prepend">
-                <div class="input-group-text">StartDate</div>
+                <div class="input-group-text">开始时间</div>
             </div>
             @include('common.date_picker', ['id' => 'inputStartDate', 'name' => 'start_date', 'value' => (isset($search) && isset($search["start_date"])) ? $search["start_date"] : '', 'format' => 'yyyy-mm-dd', ])
         </div>
     </div>
     <div class="col-auto">
-        <label class="sr-only" for="inputEndDate">EndDate</label>
+        <label class="sr-only" for="inputEndDate">结束时间</label>
         <div class="input-group mb-2">
             <div class="sr-only input-group-prepend">
-                <div class="input-group-text">EndDate</div>
+                <div class="input-group-text">结束时间</div>
             </div>
             @include('common.date_picker', ['id' => 'inputEndDate', 'name' => 'end_date', 'value' => (isset($search) && isset($search["end_date"])) ? $search["end_date"] : '', 'format' => 'yyyy-mm-dd', ])
         </div>
     </div>
     <div class="col-auto">
-        <button id="searchButton" type="submit" class="btn btn-outline-primary mb-2">Search</button>
+        <button id="searchButton" type="submit" class="btn btn-outline-primary mb-2">搜索</button>
     </div>
 </div>

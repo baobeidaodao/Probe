@@ -19,14 +19,14 @@
     <div class="modal-body">
         <div class="form-group">
             <label for="inputName">名称</label>
-            <input name="name" type="text" class="form-control" id="inputName" placeholder="Enter Name">
+            <input name="name" type="text" class="form-control" id="inputName" placeholder="名称">
         </div>
         <label for="">Area</label>
         @include('common.area', ['for' => 'create', 'area_id' => '', ])
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn btn-primary">保存</button>
     </div>
     {!! Form::close() !!}
 </div>

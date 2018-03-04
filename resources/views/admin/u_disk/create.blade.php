@@ -19,10 +19,10 @@
     <div class="modal-body">
         <div class="form-group">
             <label for="inputUuid">uuid</label>
-            <input name="uuid" type="text" class="form-control" id="inputUuid" placeholder="Enter Uuid">
+            <input name="uuid" type="text" class="form-control" id="inputUuid" placeholder="Uuid">
         </div>
         <div class="form-group">
-            <label for="selectUserId">User</label>
+            <label for="selectUserId">人员</label>
             <select name="user_id" class="form-control" id="selectUserId">
                 <option value="">Choose...</option>
                 @foreach($userList as $user)
@@ -31,7 +31,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="selectOperatorId">Operator</label>
+            <label for="selectOperatorId">运营商</label>
             <select name="operator_id" class="form-control" id="selectOperatorId">
                 <option value="">Choose...</option>
                 @foreach($operatorList as $operator)
@@ -41,8 +41,8 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn btn-primary">保存</button>
     </div>
     {!! Form::close() !!}
 </div>

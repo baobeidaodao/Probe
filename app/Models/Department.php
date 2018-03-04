@@ -9,6 +9,7 @@
 
 namespace App\Models;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Department extends Model
@@ -40,6 +41,10 @@ class Department extends Model
     {
         $db = (new Department)->join('area as city', 'department.area_id', '=', 'city.id')
             ->join('area as province', 'city.parent_id', '=', 'province.id')
+            ->where(function ($query) {
+                $area = Area::areaForUser();
+                $query->whereIn('department.area_id', $area['areaIdList']);
+            })
             ->where(function ($query) use ($search) {
                 if (isset($search) && isset($search['name']) && !empty($search['name'])) {
                     $query->where('department.name', 'like', $search['name']);
@@ -58,5 +63,20 @@ class Department extends Model
         $data['count'] = $count;
         $data['departmentList'] = $departmentList;
         return $data;
+    }
+
+    public static function listDepartmentForUser($user = null)
+    {
+        if (!isset($user)) {
+            $user = Auth::user();
+        }
+        $departmentList = (new Department)
+            ->where(function ($query) use ($user) {
+                $area = Area::areaForUser($user);
+                $query->whereIn('department.area_id', $area['areaIdList']);
+            })
+            ->get()
+            ->toArray();
+        return $departmentList;
     }
 }

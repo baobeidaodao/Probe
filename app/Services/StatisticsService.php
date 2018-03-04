@@ -152,9 +152,11 @@ class StatisticsService
         }
         $date = $probeResult['dt'];
         $probeType = $probeResult['probeType'];
-        if (in_array($probeType, [101, 202,])) {
+        $privateTypeArray = config('probe.probe_type.1');
+        $publicTypeArray = config('probe.probe_type.2');
+        if (in_array($probeType, $privateTypeArray)) {
             $probe_type = 1; // 自有
-        } else if (in_array($probeType, [201,])) {
+        } else if (in_array($probeType, $publicTypeArray)) {
             $probe_type = 2; // 公有
         } else {
             $probe_type = $probeType;

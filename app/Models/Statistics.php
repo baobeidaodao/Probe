@@ -60,6 +60,9 @@ class Statistics extends Model
         sum(statistics.report_count) as report_count,
         statistics.date' . ' ';
         $where = ' ' . 'true' . ' ';
+        $area = Area::areaForUser();
+        $areaIdList = implode(',', $area['areaIdList']);
+        $where .= ' ' . 'and ( province_id in (' . $areaIdList . ') or city_id in (' . $areaIdList . '))';
         if (isset($search) && isset($search['uuid']) && !empty($search['uuid'])) {
             $where .= ' ' . 'and uuid = \'' . $search['uuid'] . '\' ';
         }
@@ -164,6 +167,11 @@ class Statistics extends Model
     {
         $db = (new UDisk)
             ->leftJoin('statistics', 'u_disk.uuid', '=', 'statistics.uuid')
+            ->where(function ($query) {
+                $area = Area::areaForUser();
+                $query->whereIn('statistics.province_id', $area['areaIdList'])
+                    ->orWhereIn('statistics.city_id', $area['areaIdList']);
+            })
             ->where(function ($query) use ($search) {
                 if (isset($search) && isset($search['uuid']) && !empty($search['uuid'])) {
                     $query->where('u_disk.uuid', '=', $search['uuid']);

@@ -27,7 +27,7 @@
                         <th scope="col">描述</th>
                         <th scope="col">
                             <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#createPermission">
-                                Create
+                                创建
                             </button>
                         </th>
                     </tr>
@@ -42,12 +42,12 @@
                             <td>
                                 @permission('edit_permission')
                                 <button type="button" class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#editPermission{{ $perm->id or 0 }}">
-                                    Edit
+                                    修改
                                 </button>
                                 @endpermission
                                 @permission('delete_permission')
                                 <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#deletePermission{{ $perm->id or 0 }}">
-                                    Delete
+                                    删除
                                 </button>
                                 @endpermission
                             </td>

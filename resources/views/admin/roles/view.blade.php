@@ -18,15 +18,15 @@
     <div class="modal-body">
         <div class="form-group">
             <label for="viewInputName{{ $role->id or 0 }}">名称</label>
-            <input name="name" type="text" class="form-control" id="viewInputName{{ $role->id or 0 }}" value="{{ $role->name or '' }}" placeholder="Enter Name" readonly >
+            <input name="name" type="text" class="form-control" id="viewInputName{{ $role->id or 0 }}" value="{{ $role->name or '' }}" placeholder="名称" readonly >
         </div>
         <div class="form-group">
             <label for="viewInputDisplayName{{ $role->id or 0 }}">显示名称</label>
-            <input name="display_name" type="text" class="form-control" id="viewInputDisplayName{{ $role->id or 0 }}" value="{{ $role->display_name or '' }}" placeholder="Display Name" readonly >
+            <input name="display_name" type="text" class="form-control" id="viewInputDisplayName{{ $role->id or 0 }}" value="{{ $role->display_name or '' }}" placeholder="显示名称" readonly >
         </div>
         <div class="form-group">
             <label for="viewInputDescription{{ $role->id or 0 }}">描述</label>
-            <textarea name="description" class="form-control" id="viewInputDescription{{ $role->id or 0 }}" placeholder="Description" readonly >{{ $role->description or '' }}</textarea>
+            <textarea name="description" class="form-control" id="viewInputDescription{{ $role->id or 0 }}" placeholder="描述" readonly >{{ $role->description or '' }}</textarea>
         </div>
         <div class="form-group">
             <label>权限</label>
@@ -41,7 +41,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
     </div>
 </div>
 

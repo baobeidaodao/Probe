@@ -23,9 +23,9 @@
                     <tr>
                         <th scope="col">Id</th>
                         <th scope="col">UUID</th>
-                        <th scope="col">Province</th>
-                        <th scope="col">City</th>
-                        <th scope="col">Operator</th>
+                        <th scope="col">省</th>
+                        <th scope="col">市</th>
+                        <th scope="col">运营商</th>
                         <th scope="col">User Name</th>
                         <th scope="col">User Phone</th>
                         <th scope="col">Report Count</th>

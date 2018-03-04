@@ -18,23 +18,23 @@
     <div class="modal-body">
         <div class="form-group">
             <label for="inputIp">Ip</label>
-            <input type="text" class="form-control" id="inputIp" value="{{ $report['ip'] or '' }}" placeholder="Enter Ip" readonly>
+            <input type="text" class="form-control" id="inputIp" value="{{ $report['ip'] or '' }}" placeholder="Ip" readonly>
         </div>
         <div class="form-group">
-            <label for="inputOperator">Operator</label>
-            <input type="text" class="form-control" id="inputOperator" value="{{ $report['report_operator'] or '' }}" placeholder="Enter Operator" readonly>
+            <label for="inputOperator">运营商</label>
+            <input type="text" class="form-control" id="inputOperator" value="{{ $report['report_operator'] or '' }}" placeholder="运营商" readonly>
         </div>
         <div class="form-group">
-            <label for="inputProvince">Province</label>
-            <input type="text" class="form-control" id="inputProvince" value="{{ $report['report_province'] or '' }}" placeholder="Enter Province" readonly>
+            <label for="inputProvince">省</label>
+            <input type="text" class="form-control" id="inputProvince" value="{{ $report['report_province'] or '' }}" placeholder="省" readonly>
         </div>
         <div class="form-group">
-            <label for="inputProbeType">Probe Type</label>
-            <input type="text" class="form-control" id="inputProbeType" value=" @if($report['probe_type'] == 1) 自有 @else 公有 @endif " placeholder="Enter Probe Type" readonly>
+            <label for="inputProbeType">上报类型</label>
+            <input type="text" class="form-control" id="inputProbeType" value=" @if($report['probe_type'] == 1) 自有 @else 公有 @endif " placeholder="上报类型" readonly>
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
     </div>
 </div>
 

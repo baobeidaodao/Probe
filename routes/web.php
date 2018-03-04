@@ -27,9 +27,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/', 'AdminController@index');
     Route::get('/update-statistics', 'AdminController@updateStatistics');
 
+    /** 用户 */
     Route::post('users/search', 'UsersController@index');
     Route::resource('users', 'UsersController');
 
+    /** 角色 */
     Route::post('roles/search', 'RolesController@index');
     Route::resource('roles', 'RolesController');
 

@@ -44,6 +44,11 @@ class Report extends Model
     public static function listReport($search = [], $page = 1, $size = 10)
     {
         $db = (new Report)->join('statistics', 'report.statistics_id', '=', 'statistics.id')
+            ->where(function ($query) {
+                $area = Area::areaForUser();
+                $query->whereIn('statistics.province_id', $area['areaIdList'])
+                    ->orWhereIn('statistics.city_id', $area['areaIdList']);
+            })
             ->where(function ($query) use ($search) {
                 if (isset($search) && isset($search['uuid']) && !empty($search['uuid'])) {
                     $query->where('statistics.uuid', '=', $search['uuid']);

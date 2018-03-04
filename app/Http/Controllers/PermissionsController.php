@@ -110,7 +110,7 @@ class PermissionsController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:permissions|max:255',
+            'name' => 'required|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -146,21 +146,6 @@ class PermissionsController extends Controller
             return redirect()->back();
         }
         return redirect('admin/permissions');
-    }
-
-    public static function search($page = 1, Request $request){
-        $size = 10;
-        $search = [
-            'name' => isset($request->name) ? $request->name : '',
-        ];
-        $permissionListData = Permission::searchPermission($search, $page, $size);
-        $pagination = AppService::calculatePagination($page, $size, $permissionListData['count']);
-        $data = [];
-        $data['perms'] = $permissionListData['permissionList'];
-        $data['pagination'] = $pagination;
-        $data['search'] = $search;
-        $data['active'] = 'permissions';
-        return view('admin.permissions.index', $data);
     }
 
 }

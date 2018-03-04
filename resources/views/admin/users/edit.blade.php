@@ -18,25 +18,25 @@
     </div>
     <div class="modal-body">
         <div class="form-group">
-            <label for="editInputName{{ $user->id or 0 }}">Name</label>
-            <input name="name" type="text" class="form-control" id="editInputName{{ $user->id or 0 }}" value="{{ $user->name or '' }}" placeholder="Enter Name" @if($user->name === 'admin') readonly @endif>
+            <label for="editInputName{{ $user->id or 0 }}">姓名</label>
+            <input name="name" type="text" class="form-control" id="editInputName{{ $user->id or 0 }}" value="{{ $user->name or '' }}" placeholder="姓名" @if($user->name === 'admin') readonly @endif>
         </div>
         <div class="form-group">
             <label for="editInputEmail{{ $user->id or 0 }}">Email</label>
-            <input name="email" type="email" class="form-control" id="editInputEmail{{ $user->id or 0 }}" value="{{ $user->email or '' }}" placeholder="Enter Email">
+            <input name="email" type="email" class="form-control" id="editInputEmail{{ $user->id or 0 }}" value="{{ $user->email or '' }}" placeholder="Email">
         </div>
         <div class="form-group">
             <label for="editInputPassword{{ $user->id or 0 }}">Password</label>
-            <input name="password" type="password" class="form-control" id="editInputPassword{{ $user->id or 0 }}" value="" placeholder="Enter Password">
+            <input name="password" type="password" class="form-control" id="editInputPassword{{ $user->id or 0 }}" value="" placeholder="密码">
         </div>
         <div class="form-group">
-            <label for="editInputPhone{{ $user->id or 0 }}">Phone</label>
-            <input name="phone" type="text" class="form-control" id="editInputPhone{{ $user->id or 0 }}" value="{{ $user->phone or '' }}" placeholder="Enter Phone">
+            <label for="editInputPhone{{ $user->id or 0 }}">电话</label>
+            <input name="phone" type="text" class="form-control" id="editInputPhone{{ $user->id or 0 }}" value="{{ $user->phone or '' }}" placeholder="电话">
         </div>
         <div class="form-group">
-            <label for="editSelectLevel{{ $user->id or 0 }}">Level</label>
+            <label for="editSelectLevel{{ $user->id or 0 }}">级别</label>
             <select name="level" class="form-control" id="editSelectLevel{{ $user->id or 0 }}">
-                <option value="">Choose...</option>
+                <option value="">选择</option>
                 @foreach($userLevelList as $userLevel)
                     <option value="{{ $userLevel['id'] or 0 }}" @if($userLevel['id'] == $user->level) selected @endif >{{ $userLevel['name'] or '' }}</option>
                 @endforeach
@@ -45,9 +45,11 @@
         <label for="">Area</label>
         @include('common.area', ['for' => 'edit' . $user->id, 'area_id' => $user->area_id, ])
         <div class="form-group">
-            <label for="editSelectDepartment{{ $user->id or 0 }}">Department</label>
-            <select name="department_id" class="form-control" id="editSelectDepartment{{ $user->id or 0 }}">
-                <option value="">Choose...</option>
+            <label for="selectDepartmentedit{{ $user->id or 0 }}">部门</label>
+            <select name="department_id" class="form-control" id="selectDepartmentedit{{ $user->id or 0 }}">
+                @if(count($departmentList)>1)
+                @endif
+                <option value="">选择</option>
                 @foreach($departmentList as $department)
                     <option value="{{ $department['id'] or 0 }}" @if($department['id'] == $user->department_id) selected @endif >{{ $department['name'] or '' }}</option>
                 @endforeach
@@ -64,8 +66,8 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn btn-primary">保存</button>
     </div>
     {!! Form::close() !!}
 </div>

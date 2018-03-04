@@ -36,7 +36,8 @@ class DepartmentController extends Controller
         // $departmentListData = AdminService::listDepartment($page, $size);
         $departmentListData = Department::searchDepartment($search, $page, $size);
         $pagination = AppService::calculatePagination($page, $size, $departmentListData['count']);
-        $areaMap = AdminService::listAreaMap();
+        // $areaMap = AdminService::listAreaMap();
+        $areaMap = AdminService::listAreaMapForUser();
         $cityList = Area::listCity();
         $data = [];
         $data['departmentList'] = $departmentListData['departmentList'];
@@ -67,7 +68,7 @@ class DepartmentController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:permissions|max:255',
+            'name' => 'required|max:255',
             'city_id' => 'required',
         ]);
 
@@ -117,7 +118,7 @@ class DepartmentController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:permissions|max:255',
+            'name' => 'required|max:255',
             'city_id' => 'required',
         ]);
 
@@ -152,27 +153,6 @@ class DepartmentController extends Controller
             return redirect()->back();
         }
         return redirect('admin/department');
-    }
-
-    public static function search($page = 1, Request $request)
-    {
-        $size = 10;
-        $search = [
-            'name' => isset($request->name) ? $request->name : '',
-            'area_id' => (isset($request->city_id) && !empty($request->city_id)) ? $request->city_id : ((isset($request->province_id) && !empty($request->province_id)) ? $request->province_id : 0),
-        ];
-        $departmentListData = Department::searchDepartment($search, $page, $size);
-        $pagination = AppService::calculatePagination($page, $size, $departmentListData['count']);
-        $areaMap = AdminService::listAreaMap();
-        $cityList = Area::listCity();
-        $data = [];
-        $data['departmentList'] = $departmentListData['departmentList'];
-        $data['pagination'] = $pagination;
-        $data['search'] = $search;
-        $data['areaMap'] = $areaMap;
-        $data['cityList'] = $cityList;
-        $data['active'] = 'department';
-        return view('admin.department.index', $data);
     }
 
 }

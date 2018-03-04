@@ -23,13 +23,13 @@
                     <tr>
                         <th scope="col">IP</th>
                         <th scope="col">UUID</th>
-                        <th scope="col">Province</th>
-                        <th scope="col">City</th>
-                        <th scope="col">Operator</th>
-                        <th scope="col">Report Province</th>
-                        <th scope="col">Report Operator</th>
-                        <th scope="col">Report Type</th>
-                        <th scope="col">Date</th>
+                        <th scope="col">省</th>
+                        <th scope="col">市</th>
+                        <th scope="col">运营商</th>
+                        <th scope="col">上报省</th>
+                        <th scope="col">上报运营商</th>
+                        <th scope="col">上报类型</th>
+                        <th scope="col">时间</th>
                     </tr>
                     </thead>
                     <tbody>

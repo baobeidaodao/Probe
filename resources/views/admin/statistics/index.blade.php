@@ -22,16 +22,16 @@
                     <thead class="thead-light">
                     <tr>
                         <th scope="col">UUID</th>
-                        <th scope="col">Province</th>
-                        <th scope="col">City</th>
-                        <th scope="col">Operator</th>
-                        <th scope="col">User</th>
-                        <th scope="col">User Phone</th>
-                        <th scope="col">Report</th>
+                        <th scope="col">省</th>
+                        <th scope="col">市</th>
+                        <th scope="col">运营商</th>
+                        <th scope="col">人员</th>
+                        <th scope="col">电话</th>
+                        <th scope="col">上报数</th>
                         @if($form == 'search')
-                            <th scope="col">Date</th>
+                            <th scope="col">日期</th>
                         @endif
-                        <th scope="col">View</th>
+                        <th scope="col">查看</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -49,7 +49,7 @@
                             @endif
                             <td>
                                 <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#view{{ $statistics['id'] or 0 }}">
-                                    View
+                                    查看
                                 </button>
                                 <div class="modal fade bd-example-modal-lg" id="view{{ $statistics['id'] or 0 }}" tabindex="-1" role="dialog" aria-labelledby="view{{ $statistics['id'] or 0 }}Title" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">

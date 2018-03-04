@@ -19,15 +19,15 @@
     <div class="modal-body">
         <div class="form-group">
             <label for="createInputName">名称</label>
-            <input name="name" type="text" class="form-control" id="createInputName" placeholder="Enter Name">
+            <input name="name" type="text" class="form-control" id="createInputName" placeholder="名称">
         </div>
         <div class="form-group">
             <label for="createInputDisplayName">显示名称</label>
-            <input name="display_name" type="text" class="form-control" id="createInputDisplayName" placeholder="Display Name">
+            <input name="display_name" type="text" class="form-control" id="createInputDisplayName" placeholder="显示名称">
         </div>
         <div class="form-group">
             <label for="createInputDescription">描述</label>
-            <textarea name="description" class="form-control" id="createInputDescription" placeholder="Description"></textarea>
+            <textarea name="description" class="form-control" id="createInputDescription" placeholder="描述"></textarea>
         </div>
         <div class="form-group">
             <label>权限</label>
@@ -42,8 +42,8 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn btn-primary">保存</button>
     </div>
     {!! Form::close() !!}
 </div>

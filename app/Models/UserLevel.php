@@ -9,6 +9,7 @@
 
 namespace App\Models;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class UserLevel extends Model
@@ -24,4 +25,16 @@ class UserLevel extends Model
     const LEVEL_PROVINCIAL_MANAGER = 3;
     const LEVEL_MUNICIPAL_MANAGER = 4;
     const LEVEL_TESTER = 5;
+
+    public static function listLevelForUser($user = null)
+    {
+        if (!isset($user)) {
+            $user = Auth::user();
+        }
+        $level = isset($user->level) ? $user->level : self::LEVEL_ADMIN;
+        $userLevelList = (new UserLevel)->where('id', '>=', $level)
+            ->get()
+            ->toArray();
+        return $userLevelList;
+    }
 }

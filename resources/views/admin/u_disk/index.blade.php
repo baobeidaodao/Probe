@@ -22,12 +22,12 @@
                     <thead class="thead-light">
                     <tr>
                         <th scope="col">id</th>
-                        <th scope="col">uuid</th>
-                        <th scope="col">user_name</th>
-                        <th scope="col">operator_name</th>
+                        <th scope="col">UUID</th>
+                        <th scope="col">人员</th>
+                        <th scope="col">运营商</th>
                         <th scope="col">
                             <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#createUDisk">
-                                Create
+                                创建
                             </button>
                         </th>
                     </tr>
@@ -41,10 +41,10 @@
                             <td>{{ $uDisk['operator_name'] or '' }}</td>
                             <td>
                                 <button type="button" class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#editUDisk{{ $uDisk['id'] or 0 }}">
-                                    Edit
+                                    修改
                                 </button>
                                 <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#deleteUDisk{{ $uDisk['id'] or 0 }}">
-                                    Delete
+                                    删除
                                 </button>
                             </td>
                         </tr>

@@ -28,7 +28,7 @@ class UsersController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public static function index( Request $request)
+    public static function index(Request $request)
     {
         $page = isset($request->page) ? $request->page : 1;
         $size = 10;
@@ -42,9 +42,12 @@ class UsersController extends Controller
         $userListData = User::searchUser($search, $page, $size);
         $pagination = AppService::calculatePagination($page, $size, $userListData['count']);
         $roles = (new Role)->get();
-        $userLevelList = UserLevel::all()->toArray();
-        $departmentList = Department::all()->toArray();
-        $areaMap = AdminService::listAreaMap();
+        //$userLevelList = UserLevel::all()->toArray();
+        $userLevelList = UserLevel::listLevelForUser();
+        //$departmentList = Department::all()->toArray();
+        $departmentList = Department::listDepartmentForUser();
+        // $areaMap = AdminService::listAreaMap();
+        $areaMap = AdminService::listAreaMapForUser();
         $data = [];
         $data['users'] = $userListData['userList'];
         $data['roles'] = $roles;
@@ -134,8 +137,8 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:users|max:255',
-            'email' => 'required|unique:users|max:255',
+            'name' => 'required|max:255',
+            'email' => 'required|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -186,29 +189,4 @@ class UsersController extends Controller
         return redirect('admin/users');
     }
 
-    public static function search($page = 1, Request $request)
-    {
-        $size = 10;
-        $search = [
-            'name' => isset($request->name) ? $request->name : '',
-            'area_id' => (isset($request->city_id) && !empty($request->city_id)) ? $request->city_id : ((isset($request->province_id) && !empty($request->province_id)) ? $request->province_id : 0),
-            'department_id' => isset($request->department_id) ? $request->department_id : 0,
-        ];
-        $userListData = User::searchUser($search, $page, $size);
-        $pagination = AppService::calculatePagination($page, $size, $userListData['count']);
-        $roles = (new Role)->get();
-        $userLevelList = UserLevel::all()->toArray();
-        $departmentList = Department::all()->toArray();
-        $areaMap = AdminService::listAreaMap();
-        $data = [];
-        $data['users'] = $userListData['userList'];
-        $data['roles'] = $roles;
-        $data['search'] = $search;
-        $data['pagination'] = $pagination;
-        $data['userLevelList'] = $userLevelList;
-        $data['departmentList'] = $departmentList;
-        $data['areaMap'] = $areaMap;
-        $data['active'] = 'users';
-        return view('admin.users.index', $data);
-    }
 }

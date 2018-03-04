@@ -127,7 +127,7 @@ class RolesController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:roles|max:255',
+            'name' => 'required|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -164,24 +164,6 @@ class RolesController extends Controller
             return redirect()->back();
         }
         return redirect()->back();
-    }
-
-    public static function search($page = 1, Request $request)
-    {
-        $size = 10;
-        $search = [
-            'name' => isset($request->name) ? $request->name : '',
-        ];
-        $roleListData = Role::searchRole($search, $page, $size);
-        $pagination = AppService::calculatePagination($page, $size, $roleListData['count']);
-        $perms = (new Permission)->get();
-        $data = [];
-        $data['roles'] = $roleListData['roleList'];
-        $data['perms'] = $perms;
-        $data['pagination'] = $pagination;
-        $data['search'] = $search;
-        $data['active'] = 'roles';
-        return view('admin.roles.index', $data);
     }
 
 }

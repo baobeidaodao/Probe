@@ -38,7 +38,8 @@ class IpController extends Controller
         // $ipListData = Ip::listIp($page, $size);
         $ipListData = Ip::searchIp($search, $page, $size);
         $pagination = AppService::calculatePagination($page, $size, $ipListData['count']);
-        $areaMap = AdminService::listAreaMap();
+        // $areaMap = AdminService::listAreaMap();
+        $areaMap = AdminService::listAreaMapForUser();
         $cityList = Area::listCity();
         $provinceList = Area::listProvince();
         $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_1)->get()->toArray();
@@ -129,8 +130,8 @@ class IpController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'start_ip' => 'required|unique:ip|max:255',
-            'end_ip' => 'required|unique:ip|max:255',
+            'start_ip' => 'required|max:255',
+            'end_ip' => 'required|max:255',
             'operator_id' => 'required',
             'province_id' => 'required',
         ]);
@@ -172,29 +173,4 @@ class IpController extends Controller
         return redirect('admin/ip');
     }
 
-    public static function search($page = 1, Request $request)
-    {
-        $size = 10;
-        $search = [
-            'ip' => isset($request->ip) ? $request->ip : '',
-            'operator_id' => isset($request->operator_id) ? $request->operator_id : null,
-            'area_id' => isset($request->province_id) ? $request->province_id : null,
-        ];
-        $ipListData = Ip::searchIp($search, $page, $size);
-        $pagination = AppService::calculatePagination($page, $size, $ipListData['count']);
-        $areaMap = AdminService::listAreaMap();
-        $cityList = Area::listCity();
-        $provinceList = Area::listProvince();
-        $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_1)->get()->toArray();
-        $data = [];
-        $data['ipList'] = $ipListData['ipList'];
-        $data['search'] = $search;
-        $data['pagination'] = $pagination;
-        $data['areaMap'] = $areaMap;
-        $data['cityList'] = $cityList;
-        $data['provinceList'] = $provinceList;
-        $data['operatorList'] = $operatorList;
-        $data['active'] = 'ip';
-        return view('admin.ip.index', $data);
-    }
 }
