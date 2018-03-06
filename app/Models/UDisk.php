@@ -42,8 +42,12 @@ class UDisk extends Model
             ->leftJoin('users', 'u_disk.user_id', '=', 'users.id')
             ->leftJoin('operator', 'u_disk.operator_id', '=', 'operator.id')
             ->where(function ($query) {
-                $area = Area::areaForUser();
-                $query->whereIn('users.area_id', $area['areaIdList']);
+                //$area = Area::areaForUser();
+                //$query->whereIn('users.area_id', $area['areaIdList']);
+            })
+            ->where(function ($query) {
+                $userIdList = User::listUserIdForAuth();
+                $query->whereIn('u_disk.user_id', $userIdList);
             })
             ->where(function ($query) use ($search) {
                 if (isset($search) && isset($search['uuid']) && !empty($search['uuid'])) {

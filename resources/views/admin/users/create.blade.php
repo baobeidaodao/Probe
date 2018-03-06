@@ -56,7 +56,7 @@
             <label>角色</label>
             @foreach($roles as $role)
                 <div class="form-check">
-                    <input name="role[]" class="form-check-input" type="checkbox" value="{{ $role->id or '' }}" id="createCheckbox{{ $loop->iteration }}">
+                    <input name="role[]" class="form-check-input" type="checkbox" value="{{ $role->id or '' }}" id="createCheckbox{{ $loop->iteration }}" @if(Auth::user()->level > $role->id) disabled @endif >
                     <label class="form-check-label" for="createCheckbox{{ $loop->iteration }}">
                         {{ $role->display_name or $role->name }}
                     </label>

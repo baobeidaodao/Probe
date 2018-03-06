@@ -112,8 +112,12 @@ class ActionLog extends Model
         $db = (new ActionLog)
             ->leftJoin('users', 'action_log.user_id', '=', 'users.id')
             ->where(function ($query) {
-                $area = Area::areaForUser();
-                $query->whereIn('users.area_id', $area['areaIdList']);
+                //$area = Area::areaForUser();
+                //$query->whereIn('users.area_id', $area['areaIdList']);
+            })
+            ->where(function ($query) {
+                $userIdList = User::listUserIdForAuth();
+                $query->whereIn('action_log.user_id', $userIdList);
             })
             ->where(function ($query) use ($search) {
                 if (isset($search) && isset($search['user_name']) && !empty($search['user_name'])) {

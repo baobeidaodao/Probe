@@ -57,7 +57,7 @@ if (count($areaMap) == 1) {
     var areaId = '<?php echo $area_id; ?>';
     var areaLevel = '<?php echo $area_level; ?>';
 </script>
-<div class="form-row align-items-center">
+<div class="form-row align-items-center {{ $class or '' }}">
     <div class="col-auto">
         <label class="sr-only" for="selectProvince{{ $for or '' }}">省</label>
         <div class="form-group mb-2">

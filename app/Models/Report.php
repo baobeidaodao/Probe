@@ -45,9 +45,13 @@ class Report extends Model
     {
         $db = (new Report)->join('statistics', 'report.statistics_id', '=', 'statistics.id')
             ->where(function ($query) {
-                $area = Area::areaForUser();
-                $query->whereIn('statistics.province_id', $area['areaIdList'])
-                    ->orWhereIn('statistics.city_id', $area['areaIdList']);
+                //$area = Area::areaForUser();
+                //$query->whereIn('statistics.province_id', $area['areaIdList'])
+                //    ->orWhereIn('statistics.city_id', $area['areaIdList']);
+            })
+            ->where(function ($query) {
+                $userIdList = User::listUserIdForAuth();
+                $query->whereIn('statistics.user_id', $userIdList);
             })
             ->where(function ($query) use ($search) {
                 if (isset($search) && isset($search['uuid']) && !empty($search['uuid'])) {

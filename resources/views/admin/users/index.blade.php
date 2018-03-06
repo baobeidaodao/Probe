@@ -74,7 +74,7 @@
             </div>
         </div>
         @foreach($users as $user)
-            <div class="modal fade" id="viewUser{{ $user->id or 0 }}" tabindex="-1" role="dialog" aria-labelledby="viewUser{{ $user->id or 0 }}Title" aria-hidden="true">
+            <div class="modal fade bd-example-modal-lg" id="viewUser{{ $user->id or 0 }}" tabindex="-1" role="dialog" aria-labelledby="viewUser{{ $user->id or 0 }}Title" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     @include('admin.users.view')
                 </div>

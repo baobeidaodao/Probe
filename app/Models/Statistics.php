@@ -60,9 +60,12 @@ class Statistics extends Model
         sum(statistics.report_count) as report_count,
         statistics.date' . ' ';
         $where = ' ' . 'true' . ' ';
-        $area = Area::areaForUser();
-        $areaIdList = implode(',', $area['areaIdList']);
-        $where .= ' ' . 'and ( province_id in (' . $areaIdList . ') or city_id in (' . $areaIdList . '))';
+        //$area = Area::areaForUser();
+        //$areaIdList = implode(',', $area['areaIdList']);
+        //$where .= ' ' . 'and ( province_id in (' . $areaIdList . ') or city_id in (' . $areaIdList . '))';
+        $userIdList = User::listUserIdForAuth();
+        $userIdList = implode(',', $userIdList);
+        $where .= ' ' . 'and user_id in (' . $userIdList . ')';
         if (isset($search) && isset($search['uuid']) && !empty($search['uuid'])) {
             $where .= ' ' . 'and uuid = \'' . $search['uuid'] . '\' ';
         }
