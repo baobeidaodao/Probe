@@ -31,7 +31,8 @@ class UDiskController extends Controller
         // $uDiskListData = UDiskService::listUDisk($page, $size);
         $uDiskListData = UDisk::searchUDisk($search, $page, $size);
         $pagination = AppService::calculatePagination($page, $size, $uDiskListData['count']);
-        $userList = User::all()->toArray();
+        // $userList = User::all()->toArray();
+        $userList = User::listUserForAuth();
         $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_2)->get()->toArray();
         $data = [];
         $data['uDiskList'] = $uDiskListData['uDiskList'];

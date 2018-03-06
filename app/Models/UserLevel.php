@@ -32,7 +32,7 @@ class UserLevel extends Model
             $user = Auth::user();
         }
         $level = isset($user->level) ? $user->level : self::LEVEL_ADMIN;
-        $userLevelList = (new UserLevel)->where('id', '>=', $level)
+        $userLevelList = (new UserLevel)->where('id', '>', $level)
             ->get()
             ->toArray();
         return $userLevelList;

@@ -42,8 +42,8 @@
         <label for="">Area</label>
         @include('common.area', ['for' => 'create', 'area_id' => '', ])
         <div class="form-group">
-            <label for="createSelectDepartment">部门</label>
-            <select name="department_id" class="form-control" id="createSelectDepartment">
+            <label for="selectDepartmentcreate">部门</label>
+            <select name="department_id" class="form-control" id="selectDepartmentcreate">
                 @if(count($departmentList)>1)
                 @endif
                 <option value="">选择</option>

@@ -40,20 +40,24 @@
                             <td>{{ $user->email or '' }}</td>
                             <td>{{ $user->phone or '' }}</td>
                             <td>
-                                <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#viewUser{{ $user->id or 0 }}">
-                                    查看
-                                </button>
-                                @ability('admin', 'edit_user', ['validate_all' => false,])
-                                <button type="button" class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#editUser{{ $user->id or 0 }}">
-                                    修改
-                                </button>
-                                @endability
-                                @if($user->name !== 'admin')
-                                    @permission('delete_user')
-                                    <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#deleteUser{{ $user->id or 0 }}">
-                                        删除
+                                @if(Auth::getUser()->level < $user->level || Auth::id() == $user->id)
+                                    <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#viewUser{{ $user->id or 0 }}">
+                                        查看
                                     </button>
-                                    @endpermission
+                                    @ability('admin', 'edit_user', ['validate_all' => false,])
+                                    @if(Auth::getUser()->level < $user->level)
+                                        <button type="button" class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#editUser{{ $user->id or 0 }}">
+                                            修改
+                                        </button>
+                                    @endif
+                                    @endability
+                                    @if($user->name !== 'admin' && Auth::getUser()->level < $user->level)
+                                        @permission('delete_user')
+                                        <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#deleteUser{{ $user->id or 0 }}">
+                                            删除
+                                        </button>
+                                        @endpermission
+                                    @endif
                                 @endif
                             </td>
                         </tr>

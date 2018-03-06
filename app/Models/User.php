@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -33,7 +34,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'phone', 'level', 'department_id', 'area_id',
+        'name', 'email', 'password', 'phone', 'level', 'department_id', 'area_id', 'province_id', 'city_id',
     ];
 
     /**
@@ -78,17 +79,33 @@ class User extends Authenticatable
 
     public static function searchUser($search = [], $page, $size)
     {
+        $user = Auth::user();
         $db = User::with('roles.perms')
             ->where(function ($query) {
-                $area = Area::areaForUser();
-                $query->whereIn('users.area_id', $area['areaIdList']);
+                //$area = Area::areaForUser();dd($area);
+                //$query->whereIn('users.area_id', $area['areaIdList']);
             })
-            ->where(function ($query) use ($search) {
+            ->where(function ($query) {
+                $query->where('users.level', '>', Auth::user()->level);
+                $query->orWhere('users.id', '=', Auth::id());
+            })
+            ->where(function ($query) use ($search, $user) {
                 if (isset($search) && isset($search['name']) && !empty($search['name'])) {
                     $query->where('users.name', 'like', $search['name']);
                 }
                 if (isset($search) && isset($search['area_id']) && !empty($search['area_id'])) {
                     $query->where('users.area_id', '=', $search['area_id']);
+                }
+                if (isset($user->level) && $user->level > UserLevel::LEVEL_GROUP_MANAGER) {
+                    if ($user->level == UserLevel::LEVEL_PROVINCIAL_MANAGER) {
+                        $query->where('users.level', '>', $user->level);
+                        $query->where('users.province_id', '=', $user->province_id);
+                    }
+                    if ($user->level == UserLevel::LEVEL_MUNICIPAL_MANAGER) {
+                        $query->where('users.level', '>', $user->level);
+                        $query->where('users.city_id', '=', $user->city_id);
+                    }
+                    $query->orWhere('users.id', '=', Auth::id());
                 }
                 if (isset($search) && isset($search['department_id']) && !empty($search['department_id'])) {
                     $query->where('users.department_id', '=', $search['department_id']);
@@ -103,4 +120,35 @@ class User extends Authenticatable
         return $data;
     }
 
+    public static function listUserForAuth()
+    {
+        $user = Auth::user();
+        $userList = (new User)
+            ->where(function ($query) use ($user) {
+                if (isset($user->level) && $user->level > UserLevel::LEVEL_GROUP_MANAGER) {
+                    if ($user->level == UserLevel::LEVEL_PROVINCIAL_MANAGER) {
+                        $query->where('users.level', '>', $user->level);
+                        $query->where('users.province_id', '=', $user->province_id);
+                    }
+                    if ($user->level == UserLevel::LEVEL_MUNICIPAL_MANAGER) {
+                        $query->where('users.level', '>', $user->level);
+                        $query->where('users.city_id', '=', $user->city_id);
+                    }
+                    $query->orWhere('users.id', '=', Auth::id());
+                }
+            })
+            ->get()
+            ->toArray();
+        return $userList;
+    }
+
+    public static function listUserIdForAuth()
+    {
+        $userIdList = [];
+        $userList = self::listUserForAuth();
+        foreach ($userList as $user) {
+            $userIdList[] = $user['id'];
+        }
+        return $userIdList;
+    }
 }

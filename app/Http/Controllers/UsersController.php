@@ -35,6 +35,8 @@ class UsersController extends Controller
         $search = [
             'name' => isset($request->name) ? $request->name : '',
             'area_id' => (isset($request->city_id) && !empty($request->city_id)) ? $request->city_id : ((isset($request->province_id) && !empty($request->province_id)) ? $request->province_id : 0),
+            'province_id' => (isset($request->province_id) && !empty($request->province_id)) ? $request->province_id : 0,
+            'city_id' => (isset($request->city_id) && !empty($request->city_id)) ? $request->city_id : 0,
             'department_id' => isset($request->department_id) ? $request->department_id : 0,
         ];
         // $users = User::with('roles.perms')->get();
@@ -81,6 +83,9 @@ class UsersController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:users|max:255',
             'email' => 'required|unique:users|max:255',
+            'level' => 'required',
+            'province_id' => 'required',
+            'city_id' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -96,6 +101,8 @@ class UsersController extends Controller
             'level' => $request->level,
             'password' => bcrypt($request->password),
             'area_id' => (isset($request->city_id) && !empty($request->city_id)) ? $request->city_id : ((isset($request->province_id) && !empty($request->province_id)) ? $request->province_id : 0),
+            'province_id' => (isset($request->province_id) && !empty($request->province_id)) ? $request->province_id : 0,
+            'city_id' => (isset($request->city_id) && !empty($request->city_id)) ? $request->city_id : 0,
             'department_id' => isset($request->department_id) ? $request->department_id : 0,
         ]);
         if ($request->role) {
@@ -139,6 +146,9 @@ class UsersController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
             'email' => 'required|max:255',
+            'level' => 'required',
+            'province_id' => 'required',
+            'city_id' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -155,6 +165,8 @@ class UsersController extends Controller
             'level' => $request->level,
             'password' => (isset($request->password) && !empty($request->password)) ? bcrypt($request->password) : $user->password,
             'area_id' => (isset($request->city_id) && !empty($request->city_id)) ? $request->city_id : ((isset($request->province_id) && !empty($request->province_id)) ? $request->province_id : 0),
+            'province_id' => (isset($request->province_id) && !empty($request->province_id)) ? $request->province_id : 0,
+            'city_id' => (isset($request->city_id) && !empty($request->city_id)) ? $request->city_id : 0,
             'department_id' => isset($request->department_id) ? $request->department_id : 0,
         ])->save();
         if ($roleArray = $request->role) {

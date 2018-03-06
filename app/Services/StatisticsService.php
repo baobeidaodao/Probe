@@ -197,7 +197,7 @@ class StatisticsService
                     $query->where('statistics.province_id', '=', $search['province_id']);
                 }
                 if (isset($search) && isset($search['city_id']) && !empty($search['city_id'])) {
-                    $query->where('statistics.city_id', '=', $search['city_id']);
+                    //$query->where('statistics.city_id', '=', $search['city_id']);
                 }
                 if (isset($search) && isset($search['operator_id']) && !empty($search['operator_id'])) {
                     $query->where('statistics.operator_id', '=', $search['operator_id']);

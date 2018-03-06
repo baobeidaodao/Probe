@@ -8,7 +8,8 @@
  */
 
 $show = isset($show) ? $show : 3;
-
+$page = $page > 0 ? $page : 1;
+$count = $count > 0 ? $count : 1;
 ?>
 
 <nav aria-label="Page navigation example">
