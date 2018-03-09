@@ -27,9 +27,11 @@
                         <th scope="col">运营商</th>
                         <th scope="col">省</th>
                         <th scope="col">
+                            @permission('create_ip')
                             <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#create">
                                 创建
                             </button>
+                            @endpermission
                         </th>
                     </tr>
                     </thead>
@@ -42,12 +44,16 @@
                             <td>{{ $ip['operator_name'] or '' }}</td>
                             <td>{{ $ip['area_name'] or '' }}</td>
                             <td>
+                                @permission('edit_ip')
                                 <button type="button" class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#edit{{ $ip['id'] or 0 }}">
                                     修改
                                 </button>
+                                @permission('delete_ip')
+                                @endpermission
                                 <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#delete{{ $ip['id'] or 0 }}">
                                     删除
                                 </button>
+                                @endpermission
                             </td>
                         </tr>
                     @endforeach

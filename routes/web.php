@@ -11,6 +11,15 @@
 |
 */
 
+/*
+ * 监听 sql
+ **/
+Event::listen('illuminate.query', function ($sql, $param) {
+    $sql = str_replace_array("\?", $param, $sql);
+    echo $sql . "<br>";
+});
+
+
 Route::get('/', function () {
     return view('welcome');
 });

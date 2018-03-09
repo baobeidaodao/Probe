@@ -50,7 +50,7 @@
                                     修改
                                 </button>
                                 @endability
-                                @if($role->name !== 'admin')
+                                @if($role->name !== 'admin' && false)
                                     @permission('delete_role')
                                     <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#delete{{ $role->id or 0 }}">
                                         删除

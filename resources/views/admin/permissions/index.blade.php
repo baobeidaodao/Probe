@@ -45,11 +45,13 @@
                                     修改
                                 </button>
                                 @endpermission
-                                @permission('delete_permission')
-                                <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#deletePermission{{ $perm->id or 0 }}">
-                                    删除
-                                </button>
-                                @endpermission
+                                @if(false)
+                                    @permission('delete_permission')
+                                    <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#deletePermission{{ $perm->id or 0 }}">
+                                        删除
+                                    </button>
+                                    @endpermission
+                                @endif
                             </td>
                         </tr>
                     @endforeach

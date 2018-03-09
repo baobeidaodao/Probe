@@ -11,6 +11,8 @@ namespace App\Http\Controllers;
 
 
 use App\Models\ActionLog;
+use App\Models\Permission;
+use App\Models\User;
 use App\Models\UserLevel;
 use App\Services\StatisticsService;
 use Auth;
@@ -21,7 +23,8 @@ class AdminController extends Controller
     public static function index()
     {
         $user = Auth::user();
-        if (isset($user) && isset($user->level) && $user->level == UserLevel::LEVEL_TESTER) {
+        $permission = Permission::userHasPermission($user->id, 'login');
+        if (!$permission) {
             abort(403);
         }
         $data = [];
