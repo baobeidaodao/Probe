@@ -11,9 +11,11 @@ namespace App\Http\Controllers;
 
 
 use App\Models\ActionLog;
+use App\Models\Operator;
 use App\Models\Permission;
 use App\Models\User;
 use App\Models\UserLevel;
+use App\Services\AdminService;
 use App\Services\StatisticsService;
 use Auth;
 use Illuminate\Http\Request;
@@ -27,8 +29,12 @@ class AdminController extends Controller
         if (!$permission) {
             abort(403);
         }
+        $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_2)->get()->toArray();
+        $areaMap = AdminService::listAreaMapForUser();
         $data = [];
         $data['active'] = 'admin';
+        $data['areaMap'] = $areaMap;
+        $data['operatorList'] = $operatorList;
         return view('admin.index', $data);
     }
 

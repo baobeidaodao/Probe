@@ -15,6 +15,7 @@ use App\Models\Statistics;
 use App\Models\UDisk;
 use App\Models\User;
 use App\Services\AdminService;
+use App\Services\ReportService;
 use App\Services\StatisticsService;
 use App\Services\UserService;
 
@@ -42,7 +43,8 @@ class TestController extends Controller
         //$data = Statistics::countReportForArea(440000);
         //$data = StatisticsService::summaryStatisticsForGroup();
         //$data = Statistics::listStatisticsForUserList();
-        $data = StatisticsService::summaryStatisticsForCity();
+        //$data = StatisticsService::summaryStatisticsForCity();
+        $data = ReportService::summaryReportForProvinceList();
         dd($data);
         return view('test');
     }

@@ -48,7 +48,12 @@
         @endif
         @endpermission
         @permission('view_report')
-        <a href="{{ url('admin/report') }}" class="list-group-item list-group-item-action list-group-item-dark text-center @if(isset($active) && $active === 'report') active @endif ">数据查询</a>
+        @if(isset(Auth::user()->level) && Auth::user()->level <= \App\Models\UserLevel::LEVEL_GROUP_MANAGER)
+            <a href="{{ url('admin/report/group') }}" class="list-group-item list-group-item-action list-group-item-dark text-center @if(isset($active) && $active === 'report') active @endif ">数据查询</a>
+        @elseif(isset(Auth::user()->level) && Auth::user()->level == \App\Models\UserLevel::LEVEL_PROVINCIAL_MANAGER)
+            <a href="{{ url('admin/report/province') }}" class="list-group-item list-group-item-action list-group-item-dark text-center @if(isset($active) && $active === 'report') active @endif ">数据查询</a>
+        @else
+        @endif
         @endpermission
     </div>
 </nav>

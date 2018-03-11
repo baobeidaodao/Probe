@@ -38,6 +38,15 @@
                             @include('admin.update_statistics')
                         </div>
                     </div>
+                    <br>
+                    <div class="card">
+                        <div class="card-header">
+                            数据报表配置
+                        </div>
+                        <div class="card-body">
+                            @include('admin.report_config')
+                        </div>
+                    </div>
                     @endrole
                 @show
             </main>

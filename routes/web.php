@@ -73,6 +73,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::any('statistics/search', 'StatisticsController@index');
 
     /** 数据查询 */
+    Route::any('report/group', 'ReportController@group');
+    Route::any('report/province', 'ReportController@province');
     Route::resource('report', 'ReportController');
     Route::any('report/search', 'ReportController@index');
 

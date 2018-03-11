@@ -10,12 +10,13 @@
 
 <div class="form-row align-items-center">
     <div class="col-auto">
-        <label class="sr-only" for="inputUuid">UUID</label>
-        <div class="input-group mb-2">
-            <div class="input-group-prepend sr-only">
-                <div class="input-group-text">UUID</div>
-            </div>
-            <input name="uuid" type="text" class="form-control" id="inputUuid" placeholder="uuid" @if(isset($search) && isset($search['uuid'])) value="{{ $search['uuid'] or '' }}" @endif >
+        <label class="sr-only" for="selectReportType">探针方式</label>
+        <div class="form-group mb-2">
+            <select name="probe_type" id="selectReportType" class="form-control">
+                <option value="">探针方式</option>
+                <option value="1" @if(isset($search) && isset($search['probe_type']) && $search['probe_type'] == 1) selected @endif >自有</option>
+                <option value="2" @if(isset($search) && isset($search['probe_type']) && $search['probe_type'] == 2) selected @endif >公有</option>
+            </select>
         </div>
     </div>
     <div class="col-auto">
@@ -27,7 +28,29 @@
             <input name="ip" type="text" class="form-control" id="inputIp" placeholder="ip" @if(isset($search) && isset($search['ip'])) value="{{ $search['ip'] or '' }}" @endif >
         </div>
     </div>
-    @include('common.area', ['for' => 'search', 'area_id' => (isset($search) && isset($search['area_id'])) ? $search['area_id'] : '', 'province_id' => (isset($search) && isset($search['province_id'])) ? $search['province_id'] : '', 'city_id' => (isset($search) && isset($search['city_id'])) ? $search['city_id'] : '', ])
+    <div class="col-auto">
+        <label class="sr-only" for="selectReportProvince">IP归属省</label>
+        <div class="form-group mb-2">
+            <select name="report_province_id" id="selectReportProvince" class="form-control">
+                <option value="">IP归属省</option>
+                @foreach($provinceList as $province)
+                    <option value="{{ $province['id'] or 0 }}" @if(isset($search) && isset($search['report_province_id']) && $search['report_province_id'] == $province['id']) selected @endif >{{ $province['name'] or '' }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="col-auto">
+        <label class="sr-only" for="selectReportOperator">IP运营商</label>
+        <div class="form-group mb-2">
+            <select name="report_operator_id" id="selectReportOperator" class="form-control">
+                <option selected value="">IP运营商</option>
+                @foreach($reportOperatorList as $reportOperator)
+                    <option value="{{ $reportOperator['id'] or 0 }}" @if(isset($search) && isset($search['report_operator_id']) && $search['report_operator_id'] == $reportOperator['id']) selected @endif >{{ $reportOperator['name'] or '' }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    @include('common.area', ['area_id' => (isset($search) && isset($search['area_id'])) ? $search['area_id'] : '', 'province_id' => (isset($search) && isset($search['province_id'])) ? $search['province_id'] : '', 'city_id' => (isset($search) && isset($search['city_id'])) ? $search['city_id'] : '', ])
     <div class="col-auto">
         <label class="sr-only" for="selectOperator">运营商</label>
         <div class="form-group mb-2">
