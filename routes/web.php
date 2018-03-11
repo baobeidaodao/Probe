@@ -66,6 +66,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
     /** 统计信息 */
     Route::any('statistics/summary', 'StatisticsController@summary');
+    Route::any('statistics/group', 'StatisticsController@group');
+    Route::any('statistics/province', 'StatisticsController@province');
+    Route::any('statistics/city', 'StatisticsController@city');
     Route::resource('statistics', 'StatisticsController');
     Route::any('statistics/search', 'StatisticsController@index');
 

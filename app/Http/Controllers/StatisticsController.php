@@ -9,11 +9,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
 use App\Models\Operator;
 use App\Models\Statistics;
+use App\Models\UserLevel;
 use App\Services\AdminService;
 use App\Services\AppService;
 use App\Services\StatisticsService;
+use Auth;
 use Illuminate\Http\Request;
 
 class StatisticsController extends Controller
@@ -26,6 +29,9 @@ class StatisticsController extends Controller
      */
     public static function index(Request $request)
     {
+        if (Auth::user()->level <= UserLevel::LEVEL_GROUP_MANAGER) {
+            return redirect('admin/statistics/group');
+        }
         $page = isset($request->page) ? $request->page : 1;
         $size = 10;
         $search = [
@@ -87,6 +93,119 @@ class StatisticsController extends Controller
         $data['form'] = 'summary';
         $data['active'] = 'statistics';
         return view('admin.statistics.index', $data);
+    }
+
+    public static function group(Request $request)
+    {
+        $startDate = isset($request->start_date) ? $request->start_date . ' 00:00:00' : date('Y-m-d 00:00:00', strtotime('-30 day'));
+        $endDate = isset($request->end_date) ? $request->end_date . ' 23.59.59' : date('Y-m-d 23.59.59', strtotime('-1 day'));
+        $search = [
+            'province_id' => isset($request->province_id) ? $request->province_id : 0,
+            'city_id' => isset($request->city_id) ? $request->city_id : 0,
+            'operator_id' => isset($request->operator_id) ? $request->operator_id : 0,
+            'start_date' => $startDate,
+            'end_date' => $endDate,
+        ];
+        // $statisticsListData = Statistics::listStatistics($search, $page, $size);
+        $statisticsData = StatisticsService::summaryStatisticsForGroup($search);
+        $search['start_date'] = date('Y-m-d', strtotime($startDate));
+        $search['end_date'] = date('Y-m-d', strtotime($endDate));
+        //$areaMap = AdminService::listAreaMap();
+        $areaMap = AdminService::listAreaMapForUser();
+        $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_2)->get()->toArray();
+        $tips = StatisticsService::statisticsTips($search);
+        $data = [];
+        $data['statisticsList'] = $statisticsData['statisticsList'];
+        $data['summary'] = $statisticsData['summary'];
+        $data['operatorList'] = $operatorList;
+        $data['areaMap'] = $areaMap;
+        $data['search'] = $search;
+        $data['tips'] = $tips;
+        $data['form'] = 'search';
+        $data['active'] = 'statistics';
+        return view('admin.statistics.group', $data);
+    }
+
+    public static function province(Request $request)
+    {
+        if (Auth::user()->level == UserLevel::LEVEL_PROVINCIAL_MANAGER) {
+            $provinceId = Auth::user()->province_id;
+        } else {
+            $provinceId = 0;
+        }
+        $startDate = isset($request->start_date) ? $request->start_date . ' 00:00:00' : date('Y-m-d 00:00:00', strtotime('-30 day'));
+        $endDate = isset($request->end_date) ? $request->end_date . ' 23.59.59' : date('Y-m-d 23.59.59', strtotime('-1 day'));
+        $search = [
+            'province_id' => isset($request->province_id) ? $request->province_id : $provinceId,
+            'city_id' => isset($request->city_id) ? $request->city_id : 0,
+            'operator_id' => isset($request->operator_id) ? $request->operator_id : 0,
+            'start_date' => $startDate,
+            'end_date' => $endDate,
+        ];
+        // $statisticsListData = Statistics::listStatistics($search, $page, $size);
+        $statisticsData = StatisticsService::summaryStatisticsForProvince($search);
+        $search['start_date'] = date('Y-m-d', strtotime($startDate));
+        $search['end_date'] = date('Y-m-d', strtotime($endDate));
+        //$areaMap = AdminService::listAreaMap();
+        $areaMap = AdminService::listAreaMapForUser();
+        $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_2)->get()->toArray();
+        $tips = StatisticsService::statisticsTips($search);
+        $data = [];
+        $data['statisticsList'] = $statisticsData['statisticsList'];
+        $data['summary'] = $statisticsData['summary'];
+        $data['operatorList'] = $operatorList;
+        $data['areaMap'] = $areaMap;
+        $data['search'] = $search;
+        $data['tips'] = $tips;
+        $data['form'] = 'search';
+        $data['active'] = 'statistics';
+        return view('admin.statistics.province', $data);
+    }
+
+    public static function city(Request $request)
+    {
+        if (Auth::user()->level == UserLevel::LEVEL_PROVINCIAL_MANAGER) {
+            $provinceId = Auth::user()->province_id;
+        } else {
+            $provinceId = 0;
+        }
+        if (Auth::user()->level == UserLevel::LEVEL_MUNICIPAL_MANAGER) {
+            $cityId = Auth::user()->city_id;
+        } else {
+            $cityId = 0;
+        }
+        $startDate = isset($request->start_date) ? $request->start_date . ' 00:00:00' : date('Y-m-d 00:00:00', strtotime('-30 day'));
+        $endDate = isset($request->end_date) ? $request->end_date . ' 23.59.59' : date('Y-m-d 23.59.59', strtotime('-1 day'));
+        $search = [
+            'province_id' => isset($request->province_id) ? $request->province_id : $provinceId,
+            'city_id' => isset($request->city_id) ? $request->city_id : $cityId,
+            'operator_id' => isset($request->operator_id) ? $request->operator_id : 0,
+            'start_date' => $startDate,
+            'end_date' => $endDate,
+        ];
+        // $statisticsListData = Statistics::listStatistics($search, $page, $size);
+        $statisticsData = StatisticsService::summaryStatisticsForCity($search);//dd($statisticsData);
+        $search['start_date'] = date('Y-m-d', strtotime($startDate));
+        $search['end_date'] = date('Y-m-d', strtotime($endDate));
+        //$areaMap = AdminService::listAreaMap();
+        $areaMap = AdminService::listAreaMapForUser();
+        $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_2)->get()->toArray();
+        $tips = StatisticsService::statisticsTips($search);
+        $data = [];
+        $data['statisticsList'] = $statisticsData['statisticsList'];
+        $data['summary'] = $statisticsData['summary'];
+        $data['operatorList'] = $operatorList;
+        $data['areaMap'] = $areaMap;
+        $data['search'] = $search;
+        $data['tips'] = $tips;
+        $data['form'] = 'search';
+        $data['active'] = 'statistics';
+        return view('admin.statistics.city', $data);
+    }
+
+    public static function user(Request $request)
+    {
+        dd('u');
     }
 
     /**

@@ -10,11 +10,13 @@
 namespace App\Services;
 
 
+use App\Models\Area;
 use App\Models\Ip;
 use App\Models\ProbeResultVerified;
 use App\Models\Report;
 use App\Models\Statistics;
 use App\Models\UDisk;
+use App\Models\User;
 
 class StatisticsService
 {
@@ -234,4 +236,131 @@ class StatisticsService
         return $tips;
     }
 
+    public static function summaryStatisticsForGroup($search = [])
+    {
+        $statisticsData = [];
+        $statisticsList = [];
+        $provinceList = Area::listProvince();
+        $summary = [];
+        foreach ($provinceList as $province) {
+            $provinceId = $province['id'];
+            $statistics = self::listStatisticsForProvince($provinceId, $search);
+            $statistics['provinceName'] = $province['name'];
+            $statisticsList[] = $statistics;
+            $summary['installUDiskCount'] = (isset($summary['installUDiskCount']) ? $summary['installUDiskCount'] : 0) + $statistics['installUDiskCount'];
+            $summary['reportUDiskCount'] = (isset($summary['reportUDiskCount']) ? $summary['reportUDiskCount'] : 0) + $statistics['reportUDiskCount'];
+            $summary['reportCount'] = (isset($summary['reportCount']) ? $summary['reportCount'] : 0) + $statistics['reportCount'];
+        }
+        $statisticsData['statisticsList'] = $statisticsList;
+        $statisticsData['summary'] = $summary;
+        return $statisticsData;
+    }
+
+    public static function listStatisticsForProvince($provinceId, $search = [])
+    {
+        $installUDiskCount = UDisk::countInstallUDiskForArea($provinceId, Area::LEVEL_PROVINCE, $search);
+        $reportUDiskCount = Statistics::countReportUDiskForArea($provinceId, Area::LEVEL_PROVINCE, $search);
+        $reportCount = Statistics::countReportForArea($provinceId, Area::LEVEL_PROVINCE, $search);
+        $statistics = [];
+        $statistics['provinceId'] = $provinceId;
+        $statistics['installUDiskCount'] = $installUDiskCount;
+        $statistics['reportUDiskCount'] = $reportUDiskCount;
+        $statistics['reportCount'] = $reportCount;
+        return $statistics;
+    }
+
+    public static function summaryStatisticsForProvince($search = [])
+    {
+        $statisticsData = [];
+        $statisticsList = [];
+        $provinceId = $search['province_id'];
+        $cityList = Area::listCityOfProvince($provinceId);
+        $summary = [];
+        foreach ($cityList as $city) {
+            $cityId = $city['id'];
+            $statistics = self::listStatisticsForCity($cityId, $search);
+            $statistics['cityName'] = $city['name'];
+            $statisticsList[] = $statistics;
+            $summary['installUDiskCount'] = (isset($summary['installUDiskCount']) ? $summary['installUDiskCount'] : 0) + $statistics['installUDiskCount'];
+            $summary['reportUDiskCount'] = (isset($summary['reportUDiskCount']) ? $summary['reportUDiskCount'] : 0) + $statistics['reportUDiskCount'];
+            $summary['reportCount'] = (isset($summary['reportCount']) ? $summary['reportCount'] : 0) + $statistics['reportCount'];
+        }
+        $statisticsData['statisticsList'] = $statisticsList;
+        $statisticsData['summary'] = $summary;
+        return $statisticsData;
+    }
+
+    public static function listStatisticsForCity($cityId, $search = [])
+    {
+        $installUDiskCount = UDisk::countInstallUDiskForArea($cityId, Area::LEVEL_CITY, $search);
+        $reportUDiskCount = Statistics::countReportUDiskForArea($cityId, Area::LEVEL_CITY, $search);
+        $reportCount = Statistics::countReportForArea($cityId, Area::LEVEL_CITY, $search);
+        $statistics = [];
+        $statistics['cityId'] = $cityId;
+        $statistics['installUDiskCount'] = $installUDiskCount;
+        $statistics['reportUDiskCount'] = $reportUDiskCount;
+        $statistics['reportCount'] = $reportCount;
+        return $statistics;
+    }
+
+    public static function summaryStatisticsForCity($search = [])
+    {
+        // $cityId = $search['city_id'];
+        // $userList = User::listUserForCity($cityId);
+        $statisticsData = [];
+        $statisticsList = [];
+        $statisticsSummary = [];
+        $statisticsArray = Statistics::listStatisticsForUserList($search);
+        //dd($statisticsList);
+        foreach ($statisticsArray as $statistics) {
+            $userId = $statistics['user_id'];
+            if (!isset($statisticsList[$userId]) || empty($statisticsList[$userId])) {
+                $summary = [];
+                $summary['user_id'] = $statistics['user_id'];
+                $summary['user_name'] = $statistics['user_name'];
+                $summary['user_phone'] = $statistics['user_phone'];
+                $summary['user_email'] = $statistics['user_email'];
+                $summary['user_department_id'] = $statistics['user_department_id'];
+                $summary['user_department'] = $statistics['user_department'];
+                $summary['province_id'] = $statistics['province_id'];
+                $summary['province'] = $statistics['province'];
+                $summary['city_id'] = $statistics['city_id'];
+                $summary['city'] = $statistics['city'];
+                $summary['operator_id'] = $statistics['operator_id'];
+                $summary['operator'] = $statistics['operator'];
+                $summary['u_disk_list'][] = $statistics['uuid'];
+                $summary['u_disk_count'] = 1;
+                // $summary['report_count'] = $statistics['report_count'];
+                $summary['report_count'] = 1;
+                $statisticsList[$userId]['summary'] = $summary;
+            } else {
+                if (!in_array($statistics['uuid'], $statisticsList[$userId]['summary']['u_disk_list'])) {
+                    $statisticsList[$userId]['summary']['u_disk_list'][] = $statistics['uuid'];
+                    $statisticsList[$userId]['summary']['u_disk_count'] += 1;
+                }
+                // $statisticsData[$userId]['summary']['report_count'] += $statistics['report_count'];
+                $statisticsList[$userId]['summary']['report_count'] += 1;
+            }
+            $report = [];
+            $report['uuid'] = $statistics['uuid'];
+            $report['ip'] = $statistics['ip'];
+            $report['report_operator_id'] = $statistics['report_operator_id'];
+            $report['report_operator'] = $statistics['report_operator'];
+            $report['report_province_id'] = $statistics['report_province_id'];
+            $report['report_province'] = $statistics['report_province'];
+            $report['probe_type'] = $statistics['probe_type'];
+            $report['report_date'] = $statistics['report_date'];
+            $statisticsList[$userId]['report_list'][] = $report;
+        }
+        $statisticsSummary['user_count'] = count($statisticsList);
+        $statisticsSummary['u_disk_count'] = 0;
+        $statisticsSummary['report_count'] = 0;
+        foreach ($statisticsList as $statistics) {
+            $statisticsSummary['u_disk_count'] += $statistics['summary']['u_disk_count'];
+            $statisticsSummary['report_count'] += $statistics['summary']['report_count'];
+        }
+        $statisticsData['statisticsList'] = $statisticsList;
+        $statisticsData['summary'] = $statisticsSummary;
+        return $statisticsData;
+    }
 }

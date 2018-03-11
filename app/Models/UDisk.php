@@ -113,4 +113,24 @@ class UDisk extends Model
         return $uDiskData;
     }
 
+    public static function countInstallUDiskForArea($areaId, $areaLevel = Area::LEVEL_PROVINCE, $search=[])
+    {
+        $uDiskCount = (new UDisk)->join('users', 'u_disk.user_id', '=', 'users.id')
+            ->where(function ($query) use ($areaId, $areaLevel) {
+                if (isset($areaLevel) && $areaLevel == Area::LEVEL_PROVINCE) {
+                    $query->where('users.province_id', '=', $areaId);
+                }
+                if (isset($areaLevel) && $areaLevel == Area::LEVEL_CITY) {
+                    $query->where('users.city_id', '=', $areaId);
+                }
+            })
+            ->where(function ($query) use ($search){
+                if (isset($search) && isset($search['operator_id']) && !empty($search['operator_id'])) {
+                    // $query->where('u_disk.operator_id', '=', $search['operator_id']);
+                }
+            })
+            ->count();
+        return $uDiskCount;
+    }
+
 }

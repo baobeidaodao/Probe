@@ -30,14 +30,20 @@ class TestController extends Controller
         //dd($long);
         //$publicTypeArray = config('probe.probe_type.1');
         //$data = UserService::listAreaMapForUser();
-        $data = Area::area((new User)->find(13));
-        dd($data);
+        //$data = Area::area((new User)->find(13));
+        //dd($data);
         //StatisticsService::storage();
         //StatisticsService::storageOfDate('2018-02-20', '2018-02-24');
         //$uDiskData = UDisk::uDiskData();
         //dd($uDiskData);
         //$data = Statistics::with('report')->get()->toArray();
-        //dd($data);
+        //$data = UDisk::countUDiskForArea(440000);
+        //$data = Statistics::countReportUDiskForArea(440000);
+        //$data = Statistics::countReportForArea(440000);
+        //$data = StatisticsService::summaryStatisticsForGroup();
+        //$data = Statistics::listStatisticsForUserList();
+        $data = StatisticsService::summaryStatisticsForCity();
+        dd($data);
         return view('test');
     }
 }

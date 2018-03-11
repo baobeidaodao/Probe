@@ -22,7 +22,7 @@
                     <thead class="thead-light">
                     <tr>
                         <th scope="col">IP</th>
-                        <th scope="col">UUID</th>
+                        {{--<th scope="col">UUID</th>--}}
                         <th scope="col">省</th>
                         <th scope="col">市</th>
                         <th scope="col">运营商</th>
@@ -36,7 +36,7 @@
                     @foreach($reportList as $report)
                         <tr class=" @if(!isset($report['report_count']) || empty($report['report_count'])) table-danger @endif ">
                             <td>{{ $report['ip'] or '' }}</td>
-                            <td>{{ $report['uuid'] or '' }}</td>
+                            {{--<td>{{ $report['uuid'] or '' }}</td>--}}
                             <td>{{ $report['province'] or '' }}</td>
                             <td>{{ $report['city'] or '' }}</td>
                             <td>{{ $report['operator'] or '' }}</td>

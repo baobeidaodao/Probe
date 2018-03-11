@@ -21,7 +21,7 @@
                 <table class="table table-hover">
                     <thead class="thead-light">
                     <tr>
-                        <th scope="col">UUID</th>
+                        {{--<th scope="col">UUID</th>--}}
                         <th scope="col">省</th>
                         <th scope="col">市</th>
                         <th scope="col">运营商</th>
@@ -37,7 +37,7 @@
                     <tbody>
                     @foreach($statisticsList as $statistics)
                         <tr class=" @if(!isset($statistics['report_count']) || empty($statistics['report_count'])) table-danger @endif ">
-                            <td>{{ $statistics['uuid'] or '' }}</td>
+                            {{--<td>{{ $statistics['uuid'] or '' }}</td>--}}
                             <td>{{ $statistics['province'] or '' }}</td>
                             <td>{{ $statistics['city'] or '' }}</td>
                             <td>{{ $statistics['operator'] or '' }}</td>

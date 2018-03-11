@@ -37,7 +37,15 @@
         <a href="{{ url('admin/ip') }}" class="list-group-item list-group-item-action list-group-item-dark text-center @if(isset($active) && $active === 'ip') active @endif ">IP 管理</a>
         @endpermission
         @permission('view_statistics')
-        <a href="{{ url('admin/statistics') }}" class="list-group-item list-group-item-action list-group-item-dark text-center @if(isset($active) && $active === 'statistics') active @endif ">统计信息</a>
+        @if(isset(Auth::user()->level) && Auth::user()->level <= \App\Models\UserLevel::LEVEL_GROUP_MANAGER)
+            <a href="{{ url('admin/statistics/group') }}" class="list-group-item list-group-item-action list-group-item-dark text-center @if(isset($active) && $active === 'statistics') active @endif ">统计信息</a>
+        @elseif(isset(Auth::user()->level) && Auth::user()->level == \App\Models\UserLevel::LEVEL_PROVINCIAL_MANAGER)
+            <a href="{{ url('admin/statistics/province') }}" class="list-group-item list-group-item-action list-group-item-dark text-center @if(isset($active) && $active === 'statistics') active @endif ">统计信息</a>
+        @elseif(isset(Auth::user()->level) && Auth::user()->level == \App\Models\UserLevel::LEVEL_MUNICIPAL_MANAGER)
+            <a href="{{ url('admin/statistics/city') }}" class="list-group-item list-group-item-action list-group-item-dark text-center @if(isset($active) && $active === 'statistics') active @endif ">统计信息</a>
+        @else
+            <a href="{{ url('admin/statistics') }}" class="list-group-item list-group-item-action list-group-item-dark text-center @if(isset($active) && $active === 'statistics') active @endif ">统计信息</a>
+        @endif
         @endpermission
         @permission('view_report')
         <a href="{{ url('admin/report') }}" class="list-group-item list-group-item-action list-group-item-dark text-center @if(isset($active) && $active === 'report') active @endif ">数据查询</a>

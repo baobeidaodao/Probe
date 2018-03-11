@@ -33,6 +33,15 @@ class Area extends Model
         return $cityList;
     }
 
+    public static function listCityOfProvince($provinceId)
+    {
+        $cityList = (new Area)->where('level', '=', self::LEVEL_CITY)
+            ->where('parent_id', '=', $provinceId)
+            ->get()
+            ->toArray();
+        return $cityList;
+    }
+
     public static function listProvince()
     {
         $cityList = (new Area)->where('level', '=', self::LEVEL_PROVINCE)

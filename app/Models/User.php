@@ -151,4 +151,14 @@ class User extends Authenticatable
         }
         return $userIdList;
     }
+
+    public static function listUserForCity($cityId, $userLevel = UserLevel::LEVEL_TESTER)
+    {
+        $userList = (new User)
+            ->where('users.city_id', '=', $cityId)
+            ->where('users.level', '=', $userLevel)
+            ->get()
+            ->toArray();
+        return $userList;
+    }
 }
