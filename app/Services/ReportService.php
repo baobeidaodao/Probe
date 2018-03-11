@@ -12,6 +12,7 @@ namespace App\Services;
 
 use App\Models\Area;
 use App\Models\Report;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportService
 {
@@ -40,4 +41,80 @@ class ReportService
         $reportData['summary'] = $summary;
         return $reportData;
     }
+
+    public static function exportReportData($provinceId, $reportList = [], $search = [])
+    {
+        $head = [];
+        $head[] = [
+            'IP',
+            '所属省',
+            '所属运营商',
+            '测试时间',
+            'U盾省',
+            'U盾市',
+            'U盾运营商',
+            '类型',
+        ];
+        $date = date('Y-m', strtotime($search['start_date']));
+        if ($provinceId == 0) {
+            $provinceName = '所有省';
+            $fileName = $provinceName . '-' . $date;
+            Excel::create($fileName, function ($excel) use ($head, $reportList) {
+                foreach ($reportList as $report) {
+                    $list = $report['report_list'];
+                    if (!isset($list) || empty($list)) {
+                        continue;
+                    }
+                    $cellData = [];
+                    $provinceName = '';
+                    foreach ($list as $item) {
+                        $provinceName = $item['report_province'];
+                        $cellData[] = [
+                            $item['ip'],
+                            $item['report_province'],
+                            $item['report_operator'],
+                            $item['report_date'],
+                            $item['province'],
+                            $item['city'],
+                            $item['operator'],
+                            $item['probe_type'] == 1 ? '自有' : '公有',
+                        ];
+                    }
+                    $cellData = array_merge($head, $cellData);
+                    $excel->sheet($provinceName, function ($sheet) use ($cellData) {
+                        $sheet->rows($cellData);
+                    });
+                }
+            })->export('xls');
+        } else {
+            $provinceName = '';
+            $cellData = [];
+            foreach ($reportList as $report) {
+                if (isset($report['province_id']) && $report['province_id'] == $provinceId) {
+                    $list = $report['report_list'];
+                    foreach ($list as $item) {
+                        $provinceName = $item['report_province'];
+                        $cellData[] = [
+                            $item['ip'],
+                            $item['report_province'],
+                            $item['report_operator'],
+                            $item['report_date'],
+                            $item['province'],
+                            $item['city'],
+                            $item['operator'],
+                            $item['probe_type'] == 1 ? '自有' : '公有',
+                        ];
+                    }
+                }
+            }
+            $fileName = $provinceName . '-' . $date;
+            $cellData = array_merge($head, $cellData);
+            Excel::create($fileName, function ($excel) use ($cellData, $provinceName) {
+                $excel->sheet($provinceName, function ($sheet) use ($cellData) {
+                    $sheet->rows($cellData);
+                });
+            })->export('xls');
+        }
+    }
+
 }

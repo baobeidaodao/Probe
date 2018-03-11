@@ -18,6 +18,7 @@ use App\Services\AdminService;
 use App\Services\ReportService;
 use App\Services\StatisticsService;
 use App\Services\UserService;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TestController extends Controller
 {
@@ -44,8 +45,21 @@ class TestController extends Controller
         //$data = StatisticsService::summaryStatisticsForGroup();
         //$data = Statistics::listStatisticsForUserList();
         //$data = StatisticsService::summaryStatisticsForCity();
-        $data = ReportService::summaryReportForProvinceList();
-        dd($data);
+        //$data = ReportService::summaryReportForProvinceList();
+        $cellData = [
+            ['学号', '姓名', '成绩'],
+            ['10001', 'AAAAA', '99'],
+            ['10002', 'BBBBB', '92'],
+            ['10003', 'CCCCC', '95'],
+            ['10004', 'DDDDD', '89'],
+            ['10005', 'EEEEE', '96'],
+        ];
+        Excel::create('aaaa', function ($excel) use ($cellData) {
+            $excel->sheet('score', function ($sheet) use ($cellData) {
+                $sheet->rows($cellData);
+            });
+        })->export('xls');
+        dd(1);
         return view('test');
     }
 }

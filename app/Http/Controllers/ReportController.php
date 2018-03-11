@@ -150,6 +150,52 @@ class ReportController extends Controller
         return view('admin.report.province', $data);
     }
 
+    public static function export(Request $request)
+    {
+        $exportProvinceId = isset($request->export_province_id) ? $request->export_province_id : 0;
+        $firstDay = date('Y-m-01 00:00:00', strtotime(date('Y', time()) . '-' . (date('m', time()) - 1) . '-01'));
+        $lastDay = date('Y-m-d 23.59.59', strtotime("$firstDay +1 month -1 day"));
+        //$startDate = isset($request->start_date) ? $request->start_date . ' 00:00:00' : date('Y-m-d 00:00:00', strtotime('-30 day'));
+        //$endDate = isset($request->end_date) ? $request->end_date . ' 23.59.59' : date('Y-m-d 23.59.59', strtotime('-1 day'));
+        $startDate = isset($request->start_date) ? $request->start_date . ' 00:00:00' : $firstDay;
+        $endDate = isset($request->end_date) ? $request->end_date . ' 23.59.59' : $lastDay;
+        $search = [
+            'probe_type' => isset($request->probe_type) ? $request->probe_type : 0,
+            'ip' => isset($request->ip) ? $request->ip : '',
+            // 'report_province_id' => isset($request->report_province_id) ? $request->report_province_id : 0,
+            'report_province_id' => isset($request->export_province_id) ? $request->export_province_id : 0,
+            'report_operator_id' => isset($request->report_operator_id) ? $request->report_operator_id : 0,
+            'province_id' => isset($request->province_id) ? $request->province_id : 0,
+            'city_id' => isset($request->city_id) ? $request->city_id : 0,
+            'operator_id' => isset($request->operator_id) ? $request->operator_id : 0,
+            'start_date' => $startDate,
+            'end_date' => $endDate,
+        ];
+        // $statisticsListData = Statistics::listStatistics($search, $page, $size);
+        $reportData = ReportService::summaryReportForProvinceList($search);
+        $search['start_date'] = date('Y-m-d', strtotime($startDate));
+        $search['end_date'] = date('Y-m-d', strtotime($endDate));
+        //$areaMap = AdminService::listAreaMap();
+        $areaMap = AdminService::listAreaMapForUser();
+        $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_2)->get()->toArray();
+        $reportOperatorList = (new Operator())->where('level', '=', Operator::LEVEL_1)->get()->toArray();
+        $provinceList = Area::listProvince();
+        $tips = StatisticsService::statisticsTips($search);
+        $data = [];
+        $data['reportList'] = $reportData['reportList'];
+        ReportService::exportReportData($exportProvinceId, $data['reportList'], $search);
+        $data['summary'] = $reportData['summary'];
+        $data['operatorList'] = $operatorList;
+        $data['reportOperatorList'] = $reportOperatorList;
+        $data['provinceList'] = $provinceList;
+        $data['areaMap'] = $areaMap;
+        $data['search'] = $search;
+        $data['tips'] = $tips;
+        $data['form'] = 'search';
+        $data['active'] = 'report';
+        return view('admin.report.summary', $data);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

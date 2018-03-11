@@ -22,28 +22,33 @@
                     <div class="card-header">总计</div>
                     <div class="card-body text-dark">
                         <h5 class="card-title">上报数据条数：{{ $summary['report_count'] or '' }}</h5>
-                        <button type="button" class="btn btn-outline-success btn-sm">
-                            下载
-                        </button>
+                        @if($summary['report_count'] > 0)
+                            <button type="button" class="btn btn-outline-success btn-sm export-button" data-id="0">
+                                下载
+                            </button>
+                        @endif
                     </div>
                 </div>
                 @foreach($reportList as $report)
-                    <div class="card @if(!isset($report['report_count']) || empty($report['report_count'])) border-danger @else border-success  @endif mb-3">
+                    <div class="card @if(!isset($report['report_count']) || empty($report['report_count'])) border-danger @else border-success @endif mb-3">
                         <div class="card-header">{{ $report['province'] or '' }}</div>
                         <div class="card-body text-dark">
                             <h5 class="card-title">上报数据条数：{{ $report['report_count'] or '' }}</h5>
                             <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#view{{ $report['province_id'] or '' }}">
                                 查看
                             </button>
-                            <button type="button" class="btn btn-outline-success btn-sm">
-                                下载
-                            </button>
+                            @if($report['report_count'] > 0)
+                                <button type="button" class="btn btn-outline-success btn-sm export-button" data-id="{{ $report['province_id'] or 0 }}">
+                                    下载
+                                </button>
+                            @endif
                         </div>
                     </div>
                 @endforeach
             </div>
         </div>
     </div>
+    <input id="export_province_id" type="hidden" name="export_province_id" value="0">
     {!! Form::close() !!}
     @foreach($reportList as $report)
         <div class="modal fade bd-example-modal-lg" id="view{{ $report['province_id'] or '' }}" tabindex="-1" role="dialog" aria-labelledby="view{{ $report['province_id'] or '' }}Title" aria-hidden="true">
@@ -103,6 +108,12 @@
             } else if (provinceId !== '' && parseInt(provinceId) > 0) {
                 $("#searchForm").attr('action', '{{ url('/admin/report/province') }}');
             }
+        });
+        $(".export-button").click(function () {
+            var provinceId = $(this).attr('data-id');
+            $("#export_province_id").val(provinceId);
+            $("#searchForm").attr('action', '{{ url('/admin/report/export') }}');
+            $("#searchForm").submit();
         });
     </script>
 @endsection
