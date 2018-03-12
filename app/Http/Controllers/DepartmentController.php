@@ -12,6 +12,7 @@ namespace App\Http\Controllers;
 use App\Models\ActionLog;
 use App\Models\Area;
 use App\Models\Department;
+use App\Models\Operator;
 use App\Services\AdminService;
 use App\Services\AppService;
 use Illuminate\Http\Request;
@@ -39,12 +40,14 @@ class DepartmentController extends Controller
         // $areaMap = AdminService::listAreaMap();
         $areaMap = AdminService::listAreaMapForUser();
         $cityList = Area::listCity();
+        $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_2)->get()->toArray();
         $data = [];
         $data['departmentList'] = $departmentListData['departmentList'];
         $data['pagination'] = $pagination;
         $data['search'] = $search;
         $data['areaMap'] = $areaMap;
         $data['cityList'] = $cityList;
+        $data['operatorList'] = $operatorList;
         $data['active'] = 'department';
         return view('admin.department.index', $data);
     }

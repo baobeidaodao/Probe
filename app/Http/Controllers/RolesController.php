@@ -10,6 +10,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActionLog;
+use App\Models\Operator;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
@@ -45,12 +46,14 @@ class RolesController extends Controller
         // $roleListData = Role::listRole($page, $size);
         $roleListData = Role::searchRole($search, $page, $size);
         $pagination = AppService::calculatePagination($page, $size, $roleListData['count']);
+        $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_2)->get()->toArray();
         $perms = (new Permission)->get();
         $data = [];
         $data['roles'] = $roleListData['roleList'];
         $data['perms'] = $perms;
         $data['search'] = $search;
         $data['pagination'] = $pagination;
+        $data['operatorList'] = $operatorList;
         $data['active'] = 'roles';
         return view('admin.roles.index', $data);
     }

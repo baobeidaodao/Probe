@@ -10,6 +10,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActionLog;
+use App\Models\Operator;
 use App\Services\AppService;
 use Illuminate\Http\Request;
 
@@ -31,10 +32,12 @@ class LogController extends Controller
             $actionLogList[$index]['action_name'] = ActionLog::$actionMap[$actionLog['action']];
         }
         $pagination = AppService::calculatePagination($page, $size, $actionLogData['count']);
+        $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_2)->get()->toArray();
         $data = [];
         $data['actionLogList'] = $actionLogList;
         $data['pagination'] = $pagination;
         $data['search'] = $search;
+        $data['operatorList'] = $operatorList;
         $data['active'] = 'logs';
         return view('admin.logs.index', $data);
     }

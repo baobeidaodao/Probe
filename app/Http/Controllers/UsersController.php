@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ActionLog;
 use App\Models\Department;
+use App\Models\Operator;
 use App\Models\Role;
 use App\Models\UserLevel;
 use App\Services\AdminService;
@@ -50,6 +51,7 @@ class UsersController extends Controller
         $departmentList = Department::listDepartmentForUser();
         // $areaMap = AdminService::listAreaMap();
         $areaMap = AdminService::listAreaMapForUser();
+        $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_2)->get()->toArray();
         $data = [];
         $data['users'] = $userListData['userList'];
         $data['roles'] = $roles;
@@ -58,6 +60,7 @@ class UsersController extends Controller
         $data['userLevelList'] = $userLevelList;
         $data['departmentList'] = $departmentList;
         $data['areaMap'] = $areaMap;
+        $data['operatorList'] = $operatorList;
         $data['active'] = 'users';
         return view('admin.users.index', $data);
     }

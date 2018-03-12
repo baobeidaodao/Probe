@@ -10,6 +10,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActionLog;
+use App\Models\Operator;
 use App\Models\Permission;
 use App\Services\AppService;
 use Illuminate\Http\Request;
@@ -33,10 +34,12 @@ class PermissionsController extends Controller
         // $perms = (new Permission)->get();
         $permissionListData = Permission::searchPermission($search, $page, $size);
         $pagination = AppService::calculatePagination($page, $size, $permissionListData['count']);
+        $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_2)->get()->toArray();
         $data = [];
         $data['perms'] = $permissionListData['permissionList'];
         $data['pagination'] = $pagination;
         $data['search'] = $search;
+        $data['operatorList'] = $operatorList;
         $data['active'] = 'permissions';
         return view('admin.permissions.index', $data);
     }
