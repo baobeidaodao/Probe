@@ -23,8 +23,8 @@
                     <tr>
                         <th scope="col">id</th>
                         <th scope="col">部门</th>
-                        <th scope="col">市</th>
                         <th scope="col">省</th>
+                        <th scope="col">市</th>
                         <th scope="col">
                             <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#createPermission">
                                 创建

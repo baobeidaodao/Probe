@@ -35,6 +35,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/', 'AdminController@index');
     Route::get('/update-statistics', 'AdminController@updateStatistics');
+    Route::any('/update-report-config', 'AdminController@updateReportConfig');
 
     /** 用户 */
     Route::post('users/search', 'UsersController@index');

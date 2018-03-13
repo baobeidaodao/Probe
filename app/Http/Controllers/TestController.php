@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Area;
 use App\Models\Department;
+use App\Models\ReportConfig;
 use App\Models\Statistics;
 use App\Models\UDisk;
 use App\Models\User;
@@ -46,20 +47,21 @@ class TestController extends Controller
         //$data = Statistics::listStatisticsForUserList();
         //$data = StatisticsService::summaryStatisticsForCity();
         //$data = ReportService::summaryReportForProvinceList();
-        $cellData = [
-            ['学号', '姓名', '成绩'],
-            ['10001', 'AAAAA', '99'],
-            ['10002', 'BBBBB', '92'],
-            ['10003', 'CCCCC', '95'],
-            ['10004', 'DDDDD', '89'],
-            ['10005', 'EEEEE', '96'],
-        ];
-        Excel::create('aaaa', function ($excel) use ($cellData) {
-            $excel->sheet('score', function ($sheet) use ($cellData) {
-                $sheet->rows($cellData);
-            });
-        })->export('xls');
-        dd(1);
+//        $cellData = [
+//            ['学号', '姓名', '成绩'],
+//            ['10001', 'AAAAA', '99'],
+//            ['10002', 'BBBBB', '92'],
+//            ['10003', 'CCCCC', '95'],
+//            ['10004', 'DDDDD', '89'],
+//            ['10005', 'EEEEE', '96'],
+//        ];
+//        Excel::create('aaaa', function ($excel) use ($cellData) {
+//            $excel->sheet('score', function ($sheet) use ($cellData) {
+//                $sheet->rows($cellData);
+//            });
+//        })->export('xls');
+        $data = ReportConfig::operatorIdLevel();
+        dd($data);
         return view('test');
     }
 }

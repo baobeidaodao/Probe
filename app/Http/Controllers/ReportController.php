@@ -12,6 +12,7 @@ namespace App\Http\Controllers;
 use App\Models\Area;
 use App\Models\Operator;
 use App\Models\Report;
+use App\Models\ReportConfig;
 use App\Models\UserLevel;
 use App\Services\AdminService;
 use App\Services\AppService;
@@ -72,14 +73,15 @@ class ReportController extends Controller
         //$endDate = isset($request->end_date) ? $request->end_date . ' 23.59.59' : date('Y-m-d 23.59.59', strtotime('-1 day'));
         $startDate = isset($request->start_date) ? $request->start_date . ' 00:00:00' : $firstDay;
         $endDate = isset($request->end_date) ? $request->end_date . ' 23.59.59' : $lastDay;
+        $operatorIdLevel = ReportConfig::operatorIdLevel();
         $search = [
             'probe_type' => isset($request->probe_type) ? $request->probe_type : 0,
             'ip' => isset($request->ip) ? $request->ip : '',
             'report_province_id' => isset($request->report_province_id) ? $request->report_province_id : 0,
-            'report_operator_id' => isset($request->report_operator_id) ? $request->report_operator_id : 0,
+            'report_operator_id' => isset($request->report_operator_id) ? $request->report_operator_id :  $operatorIdLevel['operatorIdLevel1'],
             'province_id' => isset($request->province_id) ? $request->province_id : 0,
             'city_id' => isset($request->city_id) ? $request->city_id : 0,
-            'operator_id' => isset($request->operator_id) ? $request->operator_id : 0,
+            'operator_id' => isset($request->operator_id) ? $request->operator_id :  $operatorIdLevel['operatorIdLevel2'],
             'start_date' => $startDate,
             'end_date' => $endDate,
         ];
@@ -115,14 +117,15 @@ class ReportController extends Controller
         //$endDate = isset($request->end_date) ? $request->end_date . ' 23.59.59' : date('Y-m-d 23.59.59', strtotime('-1 day'));
         $startDate = isset($request->start_date) ? $request->start_date . ' 00:00:00' : $firstDay;
         $endDate = isset($request->end_date) ? $request->end_date . ' 23.59.59' : $lastDay;
+        $operatorIdLevel = ReportConfig::operatorIdLevel();
         $search = [
             'probe_type' => isset($request->probe_type) ? $request->probe_type : 0,
             'ip' => isset($request->ip) ? $request->ip : '',
             'report_province_id' => isset($request->report_province_id) ? $request->report_province_id : 0,
-            'report_operator_id' => isset($request->report_operator_id) ? $request->report_operator_id : 0,
+            'report_operator_id' => isset($request->report_operator_id) ? $request->report_operator_id : $operatorIdLevel['operatorIdLevel1'],
             'province_id' => isset($request->province_id) ? $request->province_id : 0,
             'city_id' => isset($request->city_id) ? $request->city_id : 0,
-            'operator_id' => isset($request->operator_id) ? $request->operator_id : 0,
+            'operator_id' => isset($request->operator_id) ? $request->operator_id : $operatorIdLevel['operatorIdLevel2'],
             'start_date' => $startDate,
             'end_date' => $endDate,
         ];
@@ -159,15 +162,16 @@ class ReportController extends Controller
         //$endDate = isset($request->end_date) ? $request->end_date . ' 23.59.59' : date('Y-m-d 23.59.59', strtotime('-1 day'));
         $startDate = isset($request->start_date) ? $request->start_date . ' 00:00:00' : $firstDay;
         $endDate = isset($request->end_date) ? $request->end_date . ' 23.59.59' : $lastDay;
+        $operatorIdLevel = ReportConfig::operatorIdLevel();
         $search = [
             'probe_type' => isset($request->probe_type) ? $request->probe_type : 0,
             'ip' => isset($request->ip) ? $request->ip : '',
             // 'report_province_id' => isset($request->report_province_id) ? $request->report_province_id : 0,
             'report_province_id' => isset($request->export_province_id) ? $request->export_province_id : 0,
-            'report_operator_id' => isset($request->report_operator_id) ? $request->report_operator_id : 0,
+            'report_operator_id' => isset($request->report_operator_id) ? $request->report_operator_id : $operatorIdLevel['operatorIdLevel1'],
             'province_id' => isset($request->province_id) ? $request->province_id : 0,
             'city_id' => isset($request->city_id) ? $request->city_id : 0,
-            'operator_id' => isset($request->operator_id) ? $request->operator_id : 0,
+            'operator_id' => isset($request->operator_id) ? $request->operator_id : $operatorIdLevel['operatorIdLevel2'],
             'start_date' => $startDate,
             'end_date' => $endDate,
         ];
