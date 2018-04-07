@@ -110,7 +110,10 @@ class User extends Authenticatable
                 if (isset($search) && isset($search['department_id']) && !empty($search['department_id'])) {
                     $query->where('users.department_id', '=', $search['department_id']);
                 }
-            });
+            })
+            ->orderBy('users.level', 'asc')
+            ->orderBy('users.area_id', 'asc')
+            ->orderBy('users.id', 'asc');
         $count = $db->count();
         $userList = $db->forPage($page, $size)
             ->get();

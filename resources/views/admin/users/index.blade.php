@@ -23,6 +23,8 @@
                     <tr>
                         <th scope="col">id</th>
                         <th scope="col">姓名</th>
+                        <th scope="col">级别</th>
+                        <th scope="col">省份</th>
                         <th scope="col">Email</th>
                         <th scope="col">电话</th>
                         <th scope="col">
@@ -37,6 +39,18 @@
                         <tr>
                             <th scope="row">{{ $user->id or 0 }}</th>
                             <td>{{ $user->name or '' }}</td>
+                            <td>
+                                @foreach($userLevelList as $userLevel)
+                                    @if($userLevel['id'] == $user->level) {{ $userLevel['name'] or '' }} @endif
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach($areaMap as $province)
+                                    @if(isset($province['level']) && $province['level'] == \App\Models\Area::LEVEL_PROVINCE)
+                                        @if($province['id'] == $user->province_id) {{ $province['name'] or '' }} @endif
+                                    @endif
+                                @endforeach
+                            </td>
                             <td>{{ $user->email or '' }}</td>
                             <td>{{ $user->phone or '' }}</td>
                             <td>
@@ -45,7 +59,7 @@
                                         查看
                                     </button>
                                     @ability('admin', 'edit_user', ['validate_all' => false,])
-                                    @if(Auth::getUser()->level < $user->level)
+                                    @if(Auth::getUser()->level < $user->level || Auth::id() == $user->id)
                                         <button type="button" class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#editUser{{ $user->id or 0 }}">
                                             修改
                                         </button>

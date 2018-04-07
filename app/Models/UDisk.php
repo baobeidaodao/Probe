@@ -36,7 +36,7 @@ class UDisk extends Model
         return $data;
     }
 
-    public static function searchUDisk($search = [], $page, $size)
+    public static function searchUDisk($search = [], $page = 1, $size = 10)
     {
         $db = (new UDisk)
             ->leftJoin('users', 'u_disk.user_id', '=', 'users.id')
