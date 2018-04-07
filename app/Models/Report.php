@@ -156,10 +156,14 @@ class Report extends Model
 
     public static function listReportForProvince($search = [])
     {
-        $reportList = (new Area)->leftJoin('report', 'area.id', '=', 'report.province_id')
+        $reportList = (new Area)->rightJoin('report', 'area.id', '=', 'report.province_id')
             ->leftJoin('statistics', 'report.statistics_id', '=', 'statistics.id')
             ->whereNotNull('report.ip')
-            ->where('area.level', '=', Area::LEVEL_PROVINCE)
+            ->where(function ($query) {
+                if (Auth::user()->level > UserLevel::LEVEL_GROUP_MANAGER) {
+                    $query->where('area.level', '=', Area::LEVEL_PROVINCE);
+                }
+            })
             ->where(function ($query) use ($search) {
                 if (isset($search) && isset($search['probe_type']) && !empty($search['probe_type'])) {
                     $query->where('report.probe_type', '=', $search['probe_type']);

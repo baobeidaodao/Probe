@@ -32,6 +32,11 @@ class ReportService
             $reportList[$provinceId]['report_count'] = 0;
             $summary['report_count'] = 0;
         }
+        /** 未定义的省份 */
+        $reportList[0]['province_id'] = 0;
+        $reportList[0]['province'] = '未知';
+        $reportList[0]['report_list'] = [];
+        $reportList[0]['report_count'] = 0;
         $reportArray = Report::listReportForProvince($search);
         foreach ($reportArray as $report) {
             $provinceId = isset($report['report_province_id']) && !empty($report['report_province_id']) ? $report['report_province_id'] : 0;
@@ -73,7 +78,7 @@ class ReportService
                     $cellData = [];
                     $provinceName = '';
                     foreach ($list as $item) {
-                        $provinceName = $item['report_province'];
+                        $provinceName = isset($item['report_province']) && !empty($item['report_province']) ? $item['report_province'] : '未知';
                         $cellData[] = [
                             $item['ip'],
                             $item['report_province'],
@@ -90,7 +95,8 @@ class ReportService
                         $sheet->rows($cellData);
                     });
                 }
-            })->export('xls');
+                ob_end_clean();
+            })->export('xlsx'); // xls  csv
         } else {
             $provinceName = '';
             $cellData = [];
@@ -118,7 +124,8 @@ class ReportService
                 $excel->sheet($provinceName, function ($sheet) use ($cellData) {
                     $sheet->rows($cellData);
                 });
-            })->export('xls');
+                ob_end_clean();
+            })->export('xlsx'); // xls  csv
         }
     }
 
