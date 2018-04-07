@@ -9,6 +9,7 @@
 
 namespace App\Models;
 
+use App\Services\AppService;
 use Illuminate\Database\Eloquent\Model;
 
 class Ip extends Model
@@ -59,7 +60,8 @@ class Ip extends Model
                 if (isset($search) && isset($search['ip']) && !empty($search['ip'])) {
                     // $ipValue = ip2long($search['ip']);
                     // $ipValue = printf("%u", ip2long($search['ip']));
-                    $ipValue = bindec(decbin(ip2long($search['ip'])));
+                    // $ipValue = bindec(decbin(ip2long($search['ip'])));
+                    $ipValue = AppService::ipToLong($search['ip']);
                     $query->where('ip.start_value', '<=', $ipValue)
                         ->where('ip.end_value', '>=', $ipValue);
                 }

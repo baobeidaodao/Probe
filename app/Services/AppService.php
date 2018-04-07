@@ -47,4 +47,12 @@ class AppService
         $pagination['total'] = intval($total);
         return $pagination;
     }
+
+    public static function ipToLong($ip)
+    {
+        //list($a, $b, $c, $d) = split(".", $ip);
+        $array = explode('.', $ip);
+        //return (($a * 256 + $b) * 256 + $c) * 256 + $d;
+        return (($array[0] * 256 + $array[1]) * 256 + $array[2]) * 256 + $array[3];
+    }
 }
