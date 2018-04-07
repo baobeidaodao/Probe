@@ -24,6 +24,8 @@
                         <th scope="col">id</th>
                         <th scope="col">UUID</th>
                         <th scope="col">人员</th>
+                        <th scope="col">省</th>
+                        <th scope="col">市</th>
                         <th scope="col">运营商</th>
                         <th scope="col">
                             <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#createUDisk">
@@ -38,6 +40,8 @@
                             <th scope="row">{{ $uDisk['id'] or 0 }}</th>
                             <td>{{ $uDisk['uuid'] or '' }}</td>
                             <td>{{ $uDisk['user_name'] or '' }}</td>
+                            <td>{{ $uDisk['user_province_name'] or '' }}</td>
+                            <td>{{ $uDisk['user_city_name'] or '' }}</td>
                             <td>{{ $uDisk['operator_name'] or '' }}</td>
                             <td>
                                 <button type="button" class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#editUDisk{{ $uDisk['id'] or 0 }}">

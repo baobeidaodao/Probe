@@ -10,6 +10,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Report extends Model
 {
@@ -50,8 +51,10 @@ class Report extends Model
                 //    ->orWhereIn('statistics.city_id', $area['areaIdList']);
             })
             ->where(function ($query) {
-                $userIdList = User::listUserIdForAuth();
-                $query->whereIn('statistics.user_id', $userIdList);
+                if (Auth::user()->level > UserLevel::LEVEL_GROUP_MANAGER) {
+                    $userIdList = User::listUserIdForAuth();
+                    $query->whereIn('statistics.user_id', $userIdList);
+                }
             })
             ->where(function ($query) use ($search) {
                 if (isset($search) && isset($search['uuid']) && !empty($search['uuid'])) {
@@ -218,4 +221,42 @@ class Report extends Model
             ->toArray();
         return $reportList;
     }
+
+    public static function countReportForGroup($search = [])
+    {
+        $count = (new Report)->leftJoin('statistics', 'report.statistics_id', '=', 'statistics.id')
+            ->whereNotNull('report.ip')
+            ->where(function ($query) use ($search) {
+                if (isset($search) && isset($search['probe_type']) && !empty($search['probe_type'])) {
+                    $query->where('report.probe_type', '=', $search['probe_type']);
+                }
+                if (isset($search) && isset($search['ip']) && !empty($search['ip'])) {
+                    $query->where('report.ip', '=', $search['ip']);
+                }
+                if (isset($search) && isset($search['report_province_id']) && !empty($search['report_province_id'])) {
+                    $query->where('report.province_id', '=', $search['report_province_id']);
+                }
+                if (isset($search) && isset($search['report_operator_id']) && !empty($search['report_operator_id'])) {
+                    $query->where('report.operator_id', '=', $search['report_operator_id']);
+                }
+                if (isset($search) && isset($search['province_id']) && !empty($search['province_id'])) {
+                    $query->where('statistics.province_id', '=', $search['province_id']);
+                }
+                if (isset($search) && isset($search['city_id']) && !empty($search['city_id'])) {
+                    $query->where('statistics.city_id', '=', $search['city_id']);
+                }
+                if (isset($search) && isset($search['operator_id']) && !empty($search['operator_id'])) {
+                    $query->where('statistics.operator_id', '=', $search['operator_id']);
+                }
+                if (isset($search) && isset($search['start_date']) && !empty($search['start_date'])) {
+                    $query->where('statistics.date', '>=', $search['start_date']);
+                }
+                if (isset($search) && isset($search['end_date']) && !empty($search['end_date'])) {
+                    $query->where('statistics.date', '<=', $search['end_date']);
+                }
+            })
+            ->count();
+        return $count;
+    }
+
 }

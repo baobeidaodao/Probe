@@ -123,7 +123,7 @@ class ReportController extends Controller
             'ip' => isset($request->ip) ? $request->ip : '',
             'report_province_id' => isset($request->report_province_id) ? $request->report_province_id : 0,
             'report_operator_id' => isset($request->report_operator_id) ? $request->report_operator_id : $operatorIdLevel['operatorIdLevel1'],
-            'province_id' => isset($request->province_id) ? $request->province_id : 0,
+            'province_id' => isset($request->province_id) ? $request->province_id : Auth::user()->province_id,
             'city_id' => isset($request->city_id) ? $request->city_id : 0,
             'operator_id' => isset($request->operator_id) ? $request->operator_id : $operatorIdLevel['operatorIdLevel2'],
             'start_date' => $startDate,

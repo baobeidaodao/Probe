@@ -12,6 +12,8 @@ namespace App\Services;
 
 use App\Models\Area;
 use App\Models\Report;
+use App\Models\UserLevel;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReportService
@@ -36,6 +38,9 @@ class ReportService
             $reportList[$provinceId]['report_list'][] = $report;
             $reportList[$provinceId]['report_count'] += 1;
             $summary['report_count'] += 1;
+        }
+        if (Auth::user()->level <= UserLevel::LEVEL_GROUP_MANAGER) {
+            $summary['report_count'] = Report::countReportForGroup($search);
         }
         $reportData['reportList'] = $reportList;
         $reportData['summary'] = $summary;
