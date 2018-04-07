@@ -57,7 +57,9 @@ class Ip extends Model
             ->leftJoin('area', 'ip.area_id', '=', 'area.id')
             ->where(function ($query) use ($search) {
                 if (isset($search) && isset($search['ip']) && !empty($search['ip'])) {
-                    $ipValue = ip2long($search['ip']);
+                    // $ipValue = ip2long($search['ip']);
+                    // $ipValue = printf("%u", ip2long($search['ip']));
+                    $ipValue = bindec(decbin(ip2long($search['ip'])));
                     $query->where('ip.start_value', '<=', $ipValue)
                         ->where('ip.end_value', '>=', $ipValue);
                 }
