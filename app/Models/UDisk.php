@@ -63,7 +63,7 @@ class UDisk extends Model
                 }
             });
         $count = $db->count();
-        $uDiskList = $db->select('u_disk.*', 'users.id as user_id', 'users.name as user_name', 'province.name as user_province_name', 'city.name as user_city_name', 'operator.id as operator_id', 'operator.name as operator_name')
+        $uDiskList = $db->select('u_disk.*', 'users.id as user_id', 'users.name as user_name', 'users.area_id as user_area_id', 'province.name as user_province_name', 'province.id as user_province_id', 'city.name as user_city_name', 'city.id as user_city_id', 'operator.id as operator_id', 'operator.name as operator_name')
             ->orderBy('u_disk.id', 'desc')
             ->forPage($page, $size)
             ->get();

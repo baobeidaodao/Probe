@@ -57,7 +57,7 @@
         </div>
         <div class="form-group row" @if(Auth::id() == $user->id) style="display: none;" @endif>
             <label for="" class="col-sm-2 col-form-label">Area</label>
-            @include('common.area', ['for' => 'edit' . $user->id, 'area_id' => $user->area_id, 'class' => 'col-sm-10', ])
+            @include('common.area', ['for' => 'Edit' . $user->id, 'area_id' => $user->area_id, 'class' => 'col-sm-10', ])
         </div>
         <div class="form-group row" @if(Auth::id() == $user->id) style="display: none;" @endif>
             <label for="selectDepartmentedit{{ $user->id or 0 }}" class="col-sm-2 col-form-label">部门</label>
@@ -86,7 +86,38 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-        <button type="submit" class="btn btn-primary">保存</button>
+        <button id="editFormSubmit{{ $user->id or 0 }}" type="submit" class="btn btn-primary">保存</button>
     </div>
     {!! Form::close() !!}
 </div>
+<script>
+    $(function () {
+        $("#editFormSubmit{{ $user->id or 0 }}").click(function () {
+            var editInputName{{ $user->id or 0 }} = $("#editInputName{{ $user->id or 0 }}").val();
+            var editInputEmail{{ $user->id or 0 }} = $("#editInputEmail{{ $user->id or 0 }}").val();
+            var editSelectLevel{{ $user->id or 0 }} = $("#editSelectLevel{{ $user->id or 0 }}").val();
+            var selectProvinceEdit{{ $user->id or 0 }} = $("#selectProvinceEdit{{ $user->id or 0 }}").val();
+            var selectCityEdit{{ $user->id or 0 }} = $("#selectCityEdit{{ $user->id or 0 }}").val();
+            if (editInputName{{ $user->id or 0 }} == '') {
+                alert('姓名不可为空');
+                return false;
+            }
+            if (editInputEmail{{ $user->id or 0 }} == '') {
+                alert('邮箱不可为空');
+                return false;
+            }
+            if (editSelectLevel{{ $user->id or 0 }} == '') {
+                alert('级别不可为空');
+                return false;
+            }
+            if (selectProvinceEdit{{ $user->id or 0 }} == '') {
+                alert('省份不可为空');
+                return false;
+            }
+            if (selectCityEdit{{ $user->id or 0 }} == '') {
+                alert('城市不可为空');
+                return false;
+            }
+        });
+    });
+</script>

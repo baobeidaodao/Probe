@@ -40,7 +40,7 @@
             </select>
         </div>
         <label for="">Area</label>
-        @include('common.area', ['for' => 'create', 'area_id' => '', ])
+        @include('common.area', ['for' => 'Create', 'area_id' => '', ])
         <div class="form-group">
             <label for="selectDepartmentcreate">部门</label>
             <select name="department_id" class="form-control" id="selectDepartmentcreate">
@@ -66,7 +66,38 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-        <button type="submit" class="btn btn-primary">保存</button>
+        <button id="createFormSubmit" type="submit" class="btn btn-primary">保存</button>
     </div>
     {!! Form::close() !!}
 </div>
+<script>
+    $(function () {
+        $("#createFormSubmit").click(function () {
+            var createInputName = $("#createInputName").val();
+            var createInputEmail = $("#createInputEmail").val();
+            var createSelectLevel = $("#createSelectLevel").val();
+            var selectProvinceCreate = $("#selectProvinceCreate").val();
+            var selectCityCreate = $("#selectCityCreate").val();
+            if (createInputName == '') {
+                alert('姓名不可为空');
+                return false;
+            }
+            if (createInputEmail == '') {
+                alert('邮箱不可为空');
+                return false;
+            }
+            if (createSelectLevel == '') {
+                alert('级别不可为空');
+                return false;
+            }
+            if (selectProvinceCreate == '') {
+                alert('省份不可为空');
+                return false;
+            }
+            if (selectCityCreate == '') {
+                alert('城市不可为空');
+                return false;
+            }
+        });
+    });
+</script>

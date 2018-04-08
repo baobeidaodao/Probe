@@ -21,6 +21,8 @@
             <label for="inputUuid">uuid</label>
             <input name="uuid" type="text" class="form-control" id="inputUuid" placeholder="Uuid">
         </div>
+        <label for="">Area</label>
+        @include('common.area', ['for' => 'Create', 'area_id' => '', ])
         <div class="form-group">
             <label for="selectUserId">人员</label>
             <select name="user_id" class="form-control" id="selectUserId">
@@ -46,3 +48,31 @@
     </div>
     {!! Form::close() !!}
 </div>
+<script>
+    $(function () {
+        $("#selectProvinceCreate").change(function () {
+            var selectUserOptionHtml = '<option value="">Choose...</option>';
+            var provinceId = $(this).val();
+            // alert(provinceId);
+            $.each(userList, function (index, value, array) {
+                // alert(value['id']);
+                if (value['province_id'] == provinceId) {
+                    selectUserOptionHtml += '<option value="' + value['id'] + '">' + value['name'] + '</option>';
+                }
+            });
+            $("#selectUserId").html(selectUserOptionHtml);
+        });
+        $("#selectCityCreate").change(function () {
+            var selectUserOptionHtml = '<option value="">Choose...</option>';
+            var cityId = $(this).val();
+            // alert(cityId);
+            $.each(userList, function (index, value, array) {
+                // alert(value['id']);
+                if (value['city_id'] == cityId) {
+                    selectUserOptionHtml += '<option value="' + value['id'] + '">' + value['name'] + '</option>';
+                }
+            });
+            $("#selectUserId").html(selectUserOptionHtml);
+        });
+    });
+</script>

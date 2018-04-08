@@ -13,6 +13,7 @@ use App\Models\ActionLog;
 use App\Models\Operator;
 use App\Models\UDisk;
 use App\Models\User;
+use App\Services\AdminService;
 use App\Services\AppService;
 use Illuminate\Http\Request;
 use Validator;
@@ -34,12 +35,14 @@ class UDiskController extends Controller
         // $userList = User::all()->toArray();
         $userList = User::listUserForAuth();
         $operatorList = (new Operator())->where('level', '=', Operator::LEVEL_2)->get()->toArray();
+        $areaMap = AdminService::listAreaMapForUser();
         $data = [];
         $data['uDiskList'] = $uDiskListData['uDiskList'];
         $data['pagination'] = $pagination;
         $data['userList'] = $userList;
         $data['search'] = $search;
         $data['operatorList'] = $operatorList;
+        $data['areaMap'] = $areaMap;
         $data['active'] = 'u-disk';
         return view('admin.u_disk.index', $data);
     }

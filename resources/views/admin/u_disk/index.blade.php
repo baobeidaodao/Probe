@@ -77,4 +77,8 @@
             </div>
         @endforeach
     </div>
+    <script>
+        var userListJson = '<?php echo json_encode($userList); ?>';
+        var userList = JSON.parse(userListJson);
+    </script>
 @endsection

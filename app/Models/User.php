@@ -94,8 +94,9 @@ class User extends Authenticatable
                     $query->where('users.name', 'like', $search['name']);
                 }
                 if (isset($search) && isset($search['area_id']) && !empty($search['area_id'])) {
-                    $query->where('users.area_id', '=', $search['area_id']);
+                    // $query->where('users.area_id', '=', $search['area_id']);
                 }
+                /*
                 if (isset($user->level) && $user->level > UserLevel::LEVEL_GROUP_MANAGER) {
                     if ($user->level == UserLevel::LEVEL_PROVINCIAL_MANAGER) {
                         $query->where('users.level', '>', $user->level);
@@ -106,6 +107,13 @@ class User extends Authenticatable
                         $query->where('users.city_id', '=', $user->city_id);
                     }
                     $query->orWhere('users.id', '=', Auth::id());
+                }
+                */
+                if (isset($search) && isset($search['province_id']) && !empty($search['province_id'])) {
+                    $query->where('users.province_id', '=', $search['province_id']);
+                }
+                if (isset($search) && isset($search['city_id']) && !empty($search['city_id'])) {
+                    $query->where('users.city_id', '=', $search['city_id']);
                 }
                 if (isset($search) && isset($search['department_id']) && !empty($search['department_id'])) {
                     $query->where('users.department_id', '=', $search['department_id']);
