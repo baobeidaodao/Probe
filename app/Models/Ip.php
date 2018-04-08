@@ -61,7 +61,8 @@ class Ip extends Model
                     // $ipValue = ip2long($search['ip']);
                     // $ipValue = printf("%u", ip2long($search['ip']));
                     // $ipValue = bindec(decbin(ip2long($search['ip'])));
-                    $ipValue = AppService::ipToLong($search['ip']);
+                    $ipValue = AppService::ipToLong($search['ip']); // var_dump($ipValue);die();
+                    $ipValue = $ipValue . ''; // var_dump($ipValue);die();
                     $query->where('ip.start_value', '<=', $ipValue)
                         ->where('ip.end_value', '>=', $ipValue);
                 }
