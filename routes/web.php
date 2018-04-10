@@ -54,6 +54,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::resource('department', 'DepartmentController');
 
     /** ip */
+    Route::any('ip/check', 'IpController@check');
     Route::post('ip/search', 'IpController@index');
     Route::resource('ip', 'IpController');
 

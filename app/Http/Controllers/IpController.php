@@ -173,4 +173,16 @@ class IpController extends Controller
         return redirect('admin/ip');
     }
 
+    public static function check(Request $request)
+    {
+        $id = isset($request->id) ? $request->id : '';
+        $startIp = isset($request->startIp) ? $request->startIp : '';
+        $endIp = isset($request->endIp) ? $request->endIp : '';
+        $ipInfo = [];
+        $ipInfo['id'] = $id;
+        $ipInfo['startIp'] = $startIp;
+        $ipInfo['endIp'] = $endIp;
+        $ipListData = Ip::checkIp($ipInfo, 10);
+        return json_encode($ipListData);
+    }
 }

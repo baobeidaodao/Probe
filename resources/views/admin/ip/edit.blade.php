@@ -9,7 +9,7 @@
 ?>
 
 <div class="modal-content">
-    {!! Form::open(['method' => 'patch', 'route' => ['ip.update', $ip['id'], ], ]) !!}
+    {!! Form::open(['id' => 'editForm' . $ip['id'], 'method' => 'patch', 'route' => ['ip.update', $ip['id'], ], ]) !!}
     <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -17,13 +17,14 @@
         </button>
     </div>
     <div class="modal-body">
+        <div id="editTips{{$ip['id']}}"></div>
         <div class="form-group">
             <label for="inputStartIp">起始IP</label>
-            <input name="start_ip" type="text" class="form-control" id="inputStartIp" value="{{ $ip['start_ip'] or '' }}" placeholder="起始IP">
+            <input name="start_ip" type="text" class="form-control" id="inputStartIp{{$ip['id']}}" value="{{ $ip['start_ip'] or '' }}" placeholder="起始IP">
         </div>
         <div class="form-group">
             <label for="inputEndIp">结束IP</label>
-            <input name="end_ip" type="text" class="form-control" id="inputEndIp" value="{{ $ip['end_ip'] or '' }}" placeholder="结束IP">
+            <input name="end_ip" type="text" class="form-control" id="inputEndIp{{$ip['id']}}" value="{{ $ip['end_ip'] or '' }}" placeholder="结束IP">
         </div>
         <div class="form-group">
             <label for="selectOperator">运营商</label>
@@ -44,7 +45,47 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-        <button type="submit" class="btn btn-primary">保存</button>
+        <button id="editSubmit{{$ip['id']}}" type="button" class="btn btn-primary">保存</button>
     </div>
     {!! Form::close() !!}
 </div>
+<script>
+    $(function () {
+        $("#editSubmit{{$ip['id']}}").click(function () {
+            var startIp = $("#inputStartIp{{$ip['id']}}").val();
+            var endIp = $("#inputEndIp{{$ip['id']}}").val();
+            $.ajax({
+                url: '/admin/ip/check?id=' + {{$ip['id']}} + '&startIp=' + startIp + '&endIp=' + endIp,
+                type: "GET",
+                async: false,
+                success: function (result) {
+                    var data;
+                    if (typeof(result) === 'string') {
+                        data = JSON.parse(result);
+                    } else {
+                        data = result;
+                    }
+                    if (data['count'] > 0) {
+                        var tips = '';
+                        var ipList = data['ipList'];
+                        var ipTips = '';
+                        $.each(ipList, function (index, value, array) {
+                            ipTips += value['start_ip'] + ' - ' + value['end_ip'] + '<br>'
+                        });
+                        tips += '你填入的IP段<br>' +
+                            startIp + ' - ' + endIp + '<br>' +
+                            '与 ' + data['count'] + ' 条记录有冲突：<br>' +
+                            ipTips +
+                            '无法添加<hr>';
+                        $("#editTips{{$ip['id']}}").html(tips);
+                        return false;
+                    } else {
+                        // alert(data['count']);
+                        $("#editSubmit{{$ip['id']}}").attr('type', 'submit');
+                        $("#editForm{{$ip['id']}}").submit();
+                    }
+                }
+            });
+        });
+    });
+</script>

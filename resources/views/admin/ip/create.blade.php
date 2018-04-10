@@ -9,7 +9,7 @@
 ?>
 
 <div class="modal-content">
-    {!! Form::open(['method'=> 'POST', 'route' => 'ip.store']) !!}
+    {!! Form::open(['id' => 'inputForm', 'method'=> 'POST', 'route' => 'ip.store']) !!}
     <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -17,6 +17,7 @@
         </button>
     </div>
     <div class="modal-body">
+        <div id="inputTips"></div>
         <div class="form-group">
             <label for="inputStartIp">起始IP</label>
             <input name="start_ip" type="text" class="form-control" id="inputStartIp" placeholder="起始IP">
@@ -46,7 +47,47 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-        <button type="submit" class="btn btn-primary">保存</button>
+        <button id="inputSubmit" type="button" class="btn btn-primary">保存</button>
     </div>
     {!! Form::close() !!}
 </div>
+<script>
+    $(function () {
+        $("#inputSubmit").click(function () {
+            var startIp = $("#inputStartIp").val();
+            var endIp = $("#inputEndIp").val();
+            $.ajax({
+                url: '/admin/ip/check?startIp=' + startIp + '&endIp=' + endIp,
+                type: "GET",
+                async: false,
+                success: function (result) {
+                    var data;
+                    if (typeof(result) === 'string') {
+                        data = JSON.parse(result);
+                    } else {
+                        data = result;
+                    }
+                    if (data['count'] > 0) {
+                        var tips = '';
+                        var ipList = data['ipList'];
+                        var ipTips = '';
+                        $.each(ipList, function (index, value, array) {
+                            ipTips += value['start_ip'] + ' - ' + value['end_ip'] + '<br>'
+                        });
+                        tips += '你填入的IP段<br>' +
+                            startIp + ' - ' + endIp + '<br>' +
+                            '与 ' + data['count'] + ' 条记录有冲突：<br>' +
+                            ipTips +
+                            '无法添加<hr>';
+                        $("#inputTips").html(tips);
+                        return false;
+                    } else {
+                        // alert(data['count']);
+                        $("#inputSubmit").attr('type', 'submit');
+                        $("#inputForm").submit();
+                    }
+                }
+            });
+        });
+    });
+</script>

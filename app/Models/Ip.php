@@ -106,4 +106,45 @@ class Ip extends Model
         }
         return $ipData;
     }
+
+    public static function checkIp($ipInfo = [], $size = 10)
+    {
+        $id = isset($ipInfo['id']) ? $ipInfo['id'] : '';
+        $startIp = isset($ipInfo['startIp']) ? $ipInfo['startIp'] : '';
+        $endIp = isset($ipInfo['endIp']) ? $ipInfo['endIp'] : '';
+        $startValue = (string)ip2long($startIp);
+        $endValue = (string)ip2long($endIp);
+        $db = (new Ip)
+            ->where(function ($query) use ($id) {
+                if (isset($id) && !empty($id)) {
+                    $query->where('ip.id', '<>', $id);
+                }
+            })
+            ->where(function ($query) use ($startValue, $endValue) {
+                $query->orWhere(function ($query) use ($startValue, $endValue) {// 范围小，被包含
+                    $query->where('ip.start_value', '<=', $startValue)
+                        ->where('ip.end_value', '>=', $endValue);
+                })->orWhere(function ($query) use ($startValue, $endValue) {// 范围大，包含
+                    $query->where('ip.start_value', '>=', $startValue)
+                        ->where('ip.end_value', '<=', $endValue);
+                })->orWhere(function ($query) use ($startValue, $endValue) {// 前交叉
+                    $query->where('ip.start_value', '>=', $startValue)
+                        ->where('ip.end_value', '>=', $endValue)
+                        ->where('ip.start_value', '<=', $endValue);
+                })->orWhere(function ($query) use ($startValue, $endValue) {// 后交叉
+                    $query->where('ip.start_value', '<=', $startValue)
+                        ->where('ip.end_value', '<=', $endValue)
+                        ->where('ip.end_value', '>=', $startValue);
+                });
+            });
+        $count = $db->count();
+        $ipList = $db->orderBy('ip.id', 'desc')
+            ->forPage(0, $size)
+            ->get()
+            ->toArray();
+        $data = [];
+        $data['count'] = $count;
+        $data['ipList'] = $ipList;
+        return $data;
+    }
 }
