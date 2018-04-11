@@ -128,7 +128,7 @@ class UDisk extends Model
             })
             ->where(function ($query) use ($search){
                 if (isset($search) && isset($search['operator_id']) && !empty($search['operator_id'])) {
-                    // $query->where('u_disk.operator_id', '=', $search['operator_id']);
+                    $query->where('u_disk.operator_id', '=', $search['operator_id']);
                 }
             })
             ->count();
