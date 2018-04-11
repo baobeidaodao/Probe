@@ -42,8 +42,8 @@
         <label for="">Area</label>
         @include('common.area', ['for' => 'Create', 'area_id' => '', ])
         <div class="form-group">
-            <label for="selectDepartmentcreate">部门</label>
-            <select name="department_id" class="form-control" id="selectDepartmentcreate">
+            <label for="selectDepartmentCreate">部门</label>
+            <select name="department_id" class="form-control" id="selectDepartmentCreate">
                 @if(count($departmentList)>1)
                 @endif
                 <option value="">选择</option>
@@ -98,6 +98,34 @@
                 alert('城市不可为空');
                 return false;
             }
+        });
+    });
+</script>
+<script>
+    $(function () {
+        $("#selectProvinceCreate").change(function () {
+            var selectDepartmentOptionHtml = '<option value="">Choose...</option>';
+            var provinceId = $(this).val();
+            // alert(provinceId);
+            $.each(departmentList, function (index, value, array) {
+                // alert(value['id']);
+                if (value['area_id'] == provinceId) {
+                    selectDepartmentOptionHtml += '<option value="' + value['id'] + '">' + value['name'] + '</option>';
+                }
+            });
+            $("#selectDepartmentCreate").html(selectDepartmentOptionHtml);
+        });
+        $("#selectCityCreate").change(function () {
+            var selectDepartmentOptionHtml = '<option value="">Choose...</option>';
+            var cityId = $(this).val();
+            // alert(cityId);
+            $.each(departmentList, function (index, value, array) {
+                // alert(value['id']);
+                if (value['area_id'] == cityId) {
+                    selectDepartmentOptionHtml += '<option value="' + value['id'] + '">' + value['name'] + '</option>';
+                }
+            });
+            $("#selectDepartmentCreate").html(selectDepartmentOptionHtml);
         });
     });
 </script>

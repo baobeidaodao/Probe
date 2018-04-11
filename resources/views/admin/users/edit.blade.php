@@ -60,14 +60,16 @@
             @include('common.area', ['for' => 'Edit' . $user->id, 'area_id' => $user->area_id, 'class' => 'col-sm-10', ])
         </div>
         <div class="form-group row" @if(Auth::id() == $user->id) style="display: none;" @endif>
-            <label for="selectDepartmentedit{{ $user->id or 0 }}" class="col-sm-2 col-form-label">部门</label>
+            <label for="selectDepartmentEdit{{ $user->id or 0 }}" class="col-sm-2 col-form-label">部门</label>
             <div class="col-sm-10">
-                <select name="department_id" class="form-control" id="selectDepartmentedit{{ $user->id or 0 }}">
+                <select name="department_id" class="form-control" id="selectDepartmentEdit{{ $user->id or 0 }}">
                     @if(count($departmentList)>1)
                     @endif
                     <option value="">选择</option>
                     @foreach($departmentList as $department)
-                        <option value="{{ $department['id'] or 0 }}" @if($department['id'] == $user->department_id) selected @endif >{{ $department['name'] or '' }}</option>
+                        @if($department['area_id'] == $user->area_id)
+                            <option value="{{ $department['id'] or 0 }}" @if($department['id'] == $user->department_id) selected @endif >{{ $department['name'] or '' }}</option>
+                        @endif
                     @endforeach
                 </select>
             </div>
@@ -118,6 +120,34 @@
                 alert('城市不可为空');
                 return false;
             }
+        });
+    });
+</script>
+<script>
+    $(function () {
+        $("#selectProvinceEdit{{ $user->id or 0 }}").change(function () {
+            var selectUserOptionHtml = '<option value="">Choose...</option>';
+            var provinceId = $(this).val();
+            // alert(provinceId);
+            $.each(departmentList, function (index, value, array) {
+                // alert(value['id']);
+                if (value['area_id'] == provinceId) {
+                    selectUserOptionHtml += '<option value="' + value['id'] + '">' + value['name'] + '</option>';
+                }
+            });
+            $("selectDepartmentEdit{{ $user->id or 0 }}").html(selectUserOptionHtml);
+        });
+        $("#selectCityEdit{{ $user->id or 0 }}").change(function () {
+            var selectUserOptionHtml = '<option value="">Choose...</option>';
+            var cityId = $(this).val();
+            // alert(cityId);
+            $.each(departmentList, function (index, value, array) {
+                // alert(value['id']);
+                if (value['area_id'] == cityId) {
+                    selectUserOptionHtml += '<option value="' + value['id'] + '">' + value['name'] + '</option>';
+                }
+            });
+            $("selectDepartmentEdit{{ $user->id or 0 }}").html(selectUserOptionHtml);
         });
     });
 </script>

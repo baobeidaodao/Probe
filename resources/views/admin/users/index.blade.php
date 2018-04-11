@@ -105,4 +105,8 @@
             </div>
         @endforeach
     </div>
+    <script>
+        var departmentListJson = '<?php echo json_encode($departmentList); ?>';
+        var departmentList = JSON.parse(departmentListJson);
+    </script>
 @endsection
